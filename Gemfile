@@ -45,3 +45,25 @@ group :development do
   gem 'spring'
 end
 
+
+gem 'devise'
+gem 'devise-i18n'
+gem 'devise_invitable'
+gem 'figaro', '>= 1.0.0.rc1'
+gem 'high_voltage'
+gem 'pg'
+gem 'pundit'
+gem 'upmin-admin'
+
+group :development do
+  gem 'better_errors'
+  gem 'hub', :require=>nil
+  gem 'quiet_assets'
+  gem 'rails_apps_pages'
+  gem 'rails_layout'
+end
+
+group :development, :test do
+  gem 'rubocop'
+end
+
