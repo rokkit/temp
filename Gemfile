@@ -32,4 +32,6 @@ group :development, :test do
   gem 'rubocop', '0.30'
   gem 'rspec-rails', '~> 3.0'
   gem 'airborne'
+  gem 'factory_girl_rails'
+  gem 'faker'
 end
