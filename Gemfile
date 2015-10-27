@@ -29,5 +29,7 @@ group :development do
   gem 'rails_layout'
 end
 group :development, :test do
-  gem 'rubocop'
+  gem 'rubocop', '0.30'
+  gem 'rspec-rails', '~> 3.0'
+  gem 'airborne'
 end
