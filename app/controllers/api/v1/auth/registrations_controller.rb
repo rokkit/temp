@@ -3,13 +3,13 @@ class Api::V1::Auth::RegistrationsController < ApplicationController
   # Параметры: phone, password
   def create
     user = User.new params.permit([:phone, :password])
-    user.phone_token = 4.times.map{ Random.rand(9) }.join
-    if user.save()
+    user.phone_token = 4.times.map { Random.rand(9) }.join
+    if user.save
       sign_in user
       SMSService.send(user.phone, 'invite text')
       render json: user
     else
-      render json: {errors: user.errors}
+      render json: { errors: user.errors }
     end
   end
 

@@ -24,7 +24,7 @@ gem 'pundit'
 gem 'upmin-admin'
 group :development do
   gem 'better_errors'
-  gem 'hub', :require=>nil
+  gem 'hub', require: nil
   gem 'quiet_assets'
   gem 'rails_layout'
 end

@@ -7,10 +7,10 @@ class Api::V1::Auth::SessionsController < ApplicationController
       if user.valid_password?(params[:password])
         render json: user
       else
-        render json: { errors: { password: 'wrong password'} }
+        render json: { errors: { password: 'wrong password' } }
       end
     else
-      render json: { errors: { phone: 'user not found'} }
+      render json: { errors: { phone: 'user not found' } }
     end
   end
 
@@ -23,7 +23,7 @@ class Api::V1::Auth::SessionsController < ApplicationController
       SMSService.send user.phone, "new password: #{new_password}"
       head :ok
     else
-      render json: {status: 'error'}
+      render json: { status: 'error' }
     end
   end
 end

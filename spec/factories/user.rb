@@ -16,5 +16,4 @@ FactoryGirl.define do
     password 'password'
     phone_token { Faker::Number.number(4) }
   end
-
 end

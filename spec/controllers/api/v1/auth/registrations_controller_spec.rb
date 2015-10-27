@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::Auth::RegistrationsController, type: :controller do
-  describe "registration with valid params" do
+  describe 'registration with valid params' do
     let(:user) { FactoryGirl.attributes_for(:user_credentials) }
     before do
       expect(SMSService).to receive(:send).and_return(true)
@@ -10,11 +10,11 @@ RSpec.describe Api::V1::Auth::RegistrationsController, type: :controller do
     it 'create a user with phone' do
       expect_json_types(id: :integer)
     end
-    it "should set a phone confirmation token" do
+    it 'should set a phone confirmation token' do
       expect(User.find(json_body[:id]).phone_token).to be_present
     end
   end
-  describe "registration with invalid params" do
+  describe 'registration with invalid params' do
     let(:user) { FactoryGirl.attributes_for(:user_credentials, phone: nil) }
     before do
       expect(SMSService).to_not receive(:send)
@@ -23,12 +23,12 @@ RSpec.describe Api::V1::Auth::RegistrationsController, type: :controller do
     it 'not create a user without phone' do
       expect(json_body[:id]).to be_nil
     end
-    it "should return errors array" do
+    it 'should return errors array' do
       expect_json_types(errors: :object)
     end
   end
 
-  describe "phone confirmation with code" do
+  describe 'phone confirmation with code' do
     let(:user) { FactoryGirl.create(:user_with_code) }
     it 'should confirm user if token valid' do
       post :confirm, code: user.phone_token
