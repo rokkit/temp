@@ -1,0 +1,11 @@
+image: ruby:2.2.2
+services:
+  - postgres
+
+before_script:
+  - bundle_install
+
+stages:
+  - build
+  - test
+  - deploy
