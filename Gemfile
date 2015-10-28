@@ -22,6 +22,7 @@ gem 'high_voltage'
 gem 'pg'
 gem 'pundit'
 gem 'upmin-admin'
+
 group :development do
   gem 'better_errors'
   gem 'hub', require: nil
@@ -30,6 +31,7 @@ group :development do
   gem 'guard-rspec', require: false
   gem 'spring-commands-rspec'
   gem 'rb-fsevent' if `uname` =~ /Darwin/
+  gem 'mina'
 end
 group :development, :test do
   gem 'rubocop', '0.30'
