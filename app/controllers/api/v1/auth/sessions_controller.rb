@@ -1,4 +1,4 @@
-class Api::V1::Auth::SessionsController < ApplicationController
+class Api::V1::Auth::SessionsController < Api::V1::BaseController
   # Создание сессии по номеру телефона и паролю
   # Параметры: phone, password
   def create

@@ -13,4 +13,5 @@ class User < ActiveRecord::Base
 
   validates :phone, presence: true, uniqueness: true
   validates :password, presence: true
+  # validates :email, uniqueness: true
 end

@@ -1,4 +1,4 @@
-class Api::V1::Auth::RegistrationsController < ApplicationController
+class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
   # Создание аккаунта с отправкой кода подтверждения на указанный номер.
   # Параметры: phone, password
   def create
