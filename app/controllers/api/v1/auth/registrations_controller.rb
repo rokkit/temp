@@ -12,7 +12,6 @@ class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
       render json: { errors: user.errors }
     end
   end
-
   # Поддтверждение аккаунта кодом, высланным на телефон при регистрации
   def confirm
     user = User.find_by_phone_token(params[:code])
