@@ -309,7 +309,6 @@ DEPENDENCIES
   quiet_assets
   rails (= 4.2.4)
   rails_layout
-  rb-fsevent
   rspec-rails (~> 3.0)
   rubocop (= 0.30)
   sass-rails (~> 5.0)

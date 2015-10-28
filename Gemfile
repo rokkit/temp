@@ -30,7 +30,7 @@ group :development do
   gem 'rails_layout'
   gem 'guard-rspec', require: false
   gem 'spring-commands-rspec'
-  gem 'rb-fsevent' if `uname` =~ /Darwin/
+  # gem 'rb-fsevent' if `uname` =~ /Darwin/
   gem 'mina'
 end
 group :development, :test do
