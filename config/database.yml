@@ -1,26 +1,22 @@
-development:
-  adapter:  postgresql
-  host:     localhost
-  encoding: unicode
-  database: uk_development
-  pool:     5
-  username: uk
-  password:
 
-test:
-  adapter:  postgresql
-  host:     localhost
-  encoding: unicode
-  database: uk_test
-  pool:     5
-  username: uk
-  password:
+  default: &default
+    adapter: postgresql
+    encoding: unicode
+    pool: 5
+    host: localhost
+    timeout: 5000
+    username: postgres
+    password: Lee6eetu
 
-production:
-  adapter:  postgresql
-  host:     localhost
-  encoding: unicode
-  database: uk_production
-  pool:     5
-  username: uk
-  password:
+
+  development:
+    <<: *default
+    database: uk_development
+
+  test:
+    <<: *default
+    database: uk_test
+
+  production:
+    <<: *default
+    database: uk_production
