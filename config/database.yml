@@ -1,0 +1,26 @@
+development:
+  adapter:  postgresql
+  host:     localhost
+  encoding: unicode
+  database: uk_development
+  pool:     5
+  username: uk
+  password:
+
+test:
+  adapter:  postgresql
+  host:     localhost
+  encoding: unicode
+  database: uk_test
+  pool:     5
+  username: uk
+  password:
+
+production:
+  adapter:  postgresql
+  host:     localhost
+  encoding: unicode
+  database: uk_production
+  pool:     5
+  username: uk
+  password:
