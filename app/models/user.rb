@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  mount_uploader :blazon, BlazonUploader
+
   enum role: [:user, :admin]
   after_initialize :set_default_role, if: :new_record?
 
