@@ -10,12 +10,22 @@
 
 
   development:
-    <<: *default
+    adapter:  postgresql
+    host:     localhost
+    encoding: unicode
     database: uk_development
+    pool:     5
+    username: uk
+    password:
 
   test:
-    <<: *default
+    adapter:  postgresql
+    host:     localhost
+    encoding: unicode
     database: uk_test
+    pool:     5
+    username: uk
+    password:
 
   production:
     <<: *default

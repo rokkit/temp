@@ -7,6 +7,9 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
+gem 'activeadmin', '~> 1.0.0.pre1'
+gem 'russian'
+gem 'carrierwave'
 group :development, :test do
   gem 'byebug'
 end

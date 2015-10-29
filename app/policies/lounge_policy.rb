@@ -1,26 +1,32 @@
-class UserPolicy
+class LoungePolicy
   attr_reader :current_user, :model
-
   def initialize(current_user, model)
     @current_user = current_user
     @model = model
   end
 
   def index?
-    @current_user.admin?
+    @current_user.is_admin?
+  end
+
+  def new?
+    @current_user.is_admin?
+  end
+
+  def create?
+    @current_user.is_admin?
   end
 
   def show?
-    @current_user.admin? || @current_user == @model
+    @current_user.is_admin?
   end
 
   def update?
-    @current_user.admin?
+    @current_user.is_admin?
   end
 
   def destroy?
-    return false if @current_user == @model
-    @current_user.admin?
+    @current_user.is_admin?
   end
   class Scope
     attr_reader :user, :scope
