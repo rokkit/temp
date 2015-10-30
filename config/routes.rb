@@ -20,7 +20,8 @@ Rails.application.routes.draw do
           end
         end
       end
-      resources :lounges
+      resources :lounges, only: [:index]
+      resources :reservations, only: [:create]
     end
   end
 end
