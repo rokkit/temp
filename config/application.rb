@@ -22,5 +22,6 @@ module Uk
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+    config.middleware.use(StackProf::Middleware, enabled:true, mode:wall, interval: 100, save_every: 10)
   end
 end
