@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::Auth::RegistrationsController, type: :controller do
+  render_views
   describe 'registration with valid params' do
     let(:user) { FactoryGirl.attributes_for(:user_credentials) }
     before do

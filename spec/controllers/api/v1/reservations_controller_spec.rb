@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::ReservationsController, type: :controller do
+  render_views
   describe "when user make a reservation request" do
     let(:user) { FactoryGirl.create :user }
     let!(:lounge) { FactoryGirl.create :lounge }

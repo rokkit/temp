@@ -11,12 +11,15 @@ gem 'jbuilder', '~> 2.0'
 gem 'activeadmin', '~> 1.0.0.pre1'
 gem 'russian'
 gem 'carrierwave'
+gem 'ancestry'
+gem 'database_cleaner'
 group :development, :test do
   gem 'byebug'
 end
 group :development do
   gem 'web-console', '~> 2.0'
   gem 'spring'
+  gem 'habtm_generator'
 end
 gem 'devise'
 gem 'devise-i18n'

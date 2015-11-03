@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  has_many :skills_users, class_name: 'SkillsUsers'
+  has_many :skills, through: :skills_users
 
 
   enum role: [:user, :admin]

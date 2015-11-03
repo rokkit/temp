@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       end
       resources :lounges, only: [:index]
       resources :reservations, only: [:create]
+      resources :skills, only: [:index]
     end
   end
 end
