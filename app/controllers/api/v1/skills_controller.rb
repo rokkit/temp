@@ -15,15 +15,16 @@ class Api::V1::SkillsController < Api::V1::BaseController
   # TODO: снятие Очков навыка
   def take
     skill = Skill.find(params[:id])
-    if skill
+    if skill && current_user.skill_point > 0
       current_user.skills.push skill
+      current_user.skill_point -= 1
       if current_user.save
         render json: { status: :ok }
       else
         render json: { status: :error }
       end
     else
-      head :not_found
+      render json: { status: :error }
     end
   end
 end

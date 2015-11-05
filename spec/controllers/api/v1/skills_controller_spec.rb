@@ -26,22 +26,38 @@ RSpec.describe Api::V1::SkillsController, type: :controller do
 
   describe "skills operation" do
     describe "skill take" do
-      let!(:skill) { FactoryGirl.create :skill }
-      let!(:user) { FactoryGirl.create :user }
-      before do
-        @request.env["devise.mapping"] = Devise.mappings[:user]
-        sign_in user
-        post :take, id: skill.id, format: :json
-      end
-      describe "when it can be" do
+      describe "when user can do it" do
+        let!(:skill) { FactoryGirl.create :skill }
+        let!(:user) { FactoryGirl.create :user, skill_point: 1 }
+        before do
+          @request.env["devise.mapping"] = Devise.mappings[:user]
+          sign_in user
+          post :take, id: skill.id, format: :json
+        end
         it "should add choosen skill to user" do
            expect(response).to be_success
            expect(json_body[:status]).to eq 'ok'
         end
+        it "should substract from user 1 skill point" do
+          user.reload
+          expect(user.skill_point).to eq(0)
+        end
       end
 
       describe "when the conditions is wrong" do
-        it 'should fails with error'
+        let!(:skill) { FactoryGirl.create :skill }
+        let!(:user) { FactoryGirl.create :user, skill_point: 0 }
+        before do
+          @request.env["devise.mapping"] = Devise.mappings[:user]
+          sign_in user
+          post :take, id: skill.id, format: :json
+        end
+        describe "when skill point is not enought" do
+          it 'should fails with error' do
+            expect(json_body[:status]).to eq 'error'
+          end
+        end
+
       end
 
     end
