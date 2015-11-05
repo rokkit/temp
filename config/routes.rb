@@ -22,7 +22,12 @@ Rails.application.routes.draw do
       end
       resources :lounges, only: [:index]
       resources :reservations, only: [:create]
-      resources :skills, only: [:index]
+      resources :skills, only: [:index] do
+        member {
+          post :take
+        }
+      end
+      resources :payments, only: [:create]
     end
   end
 end

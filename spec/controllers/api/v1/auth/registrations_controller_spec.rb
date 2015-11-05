@@ -9,10 +9,10 @@ RSpec.describe Api::V1::Auth::RegistrationsController, type: :controller do
       post :create, user
     end
     it 'create a user with phone' do
-      expect_json_types(id: :integer)
+      expect(json_body[:status]).to eq('ok')
     end
     it 'should set a phone confirmation token' do
-      expect(User.find(json_body[:id]).phone_token).to be_present
+      expect(User.find_by_phone(user[:phone]).phone_token).to be_present
     end
   end
   describe 'registration with invalid params' do
@@ -40,6 +40,11 @@ RSpec.describe Api::V1::Auth::RegistrationsController, type: :controller do
     it 'should return error when code is invalid' do
       post :confirm, code: 'wrongcode'
       expect(json_body[:status]).to eq 'error'
+    end
+    it "should return user object" do
+      post :confirm, code: user.phone_token
+      user.reload
+      expect(json_body[:user][:id]).to eq(user.id)
     end
   end
 end

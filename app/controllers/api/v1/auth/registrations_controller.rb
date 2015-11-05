@@ -7,7 +7,7 @@ class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
     if user.save
       sign_in user
       SMSService.send(user.phone, 'invite text')
-      render json: user
+      render json: {status: :ok}
     else
       render json: { errors: user.errors }
     end
@@ -18,7 +18,8 @@ class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
     if user
       user.update_attribute :confirmed_at, DateTime.now
       sign_in user
-      render json: { status: :ok }
+
+      render json: { status: :ok, user: user }
     else
       render json: { status: :error }
     end

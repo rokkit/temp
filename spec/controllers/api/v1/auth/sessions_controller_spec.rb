@@ -9,6 +9,14 @@ RSpec.describe Api::V1::Auth::SessionsController, type: :controller do
         post :create, phone: user.phone, password: 'password'
         expect(json_body[:id]).to eq user.id
       end
+
+      describe "when user not confirmed" do
+        it "should return error" do
+          user.update_attribute :confirmed_at, nil
+          post :create, phone: user.phone, password: 'password'
+          expect(json_body[:errors]).to be_present
+        end
+      end
     end
     describe 'when phone and password are invalid' do
       it 'should return errors' do
@@ -35,7 +43,7 @@ RSpec.describe Api::V1::Auth::SessionsController, type: :controller do
         expect(SMSService).to_not receive(:send)
         post :forgot, phone: 'wrong phone'
       end
-      it 'should send a new password to user' do
+      it 'should fails with error' do
         expect(json_body[:status]).to eq 'error'
       end
     end
