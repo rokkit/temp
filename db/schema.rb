@@ -11,10 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151106113129) do
+ActiveRecord::Schema.define(version: 20151106130013) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "achievements", force: :cascade do |t|
+    t.string   "name",        null: false
+    t.text     "description"
+    t.string   "key",         null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "achievements_users", force: :cascade do |t|
+    t.integer  "achievement_id"
+    t.integer  "user_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "achievements_users", ["achievement_id"], name: "index_achievements_users_on_achievement_id", using: :btree
+  add_index "achievements_users", ["user_id"], name: "index_achievements_users_on_user_id", using: :btree
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
@@ -135,6 +153,8 @@ ActiveRecord::Schema.define(version: 20151106113129) do
   add_index "users", ["phone_token"], name: "index_users_on_phone_token", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "achievements_users", "achievements"
+  add_foreign_key "achievements_users", "users"
   add_foreign_key "lounges", "cities"
   add_foreign_key "payments", "users"
   add_foreign_key "reservations", "tables"

@@ -26,6 +26,7 @@ Rails.application.routes.draw do
         end
       end
       resources :payments, only: [:create]
+      resources :achievements, only: [:index]
     end
   end
 end
