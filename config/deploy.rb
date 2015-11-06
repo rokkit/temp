@@ -12,7 +12,7 @@ set :rails_env, 'production'
 set :domain, '192.168.1.39'
 set :term_mode, nil
 set :branch, 'master'
-set :deploy_to, "/var/www/UK"
+set :deploy_to, '/var/www/UK'
 set :repository, 'git@192.168.1.39:maks_ohs/uk.git'
 
 set :user, 'maks'

@@ -10,8 +10,8 @@ RSpec.describe Api::V1::Auth::SessionsController, type: :controller do
         expect(json_body[:id]).to eq user.id
       end
 
-      describe "when user not confirmed" do
-        it "should return error" do
+      describe 'when user not confirmed' do
+        it 'should return error' do
           user.update_attribute :confirmed_at, nil
           post :create, phone: user.phone, password: 'password'
           expect(json_body[:errors]).to be_present

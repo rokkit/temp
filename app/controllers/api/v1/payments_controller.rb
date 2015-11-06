@@ -18,9 +18,7 @@ class Api::V1::PaymentsController < ApplicationController
           user.skill_point += 1
         end
 
-        if user.save
-          head :ok
-        end
+        head :ok if user.save
       end
     end
   end

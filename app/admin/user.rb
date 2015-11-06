@@ -17,12 +17,11 @@ ActiveAdmin.register User do
   filter :created_at
 
   form do |f|
-    f.inputs "User" do
+    f.inputs 'User' do
       f.input :email
       f.input :phone
       f.input :password
     end
     f.actions
   end
-
 end

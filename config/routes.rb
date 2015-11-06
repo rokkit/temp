@@ -1,10 +1,8 @@
 Rails.application.routes.draw do
-
   # mount Upmin::Engine => '/admin'
   root to: 'pages#index'
   devise_for :users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-
 
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
@@ -23,9 +21,9 @@ Rails.application.routes.draw do
       resources :lounges, only: [:index]
       resources :reservations, only: [:create]
       resources :skills, only: [:index] do
-        member {
+        member do
           post :take
-        }
+        end
       end
       resources :payments, only: [:create]
     end

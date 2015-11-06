@@ -1,5 +1,3 @@
 ActiveAdmin.register City do
-
-permit_params :name
-
+  permit_params :name
 end

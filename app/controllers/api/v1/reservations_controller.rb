@@ -11,7 +11,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
       if @reservation.save
         render json: @reservation
       else
-        render json: {errors: @reservation.errors }
+        render json: { errors: @reservation.errors }
       end
     end
   end
