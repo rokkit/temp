@@ -8,6 +8,7 @@ RSpec.describe Api::V1::Auth::SessionsController, type: :controller do
       it 'should return a user' do
         post :create, phone: user.phone, password: 'password', format: :json
         expect(json_body[:id]).to eq user.id
+        expect(json_body[:auth_token]).to eq(user.auth_token)
       end
       it 'return user achievements' do
         post :create, phone: user.phone, password: 'password', format: :json

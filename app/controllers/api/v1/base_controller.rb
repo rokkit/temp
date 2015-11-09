@@ -1,9 +1,16 @@
 class Api::V1::BaseController < ApplicationController
   skip_before_action :verify_authenticity_token # TODO: включить CSRF защиту
 
-  before_action :cors_preflight_check
+  before_action :cors_preflight_check, :token_auth
   after_action :cors_set_access_control_headers
 
+
+  def token_auth
+    if params[:auth_token]
+      user = User.find_by_auth_token(params[:auth_token])
+      sign_in user
+    end
+  end
   def cors_set_access_control_headers
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'

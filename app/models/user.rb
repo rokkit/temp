@@ -12,11 +12,17 @@ class User < ActiveRecord::Base
   enum role: [:user, :admin]
   after_initialize :set_default_role, if: :new_record?
 
+  before_save :set_auth_token
   after_save :check_for_achievements
 
   # Проверка на выполнение достижений связанных с юзером
   def check_for_achievements
     self.check_for_open_profile_achievement()
+  end
+
+  # TODO: MAKE SPEC
+  def set_auth_token
+    self.auth_token = SecureRandom.hex if self.auth_token.nil?
   end
 
   # Ачимент "Открытость"

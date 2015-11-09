@@ -48,6 +48,7 @@ RSpec.describe Api::V1::Auth::RegistrationsController, type: :controller do
         post :confirm, code: user.phone_token
         user.reload
         expect(json_body[:user][:id]).to eq(user.id)
+        expect(json_body[:user][:auth_token]).to eq(user.auth_token)
       end
     end
   end
