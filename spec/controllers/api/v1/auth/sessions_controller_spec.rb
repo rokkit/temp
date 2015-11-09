@@ -6,27 +6,35 @@ RSpec.describe Api::V1::Auth::SessionsController, type: :controller do
     let!(:user) { FactoryGirl.create(:user) }
     describe 'when phone and password valid' do
       it 'should return a user' do
-        post :create, phone: user.phone, password: 'password'
+        post :create, phone: user.phone, password: 'password', format: :json
         expect(json_body[:id]).to eq user.id
+      end
+      it 'return user achievements' do
+        post :create, phone: user.phone, password: 'password', format: :json
+        expect(json_body[:achievements]).to_not be_nil
+      end
+      it 'return user skills' do
+        post :create, phone: user.phone, password: 'password', format: :json
+        expect(json_body[:skills]).to_not be_nil
       end
 
       describe 'when user not confirmed' do
         it 'should return error' do
           user.update_attribute :confirmed_at, nil
-          post :create, phone: user.phone, password: 'password'
+          post :create, phone: user.phone, password: 'password', format: :json
           expect(json_body[:errors][:confirmed_at]).to be_present
         end
       end
     end
     describe 'when phone and password are invalid' do
       it 'returns errors' do
-        post :create, phone: user.phone, password: 'wrongpassword'
+        post :create, phone: user.phone, password: 'wrongpassword', format: :json
         expect(json_body[:errors][:password]).to be_present
       end
     end
     context "when user doest'not exist" do
       it 'returns errors' do
-        post :create, phone: '777', password: 'wrongpassword'
+        post :create, phone: '777', password: 'wrongpassword', format: :json
         expect(json_body[:errors]).to be_present
         expect(json_body[:errors][:phone]).to be_present
       end

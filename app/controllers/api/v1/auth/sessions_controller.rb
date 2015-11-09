@@ -1,13 +1,15 @@
 class Api::V1::Auth::SessionsController < Api::V1::BaseController
+  respond_to :json
   # Создание сессии по номеру телефона и паролю.
   # Юзер должен быть подтвержденным по СМС.
   # Params: phone, password
   def create
-    user = User.find_by_phone(params[:phone])
-    if user
-      if user.confirmed_at.present?
-        if user.valid_password?(params[:password])
-          render json: user
+    @user = User.find_by_phone(params[:phone])
+    if @user
+      if @user.confirmed_at.present?
+        if @user.valid_password?(params[:password])
+
+          respond_with @user
         else
           render json: { errors: { password: 'wrong password' } }
           return

@@ -2,10 +2,30 @@ class User < ActiveRecord::Base
   has_many :skills_users, class_name: 'SkillsUsers'
   has_many :skills, through: :skills_users
 
+  has_many :achievements_user
+  has_many :achievements, through: :achievements_user
+
   has_many :payments
+
+  mount_uploader :avatar, AvatarUploader
 
   enum role: [:user, :admin]
   after_initialize :set_default_role, if: :new_record?
+
+  after_save :check_for_achievements
+
+  # Проверка на выполнение достижений связанных с юзером
+  def check_for_achievements
+    self.check_for_open_profile_achievement()
+  end
+
+  # Ачимент "Открытость"
+  # Заполните свой профиль на 100%
+  def check_for_open_profile_achievement
+    # raise Achievement.find_by_key('open_profile').inspect
+    AchievementsUser.create!(user: self, achievement: Achievement.find_by_key('open_profile')) if self.email.present? &&
+       self.avatar.present?
+  end
 
   def set_default_role
     self.role ||= :user
@@ -14,6 +34,8 @@ class User < ActiveRecord::Base
   def is_admin?
     self.role == 'admin'
   end
+
+
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

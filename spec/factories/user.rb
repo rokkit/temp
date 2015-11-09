@@ -4,6 +4,7 @@ FactoryGirl.define do
     password 'password'
     phone_token { Faker::Number.number(4) }
     confirmed_at DateTime.now
+    avatar { Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'support', 'gerb_spb_liberty.svg')) }
   end
 
   factory :user_credentials, class: User do
