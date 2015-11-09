@@ -1,6 +1,6 @@
 class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
   # Создание аккаунта с отправкой кода подтверждения на указанный номер.
-  # Параметры: phone, password
+  # Params: phone, password
   def create
     user = User.new params.permit([:phone, :password])
     # TODO: когда будут СМС переключить на нормальный код
@@ -14,12 +14,12 @@ class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
     end
   end
   # Поддтверждение аккаунта кодом, высланным на телефон при регистрации
+  # Params: code
   def confirm
     user = User.find_by_phone_token(params[:code])
     if user
       user.update_attribute :confirmed_at, DateTime.now
       sign_in user
-
       render json: { status: :ok, user: user }
     else
       render json: { status: :error }

@@ -7,7 +7,7 @@ ActiveAdmin.register Lounge do
   form(html: { multipart: true }) do |f|
     f.inputs 'Заведения' do
       f.input :title
-      f.input :color
+      f.input :color, as: :string
       f.input :city
       f.input :blazon, as: :file
     end

@@ -1,6 +1,7 @@
 class Api::V1::Auth::SessionsController < Api::V1::BaseController
-  # Создание сессии по номеру телефона и паролю
-  # Параметры: phone, password
+  # Создание сессии по номеру телефона и паролю.
+  # Юзер должен быть подтвержденным по СМС.
+  # Params: phone, password
   def create
     user = User.find_by_phone(params[:phone])
     if user
@@ -22,6 +23,7 @@ class Api::V1::Auth::SessionsController < Api::V1::BaseController
   end
 
   # Восстановление пароля, путем отправки нового на телефон
+  # Params: phone
   def forgot
     user = User.find_by_phone(params[:phone])
     if user

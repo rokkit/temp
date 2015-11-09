@@ -1,5 +1,5 @@
 class Api::V1::BaseController < ApplicationController
-  skip_before_action :verify_authenticity_token
+  skip_before_action :verify_authenticity_token # TODO: включить CSRF защиту
 
   before_action :cors_preflight_check
   after_action :cors_set_access_control_headers
