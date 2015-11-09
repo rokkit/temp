@@ -12,7 +12,8 @@ gem 'activeadmin', '~> 1.0.0.pre1'
 gem 'russian'
 gem 'carrierwave'
 gem 'ancestry'
-gem 'database_cleaner'
+
+gem 'rack-cors', :require => 'rack/cors'
 group :development, :test do
   gem 'byebug'
 end
@@ -46,4 +47,5 @@ group :development, :test do
   gem 'airborne'
   gem 'factory_girl_rails'
   gem 'faker'
+  gem 'database_cleaner'
 end

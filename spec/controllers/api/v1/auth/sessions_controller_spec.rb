@@ -14,14 +14,21 @@ RSpec.describe Api::V1::Auth::SessionsController, type: :controller do
         it 'should return error' do
           user.update_attribute :confirmed_at, nil
           post :create, phone: user.phone, password: 'password'
-          expect(json_body[:errors]).to be_present
+          expect(json_body[:errors][:confirmed_at]).to be_present
         end
       end
     end
     describe 'when phone and password are invalid' do
-      it 'should return errors' do
+      it 'returns errors' do
         post :create, phone: user.phone, password: 'wrongpassword'
+        expect(json_body[:errors][:password]).to be_present
+      end
+    end
+    context "when user doest'not exist" do
+      it 'returns errors' do
+        post :create, phone: '777', password: 'wrongpassword'
         expect(json_body[:errors]).to be_present
+        expect(json_body[:errors][:phone]).to be_present
       end
     end
   end

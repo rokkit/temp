@@ -1,3 +1,20 @@
+  uk_external_development:
+    adapter:  postgresql
+    host:     localhost
+    encoding: unicode
+    database: uk_external_development
+    pool:     5
+    username: uk
+    password:
+      
+  uk_external_test:
+    adapter:  postgresql
+    host:     localhost
+    encoding: unicode
+    database: uk_external_test
+    pool:     5
+    username: uk
+    password:
 
   default: &default
     adapter: postgresql
