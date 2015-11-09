@@ -12,6 +12,7 @@ gem 'activeadmin', '~> 1.0.0.pre1'
 gem 'russian'
 gem 'carrierwave'
 gem 'ancestry'
+gem "active_admin-sortable_tree"
 
 gem 'rack-cors', :require => 'rack/cors'
 group :development, :test do
