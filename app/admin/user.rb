@@ -21,6 +21,7 @@ ActiveAdmin.register User do
       f.input :email
       f.input :phone
       f.input :password
+      f.input :phone_token
     end
     f.actions
   end

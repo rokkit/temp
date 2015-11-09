@@ -1,1 +1,12 @@
 ru:
+  activerecord:
+    models:
+      user:
+        one: Клиент
+        other: Клиенты
+      tables:
+        one: Стол
+        other: Столы
+      reservations:
+        one: Бронирование
+        other: Бронирования
