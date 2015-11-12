@@ -1,4 +1,5 @@
 class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
+  respond_to :json
   # Создание аккаунта с отправкой кода подтверждения на указанный номер.
   # Params: phone, password
   def create
@@ -16,11 +17,11 @@ class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
   # Поддтверждение аккаунта кодом, высланным на телефон при регистрации
   # Params: code
   def confirm
-    user = User.find_by_phone_token(params[:code])
-    if user
-      user.update_attribute :confirmed_at, DateTime.now
-      sign_in user
-      render json: { status: :ok, user: user }
+    @user = User.find_by_phone_token(params[:code])
+    if @user
+      @user.update_attribute :confirmed_at, DateTime.now
+      sign_in @user
+      respond_with @user
     else
       render json: { status: :error }
     end
