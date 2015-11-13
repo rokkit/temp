@@ -15,14 +15,7 @@ gem 'ancestry'
 gem "active_admin-sortable_tree"
 
 gem 'rack-cors', :require => 'rack/cors'
-group :development, :test do
-  gem 'byebug'
-end
-group :development do
-  gem 'web-console', '~> 2.0'
-  gem 'spring'
-  gem 'habtm_generator'
-end
+
 gem 'devise'
 gem 'devise-i18n'
 gem 'devise_invitable'
@@ -33,6 +26,9 @@ gem 'pundit'
 gem 'upmin-admin'
 
 group :development do
+  gem 'web-console', '~> 2.0'
+  gem 'spring'
+  gem 'habtm_generator'
   gem 'better_errors'
   gem 'hub', require: nil
   gem 'quiet_assets'
@@ -43,10 +39,12 @@ group :development do
   gem 'mina'
 end
 group :development, :test do
+  gem 'byebug'
   gem 'rubocop', '0.30'
   gem 'rspec-rails', '~> 3.0'
   gem 'airborne'
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'database_cleaner'
+  gem 'growl'
 end
