@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151109143056) do
+ActiveRecord::Schema.define(version: 20151114161248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -112,7 +112,6 @@ ActiveRecord::Schema.define(version: 20151109143056) do
   add_index "tables", ["lounge_id"], name: "index_tables_on_lounge_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "",  null: false
     t.string   "encrypted_password",     default: "",  null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -145,9 +144,9 @@ ActiveRecord::Schema.define(version: 20151109143056) do
     t.integer  "skill_point",            default: 0
     t.string   "avatar"
     t.string   "auth_token"
+    t.string   "email"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", using: :btree
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
   add_index "users", ["invitations_count"], name: "index_users_on_invitations_count", using: :btree
   add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
