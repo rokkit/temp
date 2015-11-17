@@ -11,7 +11,12 @@ RSpec.describe Api::V1::AchievementsController, type: :controller do
      get :index, format: :json
    end
    it 'returns list of total achievements with format' do
-     expect(json_body).to eq [{id: achievement.id, name: achievement.name, description: achievement.description}]
+     expect(json_body).to eq [{
+                               id: achievement.id,
+                               name: achievement.name,
+                               description: achievement.description,
+                               image: achievement.image_url
+                              }]
    end
  end
 end
