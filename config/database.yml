@@ -1,20 +1,21 @@
   uk_external_development:
     adapter:  postgresql
-    host:     localhost
+    host:     192.168.1.39
+    port: 1234
     encoding: unicode
-    database: uk_external_development
+    database: uhp_demo
     pool:     5
-    username: uk
-    password:
-      
-  uk_external_test:
-    adapter:  postgresql
-    host:     localhost
-    encoding: unicode
-    database: uk_external_test
-    pool:     5
-    username: uk
-    password:
+    username: postgres
+    password: vault13
+
+  # uk_external_test:
+  #   adapter:  postgresql
+  #   host:     localhost
+  #   encoding: unicode
+  #   database: uk_external_test
+  #   pool:     5
+  #   username: uk
+  #   password:
 
   default: &default
     adapter: postgresql
