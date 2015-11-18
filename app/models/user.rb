@@ -29,8 +29,14 @@ class User < ActiveRecord::Base
   # Заполните свой профиль на 100%
   def check_for_open_profile_achievement
     # raise Achievement.find_by_key('open_profile').inspect
-    AchievementsUser.create!(user: self, achievement: Achievement.find_by_key('open_profile')) if self.email.present? &&
-       self.avatar.present?
+    if self.email.present? && self.avatar.present?
+      achievement = Achievement.find_by_key('open_profile')
+      if !achievement
+        achievement = Achievement.create(name: 'Открытость')
+      end
+      AchievementsUser.create!(user: self, achievement: achievement)
+    end
+
   end
 
   def set_default_role

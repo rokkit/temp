@@ -29,6 +29,7 @@ RSpec.describe Api::V1::AchievementsController, type: :controller do
      end
      it 'returns list of total achievements with open status' do
        get :index, format: :json
+
        expect(json_body).to eq [{
                                  id: achievement.id,
                                  name: achievement.name,
