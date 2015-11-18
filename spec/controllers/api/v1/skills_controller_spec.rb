@@ -4,23 +4,25 @@ RSpec.describe Api::V1::SkillsController, type: :controller do
   render_views
   describe '#index' do
     let!(:skill) { FactoryGirl.create :skill }
-    let!(:skill2) { FactoryGirl.create :skill, parent: skill }
+    let!(:skill2) { FactoryGirl.create :skill }
     let(:user) { FactoryGirl.create :user, skills: [skill] }
     before do
       @request.env['devise.mapping'] = Devise.mappings[:user]
       sign_in user
-      get :index, format: :json
     end
 
     it 'returns list of skills' do
-      expect_json_types(:array)
+      get :index, format: :json
       expect(json_body.map { |l| l[:id] }).to eq [skill.id, skill2.id]
     end
-    it 'returns list with image urls' do
-      expect(json_body[0][:image]).to eq skill.image_url
+    it 'returns list of skills with parent structure' do
+      SkillsLink.create parent: skill, child: skill2
+      get :index, format: :json
+      expect(json_body[1][:parents]).to eq [skill.id]
     end
-    it 'have a parent id' do
-      expect(json_body[1][:parent_id]).to eq skill2.parent_id
+    it 'returns list with image urls' do
+      get :index, format: :json
+      expect(json_body[0][:image]).to eq skill.image_url
     end
   end
   describe '#take' do
