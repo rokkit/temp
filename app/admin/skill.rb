@@ -4,10 +4,11 @@ ActiveAdmin.register Skill do
   #
   permit_params :name, :image, :ancestry, :ancestry_id, :description, :cost
 
+  config.filters = false
   sortable tree: true,
-           sorting_attribute: :ancestry
+           sorting_attribute: :parent_id
 
-  index :as => :sortable do
+  index as: :sortable do
     label :name # item content
     actions
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151117112513) do
+ActiveRecord::Schema.define(version: 20151118104702) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,15 @@ ActiveRecord::Schema.define(version: 20151117112513) do
   add_index "reservations", ["table_id"], name: "index_reservations_on_table_id", using: :btree
   add_index "reservations", ["user_id"], name: "index_reservations_on_user_id", using: :btree
 
+  create_table "skill_hierarchies", id: false, force: :cascade do |t|
+    t.integer "ancestor_id",   null: false
+    t.integer "descendant_id", null: false
+    t.integer "generations",   null: false
+  end
+
+  add_index "skill_hierarchies", ["ancestor_id", "descendant_id", "generations"], name: "skill_anc_desc_idx", unique: true, using: :btree
+  add_index "skill_hierarchies", ["descendant_id"], name: "skill_desc_idx", using: :btree
+
   create_table "skills", force: :cascade do |t|
     t.string   "name",                    null: false
     t.text     "description"
@@ -95,6 +104,7 @@ ActiveRecord::Schema.define(version: 20151117112513) do
     t.string   "image"
     t.string   "ancestry"
     t.integer  "cost",        default: 1
+    t.integer  "parent_id"
   end
 
   create_table "skills_users", force: :cascade do |t|

@@ -24,6 +24,7 @@ gem 'high_voltage'
 gem 'pg'
 gem 'pundit'
 gem 'upmin-admin'
+gem 'closure_tree'
 
 group :development do
   gem 'web-console', '~> 2.0'
