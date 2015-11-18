@@ -2,7 +2,19 @@ class Skill < ActiveRecord::Base
   has_many :skills_users, class_name: 'SkillsUsers'
   has_many :users, through: :skills_users
 
+  has_many :skills_links, class_name: 'SkillsLink'
+  has_many :child_skills, through: :skills_links
+
+  # belongs_to :parent, class_name: 'Skill'
+
+  def parent_skills
+    SkillsLink.where(child_id: self.id).map(&:parent).map(&:id)
+  end
+  def parent_skills_obj
+    SkillsLink.where(child_id: self.id).map(&:parent)#.map(&:id)
+  end
+
   # has_ancestry orphan_strategy: :adopt
-  has_closure_tree
+  # has_closure_tree
   mount_uploader :image, SkillUploader
 end

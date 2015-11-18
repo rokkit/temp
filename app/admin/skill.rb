@@ -2,16 +2,46 @@ ActiveAdmin.register Skill do
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
-  permit_params :name, :image, :ancestry, :ancestry_id, :description, :cost
+  permit_params :name, :image, :ancestry, :ancestry_id, :description, :cost, :parent_id
 
   config.filters = false
-  sortable tree: true,
-           sorting_attribute: :parent_id
+  # sortable tree: true,
+          #  sorting_attribute: :parent_id
 
-  index as: :sortable do
-    label :name # item content
+  controller do
+    # This code is evaluated within the controller class
+
+    def update
+      @skill = Skill.find(params[:id])
+      need_parent_skills = params[:skill][:parent_skills].delete_if(&:empty?)
+      current_skill_links = SkillsLink.where(child_id: @skill.id)
+
+      current_skill_links.each do |skill_link|
+        skill_link.destroy if !params[:skill][:parent_skills].include?(skill_link.id)
+      end
+
+      need_parent_skills.each do |parent_skill_id|
+        link = SkillsLink.where(parent_id: parent_skill_id, child_id: @skill.id).first
+        if !link
+          link = SkillsLink.create!(parent_id: parent_skill_id, child_id: @skill.id)
+        end
+      end
+      if @skill.update_attributes params[:skill].permit(:name, :description, :image_cache, :cost)
+        redirect_to admin_skills_path, notice: "Successfully created Skill."
+      else
+        redirect_to :back
+      end
+    end
+  end
+  index do
+    column :id
+    column :name # item content
+    column do |skill|
+      skill.parent_skills_obj.map {|s| "##{s.id} #{s.name}" }.join('; ')
+    end
     actions
   end
+
 
   show do
     attributes_table do
@@ -26,8 +56,14 @@ ActiveAdmin.register Skill do
   end
 
   form do |f|
-    f.inputs "Skill", as: :sortable do
-    # f.input :ancestry, :as => :select, :collection => Skill.all.map {|u| [u.name, u.id]}
+    f.inputs "Skill" do
+    f.input :parent_skills,
+            :as => :check_boxes,
+            :collection => Skill.where.not(id: f.object.id).map {|s| ["##{s.id} #{s.name}", s.id] },
+            :for => :parent_skills
+            # :selected_values => [
+                    # SkillsLink.where(child_id: f.object.id).pluck(:parent_id)
+            # ]#, :input_html => { :checked => SkillsLink.where(child_id: f.object.id) }#, :as => :select, :collection => Skill.all.map {|u| [u.name, u.id]}
     f.input :name
     f.input :description
     # f.input :image
