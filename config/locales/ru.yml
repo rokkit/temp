@@ -4,9 +4,9 @@ ru:
       user:
         one: Клиент
         other: Клиенты
-      tables:
+      table:
         one: Стол
         other: Столы
-      reservations:
+      reservation:
         one: Бронирование
         other: Бронирования

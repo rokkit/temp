@@ -6,7 +6,7 @@ class Api::V1::AchievementsController < Api::V1::BaseController
   # Если какое-либо достижение открыто у юзера,
   # то оно отмечается значением в ответе
   def index
-    @achievements = Achievement.all
+    @achievements = Achievement.all.order(:id)
     respond_with @achievements
   end
 end
