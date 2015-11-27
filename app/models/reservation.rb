@@ -3,6 +3,11 @@ class Reservation < ActiveRecord::Base
   belongs_to :user
   validate :visit_date_must_be_in_future
 
+  has_many :meets
+  # has_many :meet_users, through: :meets, class_name: 'User'
+
+
+
   private
 
   # Валидатор для проверки даты бронирования
