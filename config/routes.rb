@@ -19,7 +19,7 @@ Rails.application.routes.draw do
         end
       end
       resources :lounges, only: [:index]
-      resources :reservations, only: [:create] do
+      resources :reservations, only: [:index, :create] do
         collection do
           get :load_data
         end
