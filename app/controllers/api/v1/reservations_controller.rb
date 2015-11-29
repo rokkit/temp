@@ -26,6 +26,14 @@ class Api::V1::ReservationsController < Api::V1::BaseController
     end
   end
 
+  def destroy
+    @reservation = Reservation.find(params[:id])
+    if @reservation.user == current_user
+      @reservation.destroy()
+    end
+    head :ok
+  end
+
   def load_data
     @users = User.where.not(id: current_user.id)
     @lounges = Lounge.all.includes(:tables)
