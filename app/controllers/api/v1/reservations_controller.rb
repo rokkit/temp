@@ -1,7 +1,10 @@
 class Api::V1::ReservationsController < Api::V1::BaseController
   respond_to :json
   before_action :authenticate_user!
-
+  def index
+    @reservations = current_user.reservations
+    respond_with @reservations
+  end
   # создать бронирование на указанную дату для юзера
   def create
     table = Table.find(params[:table_id])
@@ -28,4 +31,6 @@ class Api::V1::ReservationsController < Api::V1::BaseController
     @lounges = Lounge.all.includes(:tables)
     #code
   end
+
+
 end
