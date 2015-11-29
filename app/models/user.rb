@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   has_many :achievements, through: :achievements_user
 
   has_many :payments
+  has_many :reservations
 
   mount_uploader :avatar, AvatarUploader
 
