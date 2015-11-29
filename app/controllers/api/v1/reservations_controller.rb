@@ -6,6 +6,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
   def create
     table = Table.find(params[:table_id])
     visit_date = DateTime.parse(params[:visit_date])
+
     if table
       @reservation = Reservation.new user: current_user, table: table, visit_date: visit_date
       params[:meets].each do |user_id|
