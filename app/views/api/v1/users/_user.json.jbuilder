@@ -8,7 +8,7 @@ json.skills user.skills do |s|
   json.id s.id
   json.name s.name
 end
-json.exp user.total_experience # user.total_experience
+json.exp user.experience # user.total_experience
 json.visits [] #user.visits do |visit|
 #   json.id visit['_idrref']
 #   json.amount visit['_fld1574']
