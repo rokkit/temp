@@ -89,7 +89,12 @@ class Api::V1::ReservationsController < Api::V1::BaseController
 
 
   def create
+    if !params[:visit_date]
+      render json: { errors: { visit_date: 'wrong_date' } }
+      return false
+    end
     visit_date = DateTime.parse(params[:visit_date])
+
     if visit_date < Time.now.utc.in_time_zone("Moscow") + 50.minutes
       render json: { errors: { visit_date: 'too_late' } }
       return false
