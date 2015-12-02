@@ -48,3 +48,4 @@
   production:
     <<: *default
     database: uk_production
+    password: 4fV6DkNt9n

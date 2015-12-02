@@ -18,7 +18,8 @@ set :repository, 'git@bitbucket.org:rokkit/temp.git'
 
 set :user, 'ukproduction'
 set :ssh_options, '-A'
-set :rvm_path, '/usr/share/rvm/scripts/rvm'
+# set :rvm_path, '/usr/share/rvm/scripts/rvm'
+set :rvm_path, '/home/ukproduction/.rvm/bin/rvm'
 
 # set :puma_config, "config/puma_#{env}.rb"
 # set :unicorn_config, "config/unicorn.rb"
