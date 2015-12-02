@@ -11,4 +11,10 @@ class Api::V1::UsersController < Api::V1::BaseController
       render json: {status: :error}
     end
   end
+
+  # Профиль юзера с количеством опыта
+  def show
+    @user = User.find(params[:id])
+    respond_with @user
+  end
 end

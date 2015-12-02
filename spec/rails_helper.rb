@@ -36,19 +36,42 @@ RSpec.configure do |config|
   # instead of true.
   # config.use_transactional_fixtures = true
   config.use_transactional_fixtures = false
+    config.before(:suite) do
+      DatabaseCleaner.strategy = :transaction
+      DatabaseCleaner.clean_with(:truncation)
+    end
+    config.before(:each) do |example|
+      DatabaseCleaner.start
+    end
 
-  config.before(:suite) do
-    DatabaseCleaner.clean_with(:truncation)
-  end
+    config.around(:each) do |example|
+      DatabaseCleaner.cleaning do
+        example.run
+      end
+    end
+    config.after(:suite) do
+      DatabaseCleaner.clean_with(:truncation)
+    end
+  # config.before(:suite) do
+  #   DatabaseCleaner.strategy = :transaction
+  #   DatabaseCleaner[:active_record, { :connection => :test }].clean_with(:truncation)
+  #   DatabaseCleaner[:active_record, { :connection => :uk_external_development }].clean_with(:truncation)
+  # end
+  # config.before(:each) do
+  #   DatabaseCleaner.strategy = :transaction
+  #   DatabaseCleaner[:active_record, { :connection => :test }].start
+  #   DatabaseCleaner[:active_record, { :connection => :uk_external_development }].start
+  # end
+  #
+  # config.after(:each) do |example|
+  #   DatabaseCleaner.strategy = :transaction
+  #   DatabaseCleaner[:active_record, { :connection => :test }].clean
+  #   DatabaseCleaner[:active_record, { :connection => :uk_external_development }].clean
+  #
+  #   # DatabaseCleaner[:active_record, { :connection => :uk_external_development }].clean_with(:truncation)
+  # end
 
-  config.before(:each) do |example|
-    DatabaseCleaner.strategy = example.metadata[:js] ? :truncation : :transaction
-    DatabaseCleaner.start
-  end
 
-  config.after(:each) do
-    DatabaseCleaner.clean
-  end
 
   config.include Devise::TestHelpers, type: :controller
 

@@ -1,7 +1,7 @@
   uk_external_development:
     adapter:  postgresql
-    host:     192.168.1.39
-    port: 1234
+    host:     192.168.99.100
+    port: 5432
     encoding: unicode
     database: uhp_demo
     pool:     5

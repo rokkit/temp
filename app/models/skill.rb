@@ -1,4 +1,5 @@
 class Skill < ActiveRecord::Base
+  establish_connection Rails.env.to_sym
   has_many :skills_users, class_name: 'SkillsUsers'
   has_many :users, through: :skills_users
 

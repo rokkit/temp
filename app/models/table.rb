@@ -1,4 +1,5 @@
 class Table < ActiveRecord::Base
+  establish_connection Rails.env.to_sym
   # establish_connection :uk_external_development
   # self.table_name = '_reference27'
   belongs_to :lounge

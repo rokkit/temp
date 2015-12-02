@@ -1,13 +1,14 @@
 ActiveAdmin.register User do
-  permit_params :email, :password, :password_confirmation, :phone_token
+  permit_params :email, :password, :password_confirmation, :phone_token, :role, :name
 
   index do
     selectable_column
     id_column
-    column :email
+    column :phone
+    column :name
     column :current_sign_in_at
-    column :sign_in_count
     column :created_at
+    column :role
     actions
   end
 
@@ -20,9 +21,11 @@ ActiveAdmin.register User do
     f.inputs 'User' do
       f.input :email
       f.input :phone
+      f.input :name
       f.input :password
       f.input :phone_token
       f.input :auth_token
+      f.input :role, :as => :select, :collection => [:user, :admin, :vip]
     end
     f.actions
   end

@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+
+  establish_connection Rails.env.to_sym
+
   has_many :skills_users, class_name: 'SkillsUsers'
   has_many :skills, through: :skills_users
 
@@ -10,11 +13,13 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, AvatarUploader
 
-  enum role: [:user, :admin]
+  enum role: [:user, :admin, :vip]
   after_initialize :set_default_role, if: :new_record?
 
   before_save :set_auth_token
   after_save :check_for_achievements
+
+  after_create :create_user_ext
 
   # Проверка на выполнение достижений связанных с юзером
   def check_for_achievements
@@ -59,12 +64,50 @@ class User < ActiveRecord::Base
   validates_presence_of :password, if: :password_required?
   # validates :email, uniqueness: true
 
-  protected
+  # protected
 
   # Checks whether a password is needed or not. For validations only.
   # Passwords are always required if it's a new record, or if the password
   # or confirmation are being set somewhere.
   def password_required?
     !persisted? || !password.nil? || !password_confirmation.nil?
+  end
+
+
+  def total_experience
+    visits_ext = self.visits
+    if visits_ext.length > 0
+      return visits_ext.map { |p| p['_fld1574'] }.reduce(0) { |p, i| i += p }
+    else
+      return 0
+    end
+  end
+
+  def visits
+    visits_ext = ExtService.execute("select * from _AccumRg1568 WHERE _fld1663rref = E'#{self.idrref}'")
+    if visits_ext.ntuples > 0
+      visits_ext
+    else
+      []
+    end
+  end
+
+  def create_user_ext
+    _idrref = SecureRandom.hex[0..10].bytes#.join('\\')
+    result = ExtService.execute('select _code from _reference42 order by _code DESC limit 1;')
+    _code = 0000000001
+    if result.ntuples > 0
+      _code = result[0]['_code'].strip.to_i + 1
+    end
+
+    _description = self.name
+    _fld496 = self.phone
+
+    query = "INSERT INTO _reference42 \
+    (_idrref, _version, _marked, _ismetadata, _parentidrref, _folder, _code, _description, _fld494, _fld495, _fld496) VALUES \
+    ('#{_idrref}', 0,   false,   false,   '\\000\\000\\000\\000\\000', true, '#{_code}', '#{_description}', '',  false, '#{_fld496}')"
+    ExtService.execute query
+    self.idrref = _idrref
+    self.save
   end
 end

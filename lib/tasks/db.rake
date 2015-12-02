@@ -4,6 +4,7 @@
 #     task :dump => [:environment, :load_config] do
 #       filename = "#{Rails.root}/db/uk_external_schema.rb"
 #       File.open(filename, 'w:utf-8') do |file|
+#         ActiveRecord::Base.schema_format = :sql
 #         ActiveRecord::Base.establish_connection("uk_external_#{Rails.env}")
 #         ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, file)
 #       end

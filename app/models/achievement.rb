@@ -1,4 +1,5 @@
 class Achievement < ActiveRecord::Base
+  establish_connection Rails.env.to_sym
   validates :name, :key, presence: true
   mount_uploader :image, AchievementUploader
 

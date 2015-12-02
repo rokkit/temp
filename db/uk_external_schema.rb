@@ -65,6 +65,9 @@ ActiveRecord::Schema.define(version: 0) do
   add_index "_accumrg1528", ["_period", "_recordertref", "_recorderrref", "_lineno"], name: "_accumr1528_byperiod_trn", unique: true, using: :btree
   add_index "_accumrg1528", ["_recordertref", "_recorderrref", "_lineno"], name: "_accumr1528_byrecorder_rn", unique: true, using: :btree
 
+# Could not dump table "_accumrg1533" because of following StandardError
+#   Unknown type 'mvarchar(150)' for column '_fld1545'
+
   create_table "_accumrg1557", id: false, force: :cascade do |t|
     t.datetime "_period",                                null: false
     t.binary   "_recordertref",                          null: false
@@ -95,6 +98,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.binary   "_fld1570rref",                           null: false
     t.binary   "_fld1571rref",                           null: false
     t.binary   "_fld1572rref",                           null: false
+    t.binary   "_fld1663rref",                           null: false
     t.decimal  "_fld1573",      precision: 15, scale: 3, null: false
     t.decimal  "_fld1574",      precision: 15, scale: 2, null: false
     t.decimal  "_fld1575",      precision: 15, scale: 2, null: false
@@ -558,6 +562,9 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_accumrgt1531", ["_period", "_fld1529rref"], name: "_accumr1531_bydims_tr", unique: true, using: :btree
 
+# Could not dump table "_accumrgt1555" because of following StandardError
+#   Unknown type 'mvarchar(150)' for column '_fld1545'
+
   create_table "_accumrgt1566", id: false, force: :cascade do |t|
     t.datetime "_period",                               null: false
     t.binary   "_fld1558rref",                          null: false
@@ -614,13 +621,14 @@ ActiveRecord::Schema.define(version: 0) do
     t.binary   "_fld1570rref",                          null: false
     t.binary   "_fld1571rref",                          null: false
     t.binary   "_fld1572rref",                          null: false
+    t.binary   "_fld1663rref",                          null: false
     t.decimal  "_fld1573",     precision: 21, scale: 3, null: false
     t.decimal  "_fld1574",     precision: 21, scale: 2, null: false
     t.decimal  "_fld1575",     precision: 21, scale: 2, null: false
   end
 
   add_index "_accumrgtn1577", ["_fld1572rref", "_period"], name: "_accumr1577_bydims1576_rt", using: :btree
-  add_index "_accumrgtn1577", ["_period", "_fld1569rref", "_fld1570rref", "_fld1571rref", "_fld1572rref"], name: "_accumr1577_bydims_trrrr", unique: true, using: :btree
+  add_index "_accumrgtn1577", ["_period", "_fld1569rref", "_fld1570rref", "_fld1571rref", "_fld1572rref", "_fld1663rref"], name: "_accumr1577_bydims_trrrrr", unique: true, using: :btree
 
   create_table "_accumrgtn1595", id: false, force: :cascade do |t|
     t.datetime "_period",                               null: false
@@ -664,6 +672,15 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_accumrgtn1628", ["_period", "_fld1626rref", "_splitter"], name: "_accumr1628_bydims_trn", unique: true, using: :btree
 
+# Could not dump table "_chrc127" because of following StandardError
+#   Unknown type 'mchar(5)' for column '_code'
+
+# Could not dump table "_chrc128" because of following StandardError
+#   Unknown type 'mchar(5)' for column '_code'
+
+# Could not dump table "_chrc129" because of following StandardError
+#   Unknown type 'mchar(5)' for column '_code'
+
   create_table "_chrcchngr1646", id: false, force: :cascade do |t|
     t.binary  "_nodetref",                 null: false
     t.binary  "_noderref",                 null: false
@@ -694,6 +711,9 @@ ActiveRecord::Schema.define(version: 0) do
   add_index "_chrcchngr1648", ["_idrref", "_nodetref", "_noderref"], name: "_chrcch1648_bydatakey_rr", unique: true, using: :btree
   add_index "_chrcchngr1648", ["_nodetref", "_noderref", "_messageno", "_idrref"], name: "_chrcch1648_bynodemsg_rnr", unique: true, using: :btree
 
+# Could not dump table "_commonsettings" because of following StandardError
+#   Unknown type 'mvarchar(64)' for column '_userid'
+
   create_table "_configchngr", primary_key: "_idrref", force: :cascade do |t|
     t.binary  "_nodetref",                 null: false
     t.binary  "_noderref",                 null: false
@@ -704,12 +724,24 @@ ActiveRecord::Schema.define(version: 0) do
   add_index "_configchngr", ["_mdobjid", "_nodetref", "_noderref"], name: "_configchng_bydatakey_br", unique: true, using: :btree
   add_index "_configchngr", ["_nodetref", "_noderref", "_messageno", "_mdobjid"], name: "_configchng_bynodemsg_rnb", unique: true, using: :btree
 
+# Could not dump table "_configchngr_extprops" because of following StandardError
+#   Unknown type 'mvarchar(128)' for column '_filename'
+
+# Could not dump table "_const1119" because of following StandardError
+#   Unknown type 'mvarchar(10)' for column '_fld1120'
+
   create_table "_const1122", id: false, force: :cascade do |t|
     t.decimal "_fld1123",   precision: 10, null: false
     t.binary  "_recordkey",                null: false
   end
 
   add_index "_const1122", ["_recordkey"], name: "_const1122_bykey_b", unique: true, using: :btree
+
+# Could not dump table "_const1125" because of following StandardError
+#   Unknown type 'mchar(1)' for column '_fld1126'
+
+# Could not dump table "_const1128" because of following StandardError
+#   Unknown type 'mchar(1)' for column '_fld1129'
 
   create_table "_const1131", id: false, force: :cascade do |t|
     t.boolean "_fld1132",   null: false
@@ -718,12 +750,18 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_const1131", ["_recordkey"], name: "_const1131_bykey_b", unique: true, using: :btree
 
+# Could not dump table "_const1134" because of following StandardError
+#   Unknown type 'mvarchar(10)' for column '_fld1135'
+
   create_table "_const1136", id: false, force: :cascade do |t|
     t.boolean "_fld1137",   null: false
     t.binary  "_recordkey", null: false
   end
 
   add_index "_const1136", ["_recordkey"], name: "_const1136_bykey_b", unique: true, using: :btree
+
+# Could not dump table "_const1139" because of following StandardError
+#   Unknown type 'mvarchar(2)' for column '_fld1140'
 
   create_table "_const1141", id: false, force: :cascade do |t|
     t.boolean "_fld1142",   null: false
@@ -802,6 +840,9 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_const1166", ["_recordkey"], name: "_const1166_bykey_b", unique: true, using: :btree
 
+# Could not dump table "_const1168" because of following StandardError
+#   Unknown type 'mvarchar(2)' for column '_fld1169'
+
   create_table "_const1170", id: false, force: :cascade do |t|
     t.datetime "_fld1171",   null: false
     t.binary   "_recordkey", null: false
@@ -850,6 +891,9 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   add_index "_const1182", ["_recordkey"], name: "_const1182_bykey_b", unique: true, using: :btree
+
+# Could not dump table "_const1184" because of following StandardError
+#   Unknown type 'mvarchar' for column '_fld1185'
 
   create_table "_const1186", id: false, force: :cascade do |t|
     t.decimal "_fld1187",   precision: 10, null: false
@@ -1027,6 +1071,9 @@ ActiveRecord::Schema.define(version: 0) do
   add_index "_constchngr1198", ["_constid", "_nodetref", "_noderref"], name: "_constc1198_bydatakey_br", unique: true, using: :btree
   add_index "_constchngr1198", ["_nodetref", "_noderref", "_messageno", "_constid"], name: "_constc1198_bynodemsg_rnb", unique: true, using: :btree
 
+# Could not dump table "_document52" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
+
   create_table "_document52_vt553", id: false, force: :cascade do |t|
     t.binary  "_document52_idrref",                          null: false
     t.binary  "_keyfield",                                   null: false
@@ -1043,6 +1090,18 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_document52_vt553", ["_document52_idrref", "_keyfield"], name: "_document52_vt553_intkeyind", unique: true, using: :btree
 
+# Could not dump table "_document53" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
+
+# Could not dump table "_document53_vt575" because of following StandardError
+#   Unknown type 'mvarchar(150)' for column '_fld579'
+
+# Could not dump table "_document53_vt582" because of following StandardError
+#   Unknown type 'mvarchar(150)' for column '_fld586'
+
+# Could not dump table "_document54" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
+
   create_table "_document54_vt595", id: false, force: :cascade do |t|
     t.binary  "_document54_idrref",                          null: false
     t.binary  "_keyfield",                                   null: false
@@ -1055,6 +1114,9 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   add_index "_document54_vt595", ["_document54_idrref", "_keyfield"], name: "_document54_vt595_intkeyind", unique: true, using: :btree
+
+# Could not dump table "_document55" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
 
   create_table "_document55_vt615", id: false, force: :cascade do |t|
     t.binary  "_document55_idrref",                          null: false
@@ -1072,6 +1134,21 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   add_index "_document55_vt615", ["_document55_idrref", "_keyfield"], name: "_document55_vt615_intkeyind", unique: true, using: :btree
+
+# Could not dump table "_document56" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
+
+  create_table "_document56_vt1655", id: false, force: :cascade do |t|
+    t.binary  "_document56_idrref",               null: false
+    t.binary  "_keyfield",                        null: false
+    t.decimal "_lineno1656",        precision: 5, null: false
+    t.binary  "_fld1657rref",                     null: false
+  end
+
+  add_index "_document56_vt1655", ["_document56_idrref", "_keyfield"], name: "_document56_vt1655_intkeyind", unique: true, using: :btree
+
+# Could not dump table "_document56_vt646" because of following StandardError
+#   Unknown type 'mvarchar(150)' for column '_fld665'
 
   create_table "_document56_vt669", id: false, force: :cascade do |t|
     t.binary  "_document56_idrref",               null: false
@@ -1101,6 +1178,9 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_document56_vt675", ["_document56_idrref", "_keyfield"], name: "_document56_vt675_intkeyind", unique: true, using: :btree
 
+# Could not dump table "_document57" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
+
   create_table "_document57_vt689", id: false, force: :cascade do |t|
     t.binary  "_document57_idrref",                          null: false
     t.binary  "_keyfield",                                   null: false
@@ -1117,6 +1197,9 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   add_index "_document57_vt689", ["_document57_idrref", "_keyfield"], name: "_document57_vt689_intkeyind", unique: true, using: :btree
+
+# Could not dump table "_document58" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
 
   create_table "_document58_vt706", id: false, force: :cascade do |t|
     t.binary  "_document58_idrref",                          null: false
@@ -1138,6 +1221,9 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_document58_vt706", ["_document58_idrref", "_keyfield"], name: "_document58_vt706_intkeyind", unique: true, using: :btree
 
+# Could not dump table "_document59" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
+
   create_table "_document59_vt727", id: false, force: :cascade do |t|
     t.binary  "_document59_idrref",                          null: false
     t.binary  "_keyfield",                                   null: false
@@ -1148,6 +1234,9 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   add_index "_document59_vt727", ["_document59_idrref", "_keyfield"], name: "_document59_vt727_intkeyind", unique: true, using: :btree
+
+# Could not dump table "_document60" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
 
   create_table "_document60_vt740", id: false, force: :cascade do |t|
     t.binary  "_document60_idrref",                          null: false
@@ -1165,6 +1254,9 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_document60_vt740", ["_document60_idrref", "_keyfield"], name: "_document60_vt740_intkeyind", unique: true, using: :btree
 
+# Could not dump table "_document61" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
+
   create_table "_document61_vt754", id: false, force: :cascade do |t|
     t.binary  "_document61_idrref",               null: false
     t.binary  "_keyfield",                        null: false
@@ -1174,6 +1266,9 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   add_index "_document61_vt754", ["_document61_idrref", "_keyfield"], name: "_document61_vt754_intkeyind", unique: true, using: :btree
+
+# Could not dump table "_document62" because of following StandardError
+#   Unknown type 'mchar(11)' for column '_number'
 
   create_table "_document62_vt765", id: false, force: :cascade do |t|
     t.binary  "_document62_idrref",                          null: false
@@ -1186,6 +1281,9 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   add_index "_document62_vt765", ["_document62_idrref", "_keyfield"], name: "_document62_vt765_intkeyind", unique: true, using: :btree
+
+# Could not dump table "_document63" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
 
   create_table "_document63_vt784", id: false, force: :cascade do |t|
     t.binary  "_document63_idrref",                          null: false
@@ -1220,6 +1318,36 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_document63_vt794", ["_document63_idrref", "_keyfield"], name: "_document63_vt794_intkeyind", unique: true, using: :btree
 
+# Could not dump table "_document64" because of following StandardError
+#   Unknown type 'mchar(11)' for column '_number'
+
+# Could not dump table "_document64_vt823" because of following StandardError
+#   Unknown type 'mvarchar(20)' for column '_fld834'
+
+# Could not dump table "_document65" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
+
+# Could not dump table "_document66" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
+
+# Could not dump table "_document67" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
+
+  create_table "_document67_vt1658", id: false, force: :cascade do |t|
+    t.binary  "_document67_idrref",               null: false
+    t.binary  "_keyfield",                        null: false
+    t.decimal "_lineno1659",        precision: 5, null: false
+    t.binary  "_fld1660rref",                     null: false
+  end
+
+  add_index "_document67_vt1658", ["_document67_idrref", "_keyfield"], name: "_document67_vt1658_intkeyind", unique: true, using: :btree
+
+# Could not dump table "_document67_vt907" because of following StandardError
+#   Unknown type 'mvarchar(250)' for column '_fld918'
+
+# Could not dump table "_document68" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
+
   create_table "_document68_vt941", id: false, force: :cascade do |t|
     t.binary  "_document68_idrref",                          null: false
     t.binary  "_keyfield",                                   null: false
@@ -1234,6 +1362,9 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   add_index "_document68_vt941", ["_document68_idrref", "_keyfield"], name: "_document68_vt941_intkeyind", unique: true, using: :btree
+
+# Could not dump table "_document69" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
 
   create_table "_document69_vt967", id: false, force: :cascade do |t|
     t.binary  "_document69_idrref",                          null: false
@@ -1287,6 +1418,9 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_document69_vt984", ["_document69_idrref", "_keyfield"], name: "_document69_vt984_intkeyind", unique: true, using: :btree
 
+# Could not dump table "_document70" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
+
   create_table "_document70_vt994", id: false, force: :cascade do |t|
     t.binary  "_document70_idrref",                          null: false
     t.binary  "_keyfield",                                   null: false
@@ -1299,6 +1433,9 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   add_index "_document70_vt994", ["_document70_idrref", "_keyfield"], name: "_document70_vt994_intkeyind", unique: true, using: :btree
+
+# Could not dump table "_document71" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
 
   create_table "_document71_vt1007", id: false, force: :cascade do |t|
     t.binary  "_document71_idrref",                          null: false
@@ -1324,6 +1461,9 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_document71_vt1007", ["_document71_idrref", "_keyfield"], name: "_document71_vt1007_intkeyind", unique: true, using: :btree
 
+# Could not dump table "_document72" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
+
   create_table "_document72_vt1032", id: false, force: :cascade do |t|
     t.binary  "_document72_idrref",               null: false
     t.binary  "_keyfield",                        null: false
@@ -1343,6 +1483,24 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   add_index "_document72_vt1035", ["_document72_idrref", "_keyfield"], name: "_document72_vt1035_intkeyind", unique: true, using: :btree
+
+# Could not dump table "_document73" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
+
+# Could not dump table "_document73_vt1041" because of following StandardError
+#   Unknown type 'mvarchar(150)' for column '_fld1043'
+
+# Could not dump table "_document74" because of following StandardError
+#   Unknown type 'mvarchar(9)' for column '_number'
+
+# Could not dump table "_document75" because of following StandardError
+#   Unknown type 'mvarchar(9)' for column '_number'
+
+# Could not dump table "_document75_vt1074" because of following StandardError
+#   Unknown type 'mvarchar(250)' for column '_fld1085'
+
+# Could not dump table "_document76" because of following StandardError
+#   Unknown type 'mvarchar(9)' for column '_number'
 
   create_table "_document76_vt1103", id: false, force: :cascade do |t|
     t.binary  "_document76_idrref",               null: false
@@ -1572,6 +1730,18 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_documentchngr989", ["_idrref", "_nodetref", "_noderref"], name: "_documen989_bydatakey_rr", unique: true, using: :btree
   add_index "_documentchngr989", ["_nodetref", "_noderref", "_messageno", "_idrref"], name: "_documen989_bynodemsg_rnr", unique: true, using: :btree
+
+# Could not dump table "_documentjournal1106" because of following StandardError
+#   Unknown type 'mchar(11)' for column '_number'
+
+# Could not dump table "_documentjournal1107" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_number'
+
+# Could not dump table "_documentjournal1113" because of following StandardError
+#   Unknown type 'mchar(11)' for column '_number'
+
+# Could not dump table "_dynlistsettings" because of following StandardError
+#   Unknown type 'mvarchar(64)' for column '_userid'
 
   create_table "_enum100", primary_key: "_idrref", force: :cascade do |t|
     t.decimal "_enumorder", precision: 10, null: false
@@ -1873,6 +2043,15 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_enum99", ["_enumorder", "_idrref"], name: "_enum99_byorder_nr", unique: true, using: :btree
 
+# Could not dump table "_frmdtsettings" because of following StandardError
+#   Unknown type 'mvarchar(64)' for column '_userid'
+
+# Could not dump table "_inforg1203" because of following StandardError
+#   Unknown type 'mvarchar(52)' for column '_fld1211'
+
+# Could not dump table "_inforg1225" because of following StandardError
+#   Unknown type 'mvarchar(100)' for column '_fld1227'
+
   create_table "_inforg1232", id: false, force: :cascade do |t|
     t.datetime "_period",                     null: false
     t.binary   "_recordertref",               null: false
@@ -1905,6 +2084,12 @@ ActiveRecord::Schema.define(version: 0) do
   add_index "_inforg1239", ["_period", "_fld1240rref"], name: "_inforg1239_byperiod_tr", using: :btree
   add_index "_inforg1239", ["_recorderrref", "_lineno"], name: "_inforg1239_byrecorder_rn", unique: true, using: :btree
 
+# Could not dump table "_inforg1244" because of following StandardError
+#   Unknown type 'mvarchar' for column '_fld1254'
+
+# Could not dump table "_inforg1263" because of following StandardError
+#   Unknown type 'mvarchar' for column '_fld1265'
+
   create_table "_inforg1268", id: false, force: :cascade do |t|
     t.decimal "_fld1269",     precision: 10, null: false
     t.binary  "_fld1270rref",                null: false
@@ -1912,6 +2097,18 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_inforg1268", ["_fld1269"], name: "_inforg1268_bydims_n", unique: true, using: :btree
   add_index "_inforg1268", ["_fld1270rref", "_fld1269"], name: "_inforg1268_byresource1271_rn", unique: true, using: :btree
+
+# Could not dump table "_inforg1273" because of following StandardError
+#   Unknown type 'mvarchar(200)' for column '_fld1274_s'
+
+# Could not dump table "_inforg1286" because of following StandardError
+#   Unknown type 'mvarchar' for column '_fld1289'
+
+# Could not dump table "_inforg1308" because of following StandardError
+#   Unknown type 'mvarchar(200)' for column '_fld1311_s'
+
+# Could not dump table "_inforg1314" because of following StandardError
+#   Unknown type 'mvarchar' for column '_fld1318'
 
   create_table "_inforg1347", id: false, force: :cascade do |t|
     t.binary  "_fld1348_type",                 null: false
@@ -1936,6 +2133,12 @@ ActiveRecord::Schema.define(version: 0) do
   add_index "_inforg1352", ["_fld1353_type", "_fld1353_rtref", "_fld1353_rrref"], name: "_inforg1352_bydims_r", unique: true, using: :btree
   add_index "_inforg1352", ["_fld1354_type", "_fld1354_rtref", "_fld1354_rrref", "_fld1353_type", "_fld1353_rtref", "_fld1353_rrref"], name: "_inforg1352_byresource1355_rr", unique: true, using: :btree
 
+# Could not dump table "_inforg1356" because of following StandardError
+#   Unknown type 'mvarchar(10)' for column '_fld1360'
+
+# Could not dump table "_inforg1362" because of following StandardError
+#   Unknown type 'mvarchar' for column '_fld1367'
+
   create_table "_inforg1372", id: false, force: :cascade do |t|
     t.binary   "_fld1373_type",  null: false
     t.binary   "_fld1373_rtref", null: false
@@ -1947,6 +2150,12 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   add_index "_inforg1372", ["_fld1373_type", "_fld1373_rtref", "_fld1373_rrref"], name: "_inforg1372_bydims_r", unique: true, using: :btree
+
+# Could not dump table "_inforg1378" because of following StandardError
+#   Unknown type 'mvarchar(150)' for column '_fld1379'
+
+# Could not dump table "_inforg1390" because of following StandardError
+#   Unknown type 'mvarchar(3)' for column '_fld1391'
 
   create_table "_inforg1392", id: false, force: :cascade do |t|
     t.datetime "_period",                               null: false
@@ -1979,6 +2188,12 @@ ActiveRecord::Schema.define(version: 0) do
   add_index "_inforg1398", ["_fld1402rref", "_period", "_fld1399rref", "_fld1400rref", "_fld1401"], name: "_inforg1398_bydims1407_rtrrn", using: :btree
   add_index "_inforg1398", ["_period", "_fld1399rref", "_fld1400rref", "_fld1401", "_fld1402rref"], name: "_inforg1398_byperiod_trrnr", using: :btree
   add_index "_inforg1398", ["_recordertref", "_recorderrref", "_lineno"], name: "_inforg1398_byrecorder_rn", unique: true, using: :btree
+
+# Could not dump table "_inforg1409" because of following StandardError
+#   Unknown type 'mvarchar(100)' for column '_fld1412'
+
+# Could not dump table "_inforg1417" because of following StandardError
+#   Unknown type 'mvarchar(36)' for column '_fld1420'
 
   create_table "_inforg1426", id: false, force: :cascade do |t|
     t.binary   "_fld1427_type",  null: false
@@ -2023,6 +2238,12 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_inforg1441", ["_fld1442"], name: "_inforg1441_bydims_n", unique: true, using: :btree
 
+# Could not dump table "_inforg1445" because of following StandardError
+#   Unknown type 'mchar(36)' for column '_fld1446'
+
+# Could not dump table "_inforg1456" because of following StandardError
+#   Unknown type 'mvarchar(50)' for column '_fld1457'
+
   create_table "_inforg1466", id: false, force: :cascade do |t|
     t.datetime "_period",      null: false
     t.binary   "_fld1467rref", null: false
@@ -2056,6 +2277,15 @@ ActiveRecord::Schema.define(version: 0) do
   add_index "_inforg1475", ["_fld1477rref", "_period", "_recordertref", "_recorderrref", "_lineno"], name: "_inforg1475_bydims1483_rtrn", unique: true, using: :btree
   add_index "_inforg1475", ["_period", "_recordertref", "_recorderrref", "_lineno"], name: "_inforg1475_byperiod_trn", unique: true, using: :btree
   add_index "_inforg1475", ["_recordertref", "_recorderrref", "_lineno"], name: "_inforg1475_byrecorder_rn", unique: true, using: :btree
+
+# Could not dump table "_inforg1485" because of following StandardError
+#   Unknown type 'mvarchar(200)' for column '_fld1488'
+
+# Could not dump table "_inforg1494" because of following StandardError
+#   Unknown type 'mvarchar(10)' for column '_fld1496'
+
+# Could not dump table "_inforg1497" because of following StandardError
+#   Unknown type 'mvarchar(255)' for column '_fld1503'
 
   create_table "_inforgchngr1224", id: false, force: :cascade do |t|
     t.binary  "_nodetref",                 null: false
@@ -2210,6 +2440,9 @@ ActiveRecord::Schema.define(version: 0) do
   add_index "_inforgchngr1444", ["_fld1442", "_nodetref", "_noderref"], name: "_inforg1444_bydatakey_nr", unique: true, using: :btree
   add_index "_inforgchngr1444", ["_nodetref", "_noderref", "_messageno", "_fld1442"], name: "_inforg1444_bynodemsg_rnn", unique: true, using: :btree
 
+# Could not dump table "_inforgchngr1465" because of following StandardError
+#   Unknown type 'mvarchar(50)' for column '_fld1457'
+
   create_table "_inforgchngr1474", id: false, force: :cascade do |t|
     t.binary   "_nodetref",                   null: false
     t.binary   "_noderref",                   null: false
@@ -2242,6 +2475,36 @@ ActiveRecord::Schema.define(version: 0) do
   add_index "_inforgchngr1493", ["_fld1486", "_nodetref", "_noderref"], name: "_inforg1493_bydatakey_nr", unique: true, using: :btree
   add_index "_inforgchngr1493", ["_nodetref", "_noderref", "_messageno", "_fld1486"], name: "_inforg1493_bynodemsg_rnn", unique: true, using: :btree
 
+# Could not dump table "_node10" because of following StandardError
+#   Unknown type 'mvarchar(9)' for column '_code'
+
+# Could not dump table "_node11" because of following StandardError
+#   Unknown type 'mvarchar(9)' for column '_code'
+
+# Could not dump table "_node9" because of following StandardError
+#   Unknown type 'mchar(20)' for column '_code'
+
+# Could not dump table "_reference12" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_code'
+
+# Could not dump table "_reference13" because of following StandardError
+#   Unknown type 'mchar(5)' for column '_code'
+
+# Could not dump table "_reference14" because of following StandardError
+#   Unknown type 'mchar(5)' for column '_code'
+
+# Could not dump table "_reference15" because of following StandardError
+#   Unknown type 'mchar(5)' for column '_code'
+
+# Could not dump table "_reference16" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_code'
+
+# Could not dump table "_reference17" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_code'
+
+# Could not dump table "_reference18" because of following StandardError
+#   Unknown type 'mchar(6)' for column '_code'
+
   create_table "_reference18_vt183", id: false, force: :cascade do |t|
     t.binary  "_reference18_idrref",               null: false
     t.binary  "_keyfield",                         null: false
@@ -2252,6 +2515,24 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_reference18_vt183", ["_fld185rref", "_reference18_idrref"], name: "_referenc18_vt183_byfield187_rr", using: :btree
   add_index "_reference18_vt183", ["_reference18_idrref", "_keyfield"], name: "_referenc18_vt183_intkeyind", unique: true, using: :btree
+
+# Could not dump table "_reference18_vt188" because of following StandardError
+#   Unknown type 'mvarchar(512)' for column '_fld190'
+
+# Could not dump table "_reference19" because of following StandardError
+#   Unknown type 'mchar(3)' for column '_code'
+
+# Could not dump table "_reference19_vt272" because of following StandardError
+#   Unknown type 'mvarchar(512)' for column '_fld274'
+
+# Could not dump table "_reference19_vt275" because of following StandardError
+#   Unknown type 'mvarchar(150)' for column '_fld277'
+
+# Could not dump table "_reference19_vt289" because of following StandardError
+#   Unknown type 'mvarchar(150)' for column '_fld291'
+
+# Could not dump table "_reference20" because of following StandardError
+#   Unknown type 'mchar(11)' for column '_code'
 
   create_table "_reference20_vt325", id: false, force: :cascade do |t|
     t.binary  "_reference20_idrref",                         null: false
@@ -2288,6 +2569,21 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_reference20_vt335", ["_reference20_idrref", "_keyfield"], name: "_referenc20_vt335_intkeyind", unique: true, using: :btree
 
+# Could not dump table "_reference21" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_code'
+
+# Could not dump table "_reference21_vt350" because of following StandardError
+#   Unknown type 'mvarchar(256)' for column '_fld352'
+
+# Could not dump table "_reference22" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_code'
+
+# Could not dump table "_reference23" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_code'
+
+# Could not dump table "_reference24" because of following StandardError
+#   Unknown type 'mchar(5)' for column '_code'
+
   create_table "_reference24_vt365", id: false, force: :cascade do |t|
     t.binary  "_reference24_idrref",                          null: false
     t.binary  "_keyfield",                                    null: false
@@ -2321,6 +2617,18 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_reference24_vt377", ["_reference24_idrref", "_keyfield"], name: "_referenc24_vt377_intkeyind", unique: true, using: :btree
 
+# Could not dump table "_reference25" because of following StandardError
+#   Unknown type 'mchar(5)' for column '_code'
+
+# Could not dump table "_reference26" because of following StandardError
+#   Unknown type 'mchar(50)' for column '_code'
+
+# Could not dump table "_reference27" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_code'
+
+# Could not dump table "_reference28" because of following StandardError
+#   Unknown type 'mchar(5)' for column '_code'
+
   create_table "_reference28_vt419", id: false, force: :cascade do |t|
     t.binary   "_reference28_idrref",               null: false
     t.binary   "_keyfield",                         null: false
@@ -2333,6 +2641,12 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_reference28_vt419", ["_reference28_idrref", "_keyfield"], name: "_referenc28_vt419_intkeyind", unique: true, using: :btree
 
+# Could not dump table "_reference29" because of following StandardError
+#   Unknown type 'mchar(5)' for column '_code'
+
+# Could not dump table "_reference30" because of following StandardError
+#   Unknown type 'mchar(5)' for column '_code'
+
   create_table "_reference30_vt440", id: false, force: :cascade do |t|
     t.binary  "_reference30_idrref",               null: false
     t.binary  "_keyfield",                         null: false
@@ -2341,6 +2655,18 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   add_index "_reference30_vt440", ["_reference30_idrref", "_keyfield"], name: "_referenc30_vt440_intkeyind", unique: true, using: :btree
+
+# Could not dump table "_reference31" because of following StandardError
+#   Unknown type 'mchar(5)' for column '_code'
+
+# Could not dump table "_reference32" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_code'
+
+# Could not dump table "_reference33" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_code'
+
+# Could not dump table "_reference34" because of following StandardError
+#   Unknown type 'mvarchar(5)' for column '_code'
 
   create_table "_reference34_vt453", id: false, force: :cascade do |t|
     t.binary  "_reference34_idrref",                null: false
@@ -2356,6 +2682,27 @@ ActiveRecord::Schema.define(version: 0) do
 
   add_index "_reference34_vt453", ["_reference34_idrref", "_keyfield"], name: "_referenc34_vt453_intkeyind", unique: true, using: :btree
 
+# Could not dump table "_reference35" because of following StandardError
+#   Unknown type 'mchar(5)' for column '_code'
+
+# Could not dump table "_reference36" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_code'
+
+# Could not dump table "_reference37" because of following StandardError
+#   Unknown type 'mchar(5)' for column '_code'
+
+# Could not dump table "_reference38" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_code'
+
+# Could not dump table "_reference39" because of following StandardError
+#   Unknown type 'mvarchar(9)' for column '_code'
+
+# Could not dump table "_reference40" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_code'
+
+# Could not dump table "_reference41" because of following StandardError
+#   Unknown type 'mchar(9)' for column '_code'
+
   create_table "_reference41_vt489", id: false, force: :cascade do |t|
     t.binary  "_reference41_idrref",                         null: false
     t.binary  "_keyfield",                                   null: false
@@ -2365,6 +2712,27 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   add_index "_reference41_vt489", ["_reference41_idrref", "_keyfield"], name: "_referenc41_vt489_intkeyind", unique: true, using: :btree
+
+# Could not dump table "_reference42" because of following StandardError
+#   Unknown type 'mchar(10)' for column '_code'
+
+# Could not dump table "_reference43" because of following StandardError
+#   Unknown type 'mvarchar(30)' for column '_description'
+
+# Could not dump table "_reference44" because of following StandardError
+#   Unknown type 'mvarchar(9)' for column '_code'
+
+# Could not dump table "_reference45" because of following StandardError
+#   Unknown type 'mvarchar(9)' for column '_code'
+
+# Could not dump table "_reference46" because of following StandardError
+#   Unknown type 'mvarchar(9)' for column '_code'
+
+# Could not dump table "_reference47" because of following StandardError
+#   Unknown type 'mvarchar(9)' for column '_code'
+
+# Could not dump table "_reference48" because of following StandardError
+#   Unknown type 'mvarchar(9)' for column '_code'
 
   create_table "_reference48_vt506", id: false, force: :cascade do |t|
     t.binary  "_reference48_idrref",                          null: false
@@ -2376,6 +2744,15 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   add_index "_reference48_vt506", ["_reference48_idrref", "_keyfield"], name: "_referenc48_vt506_intkeyind", unique: true, using: :btree
+
+# Could not dump table "_reference49" because of following StandardError
+#   Unknown type 'mvarchar(9)' for column '_code'
+
+# Could not dump table "_reference49_vt518" because of following StandardError
+#   Unknown type 'mvarchar(50)' for column '_fld520_s'
+
+# Could not dump table "_reference49_vt524" because of following StandardError
+#   Unknown type 'mvarchar(50)' for column '_fld526_s'
 
   create_table "_reference49_vt531", id: false, force: :cascade do |t|
     t.binary   "_reference49_idrref",               null: false
@@ -2401,6 +2778,12 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   add_index "_reference49_vt537", ["_reference49_idrref", "_keyfield"], name: "_referenc49_vt537_intkeyind", unique: true, using: :btree
+
+# Could not dump table "_reference50" because of following StandardError
+#   Unknown type 'mvarchar(9)' for column '_code'
+
+# Could not dump table "_reference51" because of following StandardError
+#   Unknown type 'mvarchar(9)' for column '_code'
 
   create_table "_referencechngr137", id: false, force: :cascade do |t|
     t.binary  "_nodetref",                 null: false
@@ -2682,6 +3065,21 @@ ActiveRecord::Schema.define(version: 0) do
   add_index "_referencechngr511", ["_idrref", "_nodetref", "_noderref"], name: "_referen511_bydatakey_rr", unique: true, using: :btree
   add_index "_referencechngr511", ["_nodetref", "_noderref", "_messageno", "_idrref"], name: "_referen511_bynodemsg_rnr", unique: true, using: :btree
 
+# Could not dump table "_repsettings" because of following StandardError
+#   Unknown type 'mvarchar(64)' for column '_userid'
+
+# Could not dump table "_repvarsettings" because of following StandardError
+#   Unknown type 'mvarchar(64)' for column '_userid'
+
+# Could not dump table "_scheduledjobs1650" because of following StandardError
+#   Unknown type 'mvarchar(128)' for column '_description'
+
+# Could not dump table "_scheduledjobs1651" because of following StandardError
+#   Unknown type 'mvarchar(128)' for column '_description'
+
+# Could not dump table "_scheduledjobs1652" because of following StandardError
+#   Unknown type 'mvarchar(128)' for column '_description'
+
   create_table "_seq1643", id: false, force: :cascade do |t|
     t.datetime "_period",       null: false
     t.binary   "_recordertref", null: false
@@ -2709,17 +3107,38 @@ ActiveRecord::Schema.define(version: 0) do
   add_index "_seqchngr1645", ["_nodetref", "_noderref", "_messageno", "_recordertref", "_recorderrref"], name: "_seqchn1645_bynodemsg_rnr", unique: true, using: :btree
   add_index "_seqchngr1645", ["_recordertref", "_recorderrref", "_nodetref", "_noderref"], name: "_seqchn1645_bydatakey_rr", unique: true, using: :btree
 
+# Could not dump table "_systemsettings" because of following StandardError
+#   Unknown type 'mvarchar(64)' for column '_userid'
+
+# Could not dump table "_usersworkhistory" because of following StandardError
+#   Unknown type 'mvarchar' for column '_url'
+
   create_table "_yearoffset", id: false, force: :cascade do |t|
     t.integer "ofset", null: false
   end
+
+# Could not dump table "config" because of following StandardError
+#   Unknown type 'mvarchar(128)' for column 'filename'
+
+# Could not dump table "configsave" because of following StandardError
+#   Unknown type 'mvarchar(128)' for column 'filename'
 
   create_table "dbschema", id: false, force: :cascade do |t|
     t.binary "serializeddata", null: false
   end
 
+# Could not dump table "files" because of following StandardError
+#   Unknown type 'mvarchar(128)' for column 'filename'
+
   create_table "ibversion", id: false, force: :cascade do |t|
     t.integer "ibversion",          null: false
     t.integer "platformversionreq", null: false
   end
+
+# Could not dump table "params" because of following StandardError
+#   Unknown type 'mvarchar(128)' for column 'filename'
+
+# Could not dump table "v8users" because of following StandardError
+#   Unknown type 'mvarchar(64)' for column 'name'
 
 end
