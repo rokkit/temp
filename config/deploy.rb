@@ -13,7 +13,8 @@ set :domain, '176.112.194.149'
 set :term_mode, nil
 set :branch, 'master'
 set :deploy_to, '/var/www/uk'
-set :repository, 'git@192.168.1.39:maks_ohs/uk.git'
+# set :repository, 'git@192.168.1.39:maks_ohs/uk.git'
+set :repository, 'git@bitbucket.org:rokkit/temp.git'
 
 set :user, 'ukproduction'
 set :ssh_options, '-A'
@@ -35,7 +36,7 @@ set :shared_paths, ['config/database.yml', 'log', 'tmp', 'public/uploads']
 task :environment do
   # If you're using rbenv, use this to load the rbenv environment.
   # Be sure to commit your .rbenv-version to your repository.
-  invoke :'rvm:use[ruby-2.2.2@default]'
+  invoke :'rvm:use[ruby-2.2.3@default]'
 end
 
 task setup: :environment do
