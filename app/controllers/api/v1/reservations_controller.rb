@@ -130,7 +130,11 @@ class Api::V1::ReservationsController < Api::V1::BaseController
     end
 
 
-    @reservation = Reservation.new user: current_user, visit_date: visit_date, table: table
+    @reservation = Reservation.new user: current_user,
+                                   visit_date: visit_date,
+                                   table: table,
+                                   client_count: params[:client_count],
+                                   duration: params[:duration]
 
 
     if @reservation.save!

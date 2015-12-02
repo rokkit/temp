@@ -14,7 +14,7 @@ set :term_mode, nil
 set :branch, 'master'
 set :deploy_to, '/var/www/uk'
 # set :repository, 'git@192.168.1.39:maks_ohs/uk.git'
-set :repository, 'git@bitbucket.org:rokkit/temp.git'
+set :repository, 'git@github.com:rokkit/temp.git'
 
 set :user, 'ukproduction'
 set :ssh_options, '-A'
