@@ -151,7 +151,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
 
   def load_data
     @users = User.where.not(id: current_user.id)
-    @lounges = Lounge.all.includes(:tables)
+    @lounges = Lounge.where(active: true).includes(:tables)
     #code
   end
 
