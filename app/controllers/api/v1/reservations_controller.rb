@@ -89,7 +89,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
 
 
   def create
-    if !params[:visit_date].present?
+    if !params[:visit_date].present? && params[:visit_date] == 'undefined'
       render json: { errors: { visit_date: 'wrong_date' } }
       return false
     end
