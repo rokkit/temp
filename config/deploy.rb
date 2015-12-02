@@ -9,13 +9,13 @@ require 'mina/rvm'    # for rvm support. (http://rvm.io)
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
 set :rails_env, 'production'
-set :domain, '192.168.1.39'
+set :domain, '176.112.194.149'
 set :term_mode, nil
 set :branch, 'master'
-set :deploy_to, '/var/www/UK'
+set :deploy_to, '/var/www/uk'
 set :repository, 'git@192.168.1.39:maks_ohs/uk.git'
 
-set :user, 'maks'
+set :user, 'ukproduction'
 set :ssh_options, '-A'
 set :rvm_path, '/usr/share/rvm/scripts/rvm'
 
