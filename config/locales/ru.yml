@@ -5,6 +5,34 @@ ru:
           one: "Клиент"
           many: 'Клиентов'
           other: "Клиенты"
+        payment:
+          one: "Платеж"
+          many: 'Платежей'
+          other: "Платежи"
+        reservation:
+          one: "Бронирование"
+          many: 'Бронирований'
+          other: "Бронирования"
+        table:
+          one: "Стол"
+          many: 'Столов'
+          other: "Столы"
+        skill:
+          one: "Навык"
+          many: 'Навыков'
+          other: "Навыки"
+        achievement:
+          one: "Достижение"
+          many: 'Достижений'
+          other: "Достижения"
+        lounge:
+          one: "Ложа"
+          many: 'Ложи'
+          other: "Ложи"
+        city:
+          one: "Город"
+          many: 'Городов'
+          other: "Города"
       attributes:
         user:
           name: "ФИО"
@@ -12,6 +40,20 @@ ru:
           role: "Роль"
           current_sign_in_at: 'Был в сети'
           created_at: 'Создан'
+          experience: 'Опыт'
+          level: 'Уровень'
+        payment:
+          amount: 'Сумма'
+          user: 'Клиент'
+        reservation:
+          visit_date: 'Дата посещения'
+          user: 'Клиент'
+          table: 'Стол'
+        table:
+          lounge: 'Ложа'
+          title: 'Название'
+          seats: 'Кол-во мест'
+          vip: 'Для постоянников'
   active_admin:
     dashboard: "Панель управления"
     dashboard_welcome:

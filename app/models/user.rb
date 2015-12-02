@@ -19,7 +19,11 @@ class User < ActiveRecord::Base
   before_save :set_auth_token
   after_save :check_for_achievements
 
-  after_create :create_user_ext
+  # after_create :create_user_ext
+
+  def to_s
+    "#{self.name} (#{self.phone})"
+  end
 
   # Проверка на выполнение достижений связанных с юзером
   def check_for_achievements
