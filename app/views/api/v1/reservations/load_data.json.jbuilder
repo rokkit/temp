@@ -8,5 +8,5 @@ json.users @users do|user|
   json.extract! user, :id, :name
 end
 json.payments @payments do|payment|
-  json.extract! payment, :id, :amount
+  json.extract! payment, :id, :amount, :created_at
 end
