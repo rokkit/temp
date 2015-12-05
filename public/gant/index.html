@@ -32,13 +32,6 @@
         progress: 0.8, open: true, parent:3},
         {id:6, text:"Task #2.3", start_date:"05-04-2013", duration:4,
         progress: 0.2, open: true, parent:3}
-    ],
-    links:[
-        {id:1, source:1, target:2, type:"1"},
-        {id:2, source:1, target:3, type:"1"},
-        {id:3, source:3, target:4, type:"1"},
-        {id:4, source:4, target:5, type:"0"},
-        {id:5, source:5, target:6, type:"0"}
     ]
 };
 gantt.parse (tasks);

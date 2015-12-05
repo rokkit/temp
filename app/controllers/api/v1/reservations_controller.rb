@@ -89,20 +89,36 @@ class Api::V1::ReservationsController < Api::V1::BaseController
 
 
   def create
+    if !params[:lounge].present?
+      render json: { errors: { lounge: 'not_found' } }
+      return false
+    end
     if !params[:visit_date].present? && params[:visit_date] == 'undefined'
       render json: { errors: { visit_date: 'wrong_date' } }
       return false
     end
-    visit_date = DateTime.parse(params[:visit_date])
+    visit_date = Time.zone.strptime(params[:visit_date], "%Y-%m-%d %H:%M")
 
-    if visit_date < Time.now.utc.in_time_zone("Moscow") + 50.minutes
+    if visit_date < Time.zone.now + 50.minutes
       render json: { errors: { visit_date: 'too_late' } }
       return false
     end
-    before_visit_date = visit_date - 2.hours - 30.minutes
-    after_visit_date = visit_date + 2.hours + 30.minutes
+    #
+    if Reservation.where(user_id: current_user.id).where('visit_date > ? AND visit_date < ?', visit_date.beginning_of_day, visit_date.end_of_day).present?
+      render json: { errors: { visit_date: 'wrong_date' } }
+      return
+    end
 
-    reservations = Reservation.where('visit_date > ? AND visit_date <= ?', before_visit_date, after_visit_date)
+    end_visit_date = nil
+    if current_user.role == 'vip'
+      end_visit_date = visit_date + 2.hours + 30.minutes
+    else
+      end_visit_date = visit_date + 1.hours + 30.minutes
+    end
+
+
+    reservations = Reservation.where('end_visit_date > ? AND visit_date < ? ',
+                                    visit_date.utc, end_visit_date.utc)
     tables = []
     if current_user.role == 'vip'
       tables = Table.where(lounge_id: params[:lounge]).to_a
@@ -133,17 +149,18 @@ class Api::V1::ReservationsController < Api::V1::BaseController
     @reservation = Reservation.new user: current_user,
                                    visit_date: visit_date,
                                    table: table,
-                                   client_count: params[:client_count],
-                                   duration: params[:duration]
-
-
-    if @reservation.save!
+                                   client_count: params[:client_count]
+    meets = []
+    if params[:meets].present?
       params[:meets].each do |user_id|
         user = User.find(user_id)
-        if user
-          Meet.create user: user, reservation: @reservation
+        if user.level <= current_user.level
+          meets.push Meet.new(user: user)
         end
-      end if params[:meets].present?
+      end
+    end
+    if @reservation.save!
+      meets.each { |m| m.reservation = @reservation; m.save }
       render json: @reservation
     else
       render json: { errors: @reservation.errors }
@@ -161,6 +178,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
   def load_data
     @users = User.where.not(id: current_user.id)
     @lounges = Lounge.where(active: true).includes(:tables)
+    @payments = current_user.payments
     #code
   end
 

@@ -8,11 +8,18 @@ class Reservation < ActiveRecord::Base
   # has_many :meet_users, through: :meets, class_name: 'User'
 
   after_create :create_ext_record
+  before_save :update_end_visit_date
 
 
 
   private
-
+  def update_end_visit_date
+    if self.user.role == 'vip'
+      self.end_visit_date = self.visit_date + 2.hours + 30.minutes
+    else
+      self.end_visit_date = self.visit_date + 1.hours + 30.minutes
+    end
+  end
   def create_ext_record
     # status = ReservStatusExt.where(_enumorder: 1).first
     # date =  self.visit_date.strftime('%Y-%m-%d %R:01')

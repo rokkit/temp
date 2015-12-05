@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   # mount Upmin::Engine => '/admin'
   root to: 'pages#index'
+  get 'pages/schedule', to: 'pages#schedule'
   devise_for :users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 

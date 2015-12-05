@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151202175547) do
+ActiveRecord::Schema.define(version: 20151204143628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,11 +91,12 @@ ActiveRecord::Schema.define(version: 20151202175547) do
     t.integer  "table_id"
     t.datetime "visit_date"
     t.integer  "user_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.binary   "idrref"
     t.integer  "client_count"
     t.string   "duration"
+    t.datetime "end_visit_date"
   end
 
   add_index "reservations", ["table_id"], name: "index_reservations_on_table_id", using: :btree
@@ -122,11 +123,12 @@ ActiveRecord::Schema.define(version: 20151202175547) do
   end
 
   create_table "skills_links", force: :cascade do |t|
-    t.integer  "parent_id"
-    t.integer  "child_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer "parent_id"
+    t.integer "child_id"
   end
+
+  add_index "skills_links", ["child_id"], name: "skill_child_idx", using: :btree
+  add_index "skills_links", ["parent_id", "child_id"], name: "skill_links_idx", unique: true, using: :btree
 
   create_table "skills_users", force: :cascade do |t|
     t.integer "skill_id"

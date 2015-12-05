@@ -10,24 +10,27 @@ ru:
           one: "Платеж"
           many: 'Платежей'
           other: "Платежи"
+          few: 'Платежей'
         reservation:
           one: "Бронирование"
           many: 'Бронирований'
           other: "Бронирования"
-          few: "Бронирования"
+          few: "Бронирований"
         table:
           one: "Стол"
           many: 'Столов'
           other: "Столы"
-          few: "Столы"
+          few: "Столов"
         skill:
           one: "Навык"
           many: 'Навыков'
           other: "Навыки"
+          few: 'Навыков'
         achievement:
           one: "Достижение"
           many: 'Достижений'
           other: "Достижения"
+          few: 'Достижений'
         lounge:
           one: "Ложа"
           many: 'Ложи'
@@ -37,6 +40,7 @@ ru:
           one: "Город"
           many: 'Городов'
           other: "Города"
+          few: 'Городов'
       attributes:
         user:
           name: "ФИО"

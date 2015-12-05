@@ -1,0 +1,160 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Timeline View Demo - dhtmlxScheduler</title>
+	<meta name="description" content="This demo shows a JavaScript event calendar in Timeline View where the users can manage and track the ongoing tasks or projects.">
+	<meta name="keywords" content="javascript, scheduler, event calendar, events calendar, event, calendar, ajax, google-like">
+</head>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+	<script src='/schedule/codebase/dhtmlxscheduler.js?v=4.1' type="text/javascript" charset="utf-8"></script>
+	<script src='/schedule/codebase/ext/dhtmlxscheduler_timeline.js?v=4.1' type="text/javascript" charset="utf-8"></script>
+
+	<link rel='STYLESHEET' type='text/css' href='/schedule/codebase/dhtmlxscheduler_flat.css'>
+
+
+
+<style type="text/css" media="screen">
+	html, body{
+		margin:0px;
+		padding:0px;
+		height:100%;
+		overflow:hidden;
+	}
+	.one_line{
+		white-space:nowrap;
+		overflow:hidden;
+		padding-top:5px; padding-left:5px;
+		text-align:left !important;
+	}
+</style>
+
+<script type="text/javascript" charset="utf-8">
+
+	function init() {
+    var lounges = <%= Lounge.where(active: true).to_json(:include => :tables).html_safe %>;
+    var reservations = <%= Reservation.all.to_json(include: [:table, :user]).html_safe %>;
+
+    var reservations_json = []
+
+    $.each(reservations, function(){
+			console.log(this)
+      console.log(moment(this.visit_date).format('YYYY-MM-DD HH:mm'))
+      var start_date = moment(this.visit_date).format('YYYY-MM-DD HH:mm')
+      var end_date = moment(this.end_visit_date).format('YYYY-MM-DD HH:mm')
+      reservations_json.push(
+        { start_date: start_date, end_date: end_date, text: "Клиент: "+this.user.name + ' +'
+				+ this.user.phone, section_id: this.table_id}
+      )
+    });
+		console.log(reservations_json)
+
+		// var sections=[
+		// 	{key:1, label:"James Smith"},
+		// 	{key:2, label:"John Williams"},
+		// 	{key:3, label:"David Miller"},
+		// 	{key:4, label:"Linda Brown"}
+		// ];
+		var sections = []
+		$.each(lounges, function(){
+			$.each(this.tables, function() {
+				sections.push({key: this.id, label: this.id})
+			})
+		});
+		window.resizeTo(950,700)
+		modSchedHeight();
+
+		scheduler.locale.labels.timeline_tab = "Timeline"
+		scheduler.locale.labels.section_custom="Section";
+		scheduler.config.fix_tab_position = false;
+		scheduler.config.details_on_create=true;
+		scheduler.config.details_on_dblclick=true;
+		scheduler.config.xml_date="%Y-%m-%d %H:%i";
+
+		scheduler.config.first_hour = 17
+		scheduler.config.last_hour = 24
+		//===============
+		//Configuration
+		//===============
+
+
+		scheduler.createTimelineView({
+			name:	"timeline",
+			x_unit:	"minute",
+			x_date:	"%H:%i",
+			x_step:	30,
+			x_size: 15,
+			x_start: 34,
+			x_length:	8,
+			y_unit:	sections,
+			y_property:	"section_id",
+			render:"bar",
+			section_autoheight: true,
+			fit_events: true,
+			dy: 10,
+			event_dy: 'full',
+			resize_events: true,
+			dx: 120
+		});
+
+		//===============
+		//Data loading
+		//===============
+		scheduler.config.lightbox.sections=[
+			{name:"description", height:130, map_to:"text", type:"textarea" , focus:true},
+			{name:"custom", height:23, type:"select", options:sections, map_to:"section_id" },
+			{name:"time", height:72, type:"time", map_to:"auto"}
+		]
+
+    var start_day = new Date();
+    start_day.setHours(17,0,0,0);
+
+		// scheduler.xy.scale_height = 5;
+		scheduler.xy.min_event_height = 40
+		scheduler.init('scheduler_here', start_day,"timeline");
+		scheduler.parse(reservations_json, "json");
+	}
+</script>
+
+<body onload="init();"  onresize="modSchedHeight()">
+    <style>
+        a img{
+            border: none;
+        }
+        li{
+            list-style: none;
+        }
+    </style>
+	<script>
+		function modSchedHeight(){
+			var headHeight = 100;
+			var sch = document.getElementById("scheduler_here");
+                        if (!sch) return;
+			sch.style.height = (parseInt(document.body.offsetHeight)-headHeight)+"px";
+		}
+	</script>
+
+	<!-- end. info block -->
+    <ul>
+        <li>
+            <a></a>
+            <span></span>
+        </li>
+    </ul>
+
+	<div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:100%;'>
+		<div class="dhx_cal_navline">
+			<div class="dhx_cal_prev_button">&nbsp;</div>
+			<div class="dhx_cal_next_button">&nbsp;</div>
+			<div class="dhx_cal_today_button"></div>
+			<div class="dhx_cal_date"></div>
+			<div class="dhx_cal_tab" name="day_tab" style="left:30px;"></div>
+			<div class="dhx_cal_tab" name="timeline_tab" style="left:105px;"></div>
+		</div>
+		<div class="dhx_cal_header">
+		</div>
+		<div class="dhx_cal_data">
+		</div>
+	</div>
+</body>

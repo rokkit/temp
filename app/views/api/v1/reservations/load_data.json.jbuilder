@@ -7,3 +7,6 @@ end
 json.users @users do|user|
   json.extract! user, :id, :name
 end
+json.payments @payments do|payment|
+  json.extract! payment, :id, :amount
+end

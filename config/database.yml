@@ -8,15 +8,6 @@
     username: postgres
     password: vault13
 
-  # uk_external_test:
-  #   adapter:  postgresql
-  #   host:     localhost
-  #   encoding: unicode
-  #   database: uk_external_test
-  #   pool:     5
-  #   username: uk
-  #   password:
-
   default: &default
     adapter: postgresql
     encoding: unicode
@@ -33,7 +24,7 @@
     encoding: unicode
     database: uk_development
     pool:     5
-    username: uk
+    username: postgres
     password:
 
   test:
@@ -42,7 +33,7 @@
     encoding: unicode
     database: uk_test
     pool:     5
-    username: uk
+    username: postgres
     password:
 
   production:

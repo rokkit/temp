@@ -13,6 +13,7 @@ gem 'russian'
 gem 'carrierwave'
 gem 'ancestry'
 gem "active_admin-sortable_tree"
+gem 'time_zone_ext'
 
 gem 'rack-cors', :require => 'rack/cors'
 

@@ -8,7 +8,12 @@ class Api::V1::BaseController < ApplicationController
   def token_auth
     if params[:auth_token]
       user = User.find_by_auth_token(params[:auth_token])
+      if user
       sign_in user
+      else
+        head :unauthorized
+        return
+      end
     end
   end
   def cors_set_access_control_headers

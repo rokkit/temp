@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>How to Start with dhtmlxGantt</title>
+   <script src="/gant/codebase/dhtmlxgantt.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+   <link href="/gant/codebase/dhtmlxgantt.css" rel="stylesheet">
+   <style type="text/css" media="screen">
+    html, body{
+        margin:0px;
+        padding:0px;
+        height:100%;
+        overflow:hidden;
+    }
+
+</style>
+</head>
+<body>
+    <div id="gantt_here" style='width:1000px; height:600px;'></div>
+    <script type="text/javascript">
+  var lounges = <%= Lounge.where(active: true).to_json.html_safe %>;
+  var reservations = <%= Reservation.all.to_json.html_safe %>;
+  console.log(reservations)
+  var demo_tasks = {
+    data: [{
+      text: 'Site #1',
+      parent: 0,
+      id: '1',
+      open: true,
+      progress: 0.42
+    }]
+  }
+  //
+  // $.each(lounges, function(){
+  //   demo_tasks.data.push({
+  //     text: this.title,
+  //     parent: 0,
+  //     open: true,
+  //     progress: 1,
+  //     id: this.id
+  //   })
+  // });
+  $.each(reservations, function(){
+    console.log(moment.utc(this.visit_date).format('DD-MM-YYYY HH:mm'))
+    demo_tasks.data.push({
+      text: 'Стол: '+this.table_id,
+      start_date: moment.utc(this.visit_date).format('DD-MM-YYYY HH:mm'),
+      'end_date': moment.utc(this.visit_date).add(1, 'hours').format('DD-MM-YYYY HH:mm'),
+      'duration': 2,
+      'progress': 1,
+      'parent': 1,
+      'id': this.id,
+      'owner': '1'
+    })
+  });
+  demo_tasks.data.push({
+      'text': 'Project Defenition',
+      'start_date': '03-12-2015 20:00',
+      'duration': 30,
+      'progress': 1,
+      'parent': 1,
+      'id': 1379082074907,
+      'end_date': '03-12-2015 18:00',
+      'owner': '1'
+  })
+  demo_tasks.data.push({
+      'text': 'Project Defenition',
+      'start_date': '03-12-2015 22:00',
+      'duration': 30,
+      'progress': 1,
+      'parent': 1,
+      'id': 1379082074903,
+      'end_date': '03-12-2015 23:00',
+      'owner': '1'
+  })
+  console.log(demo_tasks)
+
+
+        var start_day = new Date();
+        start_day.setHours(17,0,0,0);
+
+        var end_day = new Date();
+        end_day.setHours(23,59,59,999);
+
+    		gantt.config.start_date = start_day;
+    		gantt.config.end_date = end_day;
+    		gantt.config.date_grid = "%H:%i";
+
+    		gantt.config.scale_unit = "minute";
+        gantt.config.step = 30;
+    		gantt.config.duration_unit = "hour";
+    		gantt.config.date_scale = "%H:%i";
+    		gantt.config.details_on_create = true;
+
+    		gantt.templates.task_class = function(start, end, obj){
+    			return "owner_"+obj.owner;
+    		}
+
+    		gantt.config.columns = [
+    		    {name:"text",       label:"Task name",  width:"*", tree:true },
+    		    {name:"start_date", label:"Start time", align: "center", width:70 },
+            {name:"end_date", label:"End time", align: "center", width:70 },
+    		    {name:"progress",   label:"Owner",  template:function(obj){
+    				return gantt.getLabel("owner", obj.owner);
+    		    }, align: "center", width:70 },
+    		    {name:"add",        label:"",           width:44 }
+    		];
+    		gantt.config.grid_width = 380;
+
+    		gantt.attachEvent("onTaskCreated", function(obj){
+    			obj.duration = 4;
+    			obj.progress = 0.25;
+    			return true;
+    		});
+
+
+
+    		gantt.locale.labels["section_owner"] = "Owner";
+    	    gantt.config.lightbox.sections = [
+    	        {name: "description", height: 38, map_to: "text", type: "textarea", focus: true},
+    	        {name: "owner", height: 22, map_to: "owner", type: "select", options: [
+    	        	{key:"0", label: ""},
+    	        	{key:"1", label: "Mark"},
+    	        	{key:"2", label: "John"},
+    	        	{key:"3", label: "Rebecca"},
+    	        	{key:"4", label: "Alex"}]},
+    	        {name: "time", height: 72, type: "duration", map_to: "auto", time_format:["%d","%m","%Y","%H:%i"]}
+    	    ];
+
+    		gantt.init("gantt_here");
+
+    		gantt.parse(demo_tasks);
+
+
+    </script>
+</body>
+</html>
