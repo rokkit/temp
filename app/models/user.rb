@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, AvatarUploader
 
-  enum role: [:user, :admin, :vip]
+  enum role: [:user, :admin, :vip, :hookmaster]
   after_initialize :set_default_role, if: :new_record?
 
   before_save :set_auth_token
@@ -79,11 +79,50 @@ class User < ActiveRecord::Base
 
 
   def total_experience
-    visits_ext = self.visits
-    if visits_ext.length > 0
-      return visits_ext.map { |p| p['_fld1574'] }.reduce(0) { |p, i| i += p }
+    if self.role == 'hookmaster'
+      # Оборот всех заведений
+      payments = Payment.all.order(:created_at).group_by { |t| t.created_at.beginning_of_day }
+      # puts payments.inspect
+      total_amount = 0
+      payments.sort.each do |month, ps|
+        month_amount = ps.map(&:amount).reduce(0) { |p, sum| sum += p }
+        month_works_count = Work.where('work_at >= ? AND work_at < ?', month.beginning_of_day, month.end_of_day).count
+        if month_works_count > 0
+          total_amount += (month_amount / month_works_count)
+        end
+      end
+
+      return total_amount
     else
-      return 0
+      return self.experience
+    end
+  end
+
+  def current_level
+    if self.role == 'hookmaster'
+      grade_one_rate = 5225
+      grade_one_cost = grade_one_rate * 10
+      grade_two_rate = 15674
+      grade_two_cost = grade_one_cost + grade_two_rate * 10
+      grade_three_rate = 31347
+      grade_three_cost = grade_one_cost + grade_two_cost + (grade_three_rate * 10)
+
+
+      if self.total_experience <= grade_one_cost
+        return (self.total_experience / grade_one_rate).to_i + 1
+      elsif self.total_experience <= grade_two_cost
+        current_exp = self.total_experience
+        result_exp = current_exp - grade_one_cost
+        return (result_exp / grade_two_rate).to_i + 10
+      elsif self.total_experience <= grade_three_cost
+        current_exp = self.total_experience
+        result_exp = current_exp - grade_two_cost
+        return (result_exp / grade_two_rate).to_i + 20
+      else
+        30
+      end
+    else
+      self.level
     end
   end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151204143628) do
+ActiveRecord::Schema.define(version: 20151206160439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,8 +83,10 @@ ActiveRecord::Schema.define(version: 20151204143628) do
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "table_id"
   end
 
+  add_index "payments", ["table_id"], name: "index_payments_on_table_id", using: :btree
   add_index "payments", ["user_id"], name: "index_payments_on_user_id", using: :btree
 
   create_table "reservations", force: :cascade do |t|
@@ -191,13 +193,27 @@ ActiveRecord::Schema.define(version: 20151204143628) do
   add_index "users", ["phone_token"], name: "index_users_on_phone_token", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  create_table "works", force: :cascade do |t|
+    t.integer  "lounge_id"
+    t.integer  "user_id"
+    t.datetime "work_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "works", ["lounge_id"], name: "index_works_on_lounge_id", using: :btree
+  add_index "works", ["user_id"], name: "index_works_on_user_id", using: :btree
+
   add_foreign_key "achievements_users", "achievements"
   add_foreign_key "achievements_users", "users"
   add_foreign_key "lounges", "cities"
   add_foreign_key "meets", "reservations"
   add_foreign_key "meets", "users"
+  add_foreign_key "payments", "tables"
   add_foreign_key "payments", "users"
   add_foreign_key "reservations", "tables"
   add_foreign_key "reservations", "users"
   add_foreign_key "tables", "lounges"
+  add_foreign_key "works", "lounges"
+  add_foreign_key "works", "users"
 end
