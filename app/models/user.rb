@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   # Заполните свой профиль на 100%
   def check_for_open_profile_achievement
     # raise Achievement.find_by_key('open_profile').inspect
-    if self.email.present? && self.avatar.present?
+    if self.email.present? && self.hobby.present? && self.employe.present? && self.work_company.present? && && self.city.present?
       achievement = Achievement.find_by_key('open_profile')
       if !achievement
         achievement = Achievement.create(name: 'Открытость')
