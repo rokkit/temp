@@ -26,7 +26,7 @@ ActiveAdmin.register Skill do
           link = SkillsLink.create!(parent_id: parent_skill_id, child_id: @skill.id)
         end
       end
-      if @skill.update_attributes params[:skill].permit(:name, :description, :image_cache, :cost, :row, :role)
+      if @skill.update_attributes params[:skill].permit(:name, :description, :image_cache, :cost, :row, :role, :image)
         redirect_to admin_skills_path, notice: "Successfully created Skill."
       else
         redirect_to :back
