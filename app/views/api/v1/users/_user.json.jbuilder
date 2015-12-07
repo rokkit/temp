@@ -9,6 +9,12 @@ json.skills user.skills do |s|
   json.name s.name
 end
 
+json.penalties user.penalties do |s|
+  json.id s.id
+  json.name s.name
+  json.description
+end
+
 json.exp user.total_experience
 json.level user.current_level
 

@@ -38,6 +38,11 @@ ActiveAdmin.register User do
       f.input :phone_token
       f.input :auth_token
       f.input :role, :as => :select, :collection => [:user, :admin, :vip, :hookmaster]
+
+      # 
+      # f.has_many :achievements, allow_destroy: true, new_record: "Добавить достижение" do |e|
+      #     e.input :achievement, as: :select2_multiple
+      # end
     end
     f.actions
   end

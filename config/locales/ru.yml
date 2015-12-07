@@ -41,6 +41,16 @@ ru:
           many: 'Городов'
           other: "Города"
           few: 'Городов'
+        work:
+          one: "Смена"
+          many: 'Смены'
+          other: "Смены"
+          few: 'Смен'
+        penalty:
+          one: "Штраф"
+          many: 'Штрафы'
+          other: "Штрафы"
+          few: 'Штрафов'
       attributes:
         user:
           name: "ФИО"

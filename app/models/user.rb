@@ -1,9 +1,13 @@
 class User < ActiveRecord::Base
+  has_and_belongs_to_many :penalties
 
   establish_connection Rails.env.to_sym
 
   has_many :skills_users, class_name: 'SkillsUsers'
   has_many :skills, through: :skills_users
+
+  has_many :penalties_user
+  has_many :penalties, through: :penalties_user
 
   has_many :achievements_user
   has_many :achievements, through: :achievements_user

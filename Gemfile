@@ -14,6 +14,8 @@ gem 'carrierwave'
 gem 'ancestry'
 gem "active_admin-sortable_tree"
 gem 'time_zone_ext'
+gem 'select2-rails'
+gem 'activeadmin-select2', github: 'mfairburn/activeadmin-select2'
 
 gem 'rack-cors', :require => 'rack/cors'
 
