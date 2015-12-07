@@ -1,5 +1,6 @@
 ActiveAdmin.register User do
-  permit_params :email, :password, :password_confirmation, :phone_token, :role, :name
+  permit_params :email, :password, :password_confirmation, :phone_token, :role,
+                :name, :city, :employe, :work_company, :hobby
 
   scope :clients, default: true
   scope :hookmasters
