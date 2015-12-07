@@ -18,7 +18,7 @@ ActiveAdmin.register_page 'Dashboard' do
 
       column do
         panel "Клиенты" do
-          table_for User.order('id desc').limit(10).each do |customer|
+          table_for User.clients.order('id desc').limit(10).each do |customer|
             column(:id)    {|customer| link_to(customer.id, admin_user_path(customer)) }
             column(:phone)    {|customer| link_to(customer.phone, admin_user_path(customer)) }
             column(:name)    {|customer| link_to(customer.name, admin_user_path(customer)) }

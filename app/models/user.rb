@@ -12,8 +12,8 @@ class User < ActiveRecord::Base
   has_many :achievements_user
   has_many :achievements, through: :achievements_user
 
-  has_many :payments
-  has_many :reservations
+  has_many :payments, dependent: :delete_all
+  has_many :reservations, dependent: :delete_all
 
   mount_uploader :avatar, AvatarUploader
 
@@ -22,6 +22,9 @@ class User < ActiveRecord::Base
 
   before_save :set_auth_token
   after_save :check_for_achievements
+
+  scope :clients, -> { where.not(role: 3).where.not(role: 1) }
+  scope :hookmasters, -> { where(role: 3) }
 
   # after_create :create_user_ext
 

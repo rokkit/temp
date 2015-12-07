@@ -2,10 +2,10 @@ ru:
   activerecord:
       models:
         user:
-          one: "Клиент"
-          many: 'Клиентов'
-          other: "Клиенты"
-          few: 'Клиенты'
+          one: "Пользователь"
+          many: 'Пользователей'
+          other: "Пользователи"
+          few: 'Пользователей'
         payment:
           one: "Платеж"
           many: 'Платежей'
@@ -209,3 +209,6 @@ ru:
       block: "Список"
       grid: "Сетка"
       blog: "Блог"
+    scopes:
+      clients: 'Клиенты'
+      hookmasters: 'Кальянщики'

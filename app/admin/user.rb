@@ -1,6 +1,9 @@
 ActiveAdmin.register User do
   permit_params :email, :password, :password_confirmation, :phone_token, :role, :name
 
+  scope :clients, default: true
+  scope :hookmasters
+
   index do
     selectable_column
     id_column
@@ -39,11 +42,27 @@ ActiveAdmin.register User do
       f.input :auth_token
       f.input :role, :as => :select, :collection => [:user, :admin, :vip, :hookmaster]
 
-      # 
+      #
       # f.has_many :achievements, allow_destroy: true, new_record: "Добавить достижение" do |e|
       #     e.input :achievement, as: :select2_multiple
       # end
     end
     f.actions
+  end
+
+  controller do
+    def update
+      if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
+        params[:user].delete("password")
+        params[:user].delete("password_confirmation")
+      end
+      super
+    end
+  end
+  batch_action :destroy do |ids|
+    User.find(ids).each do |u|
+      u.destroy
+    end
+    redirect_to collection_path, alert: "Пользователи успешно удалены"
   end
 end
