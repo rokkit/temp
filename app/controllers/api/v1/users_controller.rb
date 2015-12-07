@@ -5,7 +5,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   # Обновить профиль юезера
   def update
     @user = current_user
-    if @user.update_attributes params[:user].permit(:email, :password, :password_confirmation, :phone_token, :role, :name, :city, :employe, :work_company, :hobby)
+    if @user.update_attributes params.permit(:email, :password, :password_confirmation, :phone_token, :role, :name, :city, :employe, :work_company, :hobby)
        respond_with @user
     else
       render json: {status: :error}
