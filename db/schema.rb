@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151207101032) do
+ActiveRecord::Schema.define(version: 20151207104320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,8 +134,9 @@ ActiveRecord::Schema.define(version: 20151207101032) do
   add_index "skills_links", ["parent_id", "child_id"], name: "skill_links_idx", unique: true, using: :btree
 
   create_table "skills_users", force: :cascade do |t|
-    t.integer "skill_id"
-    t.integer "user_id"
+    t.integer  "skill_id"
+    t.integer  "user_id"
+    t.datetime "used_at"
   end
 
   create_table "tables", force: :cascade do |t|

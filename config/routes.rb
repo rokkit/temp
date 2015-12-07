@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       resources :skills, only: [:index] do
         member do
           post :take
+          post :use
         end
       end
       resources :payments, only: [:create]

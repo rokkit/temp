@@ -31,4 +31,16 @@ class Api::V1::SkillsController < Api::V1::BaseController
       render json: { status: :error }
     end
   end
+
+  # Использовать навык юзером
+  # если у него есть такая возможность
+  def use
+    skill = Skill.find(params[:id])
+    if current_user.skills.pluck(:id).include?(skill.id)
+      skill_user = SkillsUsers.where(skill_id: skill.id, user_id: current_user.id).first
+      skill_user.used_at = DateTime.now
+      skill_user.save
+      render json: {status: :ok}
+    end
+  end
 end
