@@ -3,7 +3,7 @@ ActiveAdmin.register Achievement do
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
-permit_params :name, :description, :key, :image
+permit_params :name, :description, :key, :image, :role
 
 index do
   selectable_column
@@ -11,6 +11,7 @@ index do
   column :image do |achievement|
     image_tag(achievement.image_url, width: '40px')
   end
+  column :role
   actions
 end
 show do
@@ -21,6 +22,7 @@ show do
     end
     row :description
     row :key
+    row :role
   end
   active_admin_comments
 end
@@ -35,6 +37,7 @@ form do |f|
     ? image_tag(f.object.image_url, width: '100px')
     : content_tag(:span, "no image yet")
   f.input :image_cache, :as => :hidden
+  f.input :role, :as => :select, :collection => [:user, :hookmaster]
   end
   f.actions
   f.semantic_errors
