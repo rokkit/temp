@@ -37,7 +37,7 @@ ActiveAdmin.register User do
       f.input :password
       f.input :phone_token
       f.input :auth_token
-      f.input :role, :as => :select, :collection => [:user, :admin, :vip]
+      f.input :role, :as => :select, :collection => [:user, :admin, :vip, :hookmaster]
     end
     f.actions
   end

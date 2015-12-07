@@ -5,7 +5,11 @@ class Api::V1::SkillsController < Api::V1::BaseController
   # Полный список навыков с указанием родительского
   # навыка
   def index
-    @skills = Skill.all.order(:id)
+    if params[:role] == 'user'
+      @skills = Skill.where(role: 0).order(:id)
+    elsif params[:role] == 'hookmaster'
+      @skills = Skill.where(role: 1).order(:id)
+    end
     respond_with @skills
   end
 

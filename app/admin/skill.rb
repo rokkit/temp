@@ -2,7 +2,7 @@ ActiveAdmin.register Skill do
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
-  permit_params :name, :image, :ancestry, :ancestry_id, :description, :cost, :parent_id
+  permit_params :name, :image, :ancestry, :ancestry_id, :description, :cost, :parent_id, :role
 
   config.filters = false
   # sortable tree: true,
@@ -26,7 +26,7 @@ ActiveAdmin.register Skill do
           link = SkillsLink.create!(parent_id: parent_skill_id, child_id: @skill.id)
         end
       end
-      if @skill.update_attributes params[:skill].permit(:name, :description, :image_cache, :cost)
+      if @skill.update_attributes params[:skill].permit(:name, :description, :image_cache, :cost, :role)
         redirect_to admin_skills_path, notice: "Successfully created Skill."
       else
         redirect_to :back
@@ -36,6 +36,8 @@ ActiveAdmin.register Skill do
   index do
     column :id
     column :name # item content
+    column :cost
+    column :role
     column do |skill|
       skill.parent_skills_obj.map {|s| "##{s.id} #{s.name}" }.join('; ')
     end
@@ -51,6 +53,7 @@ ActiveAdmin.register Skill do
       end
       row :description
       row :cost
+      row :role
     end
     active_admin_comments
   end
@@ -66,6 +69,7 @@ ActiveAdmin.register Skill do
             # ]#, :input_html => { :checked => SkillsLink.where(child_id: f.object.id) }#, :as => :select, :collection => Skill.all.map {|u| [u.name, u.id]}
     f.input :name
     f.input :description
+    f.input :role, :as => :select, :collection => [:user, :hookmaster]
     # f.input :image
     # f.inputs "Иконка", :multipart => true do
       f.input :image, :as => :file, :hint => f.object.image_url.present? \

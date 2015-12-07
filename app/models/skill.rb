@@ -6,6 +6,8 @@ class Skill < ActiveRecord::Base
   has_many :skills_links, class_name: 'SkillsLink'
   has_many :child_skills, through: :skills_links
 
+  enum role: [:user, :hookmaster]
+
   # belongs_to :parent, class_name: 'Skill'
 
   def parent_skills
