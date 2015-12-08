@@ -51,7 +51,7 @@ class User < ActiveRecord::Base
     # raise Achievement.find_by_key('open_profile').inspect
     if self.email.present? && self.hobby.present? && self.employe.present? && self.work_company.present? && self.city.present?
 
-      achievement = Achievement.find_by_key('open_profile')
+      achievement = Achievement.find_by_key('otkrytost')
       if !achievement
         achievement = Achievement.create(name: 'Открытость')
       end
