@@ -1,4 +1,5 @@
 ActiveAdmin.register Work do
+  menu parent: 'Администрирование'
   permit_params :user_id, :work_at, :lounge_id
 
   index do

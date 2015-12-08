@@ -1,4 +1,5 @@
 ActiveAdmin.register Payment do
+  menu parent: 'Администрирование'
   permit_params :user_id, :amount, :table_id
 
   index do

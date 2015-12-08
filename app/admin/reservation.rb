@@ -1,4 +1,5 @@
 ActiveAdmin.register Reservation do
+  menu parent: 'Администрирование'
   permit_params :table_id, :user_id, :visit_date, :client_count, :duration
 
   index do
