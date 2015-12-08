@@ -27,8 +27,14 @@ ActiveAdmin.register User do
       row :phone
       row :experience
       row :level
+      row :skill_point
       row :role
       row :created_at
+      panel "Навыки" do
+         table_for user.skills do
+           column :name
+         end
+      end
     end
     active_admin_comments
   end
