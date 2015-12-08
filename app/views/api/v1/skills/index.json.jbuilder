@@ -9,6 +9,7 @@ json.array!(@skills) do |skill|
     json.used_at skill_user.used_at
   else
     json.taken_at nil
+    json.used_at nil
   end
 
   has_parent_skill = (user_skills.pluck(:skill_id) & skill.parent_skills).present? || skill.parent_skills.empty?
