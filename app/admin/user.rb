@@ -27,6 +27,7 @@ ActiveAdmin.register User do
       row :phone
       row :experience
       row :level
+      row :experience
       row :skill_point
       row :role
       row :created_at
@@ -66,6 +67,7 @@ ActiveAdmin.register User do
       f.input :role, :as => :select, :collection => [:user, :admin, :vip, :hookmaster]
       f.input :skill_point
       f.input :level
+      f.input :experience
       f.inputs do
         f.has_many :skills_users, heading: 'Навыки', new_record: "Добавить навык" do |a|
           a.input :skill

@@ -18,6 +18,7 @@ end
 json.exp user.total_experience
 json.level user.current_level
 
+
 json.visits [] #user.visits do |visit|
 #   json.id visit['_idrref']
 #   json.amount visit['_fld1574']
