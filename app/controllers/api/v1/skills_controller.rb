@@ -18,14 +18,14 @@ class Api::V1::SkillsController < Api::V1::BaseController
   # TODO: проверка на возможность получения
   # TODO: снятие Очков навыка
   def take
-    skill = Skill.find(params[:id])
-    if skill && current_user.skill_point - skill.cost >= 0
-      current_user.skills.push skill
-      current_user.skill_point -= skill.cost
+    @skill = Skill.find(params[:id])
+    if @skill && current_user.skill_point - @skill.cost >= 0
+      current_user.skills.push @skill
+      current_user.skill_point -= @skill.cost
       if current_user.save
-        skill_user = SkillsUsers.where(user_id: current_user.id, skill_id: skill.id).first
+        skill_user = SkillsUsers.where(user_id: current_user.id, skill_id: @skill.id).first
         skill_user.update_attribute :taken_at, DateTime.now
-        render json: { status: :ok }
+        respond_with @skill
       else
         render json: { status: :error }
       end
@@ -37,12 +37,12 @@ class Api::V1::SkillsController < Api::V1::BaseController
   # Использовать навык юзером
   # если у него есть такая возможность
   def use
-    skill = Skill.find(params[:id])
-    if current_user.skills.pluck(:id).include?(skill.id)
-      skill_user = SkillsUsers.where(skill_id: skill.id, user_id: current_user.id).first
+    @skill = Skill.find(params[:id])
+    if current_user.skills.pluck(:id).include?(@skill.id)
+      skill_user = SkillsUsers.where(skill_id: @skill.id, user_id: current_user.id).first
       skill_user.used_at = DateTime.now
       skill_user.save
-      render json: {status: :ok}
+      respond_with @skill
     end
   end
 end
