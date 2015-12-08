@@ -5,12 +5,15 @@ class User < ActiveRecord::Base
 
   has_many :skills_users, class_name: 'SkillsUsers'
   has_many :skills, through: :skills_users
+  accepts_nested_attributes_for :skills_users, :allow_destroy => true
 
   has_many :penalties_user
   has_many :penalties, through: :penalties_user
+  accepts_nested_attributes_for :penalties_user, :allow_destroy => true
 
   has_many :achievements_user
   has_many :achievements, through: :achievements_user
+  accepts_nested_attributes_for :achievements_user, :allow_destroy => true
 
   has_many :payments, dependent: :delete_all
   has_many :reservations, dependent: :delete_all

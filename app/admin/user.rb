@@ -1,6 +1,6 @@
 ActiveAdmin.register User do
   permit_params :email, :password, :password_confirmation, :phone_token, :role,
-                :name, :city, :employe, :work_company, :hobby
+                :name, :city, :employe, :work_company, :hobby, :skills_users_attributes
 
   scope :clients, default: true
   scope :hookmasters
@@ -32,7 +32,23 @@ ActiveAdmin.register User do
       row :created_at
       panel "Навыки" do
          table_for user.skills do
-           column :name
+           column 'Название' do |skill|
+             skill.name
+           end
+         end
+      end
+      panel "Достижения" do
+         table_for user.achievements do
+           column 'Название' do |achievement|
+             achievement.name
+           end
+         end
+      end
+      panel "Штрафы" do
+         table_for user.penalties do
+           column 'Название' do |penalty|
+             penalty.name
+           end
          end
       end
     end
@@ -48,16 +64,25 @@ ActiveAdmin.register User do
       f.input :phone_token
       f.input :auth_token
       f.input :role, :as => :select, :collection => [:user, :admin, :vip, :hookmaster]
-
+      f.inputs do
+        f.has_many :skills_users, heading: 'Навыки', new_record: "Добавить навык" do |a|
+          a.input :skill
+        end
+      end
       #
-      # f.has_many :achievements, allow_destroy: true, new_record: "Добавить достижение" do |e|
-      #     e.input :achievement, as: :select2_multiple
-      # end
+      f.inputs do
+        f.has_many :achievements_user, heading: 'Достижения', new_record: "Добавить достижение" do |a|
+          a.input :achievement
+        end
+      end
     end
     f.actions
   end
 
   controller do
+    def permitted_params
+      params.permit!
+    end
     def update
       if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
         params[:user].delete("password")
