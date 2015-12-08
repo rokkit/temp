@@ -23,7 +23,8 @@ class Api::V1::SkillsController < Api::V1::BaseController
       current_user.skills.push skill
       current_user.skill_point -= skill.cost
       if current_user.save
-        SkillsUsers.where(user_id: current_user.id, skill_id: skill.id).first.update_attribute :taken_at, DateTime.now
+        skill_user = SkillsUsers.where(user_id: current_user.id, skill_id: skill.id).first
+        skill_user.update_attribute :taken_at, DateTime.now
         render json: { status: :ok }
       else
         render json: { status: :error }
