@@ -10,6 +10,7 @@ ActiveAdmin.register Reservation do
       "#{order.table.lounge.title} №#{order.table.id}"
     end
     column :visit_date
+    column :end_visit_date
     actions
   end
 

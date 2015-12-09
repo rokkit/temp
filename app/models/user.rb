@@ -95,11 +95,11 @@ class User < ActiveRecord::Base
     if self.role == 'hookmaster'
       # Оборот всех заведений
       payments = Payment.all.order(:created_at).group_by { |t| t.created_at.beginning_of_day }
-      # puts payments.inspect
+
       total_amount = 0
-      payments.sort.each do |month, ps|
+      payments.sort.each do |day, ps|
         month_amount = ps.map(&:amount).reduce(0) { |p, sum| sum += p }
-        month_works_count = Work.where('work_at >= ? AND work_at < ?', month.beginning_of_day, month.end_of_day).count
+        month_works_count = Work.where('work_at >= ? AND work_at < ?', day.beginning_of_day, day.end_of_day).count
         if month_works_count > 0
           total_amount += (month_amount / month_works_count)
         end
@@ -108,6 +108,22 @@ class User < ActiveRecord::Base
       return total_amount
     else
       return self.experience
+    end
+  end
+
+  def need_to_levelup
+    if self.role == 'hookmaster'
+      if self.current_level <= 10
+        return 5225 - (self.total_experience - 5225 * (self.current_level - 1) )
+      end
+    else
+      first_level = 6000
+      if self.level == 1
+        need = first_level
+      else
+        need = ((self.level) * first_level * 1.25 ** 2.1).round
+      end
+      need - self.experience
     end
   end
 

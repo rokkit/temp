@@ -1,13 +1,12 @@
 ActiveAdmin.register Payment do
   menu parent: 'Администрирование'
-  permit_params :user_id, :amount, :table_id
+  permit_params :user_id, :amount, :table_id, :visit_date
 
   index do
     selectable_column
     id_column
     column :user
-    column :visit_date
-    column :end_visit_date
+    column :amount
     column :table
     actions
   end

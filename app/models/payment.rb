@@ -20,5 +20,6 @@ class Payment < ActiveRecord::Base
     elsif self.user.experience >= 19200 && self.user.experience < 28800
       self.user.update_attributes level: 3, skill_point: current_skill_points + 1
     end
+    self.user.save
   end
 end

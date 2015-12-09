@@ -17,6 +17,7 @@ end
 
 json.exp user.total_experience
 json.level user.current_level
+json.need_to_levelup user.need_to_levelup
 
 
 json.visits [] #user.visits do |visit|

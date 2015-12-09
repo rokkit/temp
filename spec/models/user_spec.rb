@@ -30,6 +30,7 @@ RSpec.describe 'User' do
          end
          it 'вычисляется опыт' do
            expect(user.total_experience).to eq(4000)
+           expect(user.need_to_levelup).to eq(1225)
          end
        end
      end
@@ -76,30 +77,54 @@ RSpec.describe 'User' do
      end
    end
 
-   describe "Уровень клиента мастера" do
+   describe "Уровень клиента" do
      let(:user) { FactoryGirl.create :user, role: :hookmaster }
-     let(:client) { FactoryGirl.create :user, role: :user }
+
      let(:lounge) { FactoryGirl.create :lounge }
      let(:table) { FactoryGirl.create :table, lounge: lounge }
-
-     context 'когда один платеж на 2000р.' do
-       let!(:payment) { FactoryGirl.create :payment, amount: 2000, user: client, table: table }
-       it "уровень равен 1" do
-         expect(user.level).to eq 1
+     context 'когда клиент 1 уровня' do
+       let(:client) { FactoryGirl.create :user, role: :user }
+       context 'когда один платеж на 2000р.' do
+         let!(:payment) { FactoryGirl.create :payment, amount: 2000, user: client, table: table }
+         it "уровень равен 1" do
+           expect(client.level).to eq 1
+         end
+         it 'до следующего уровня 4000 опыта' do
+           expect(client.need_to_levelup).to eq 4000
+         end
+       end
+       context 'когда один платеж на 6001р.' do
+         let!(:payment) { FactoryGirl.create :payment, amount: 6001, user: client, table: table }
+         it "уровень равен 2" do
+           client.reload
+           expect(client.level).to eq 2
+         end
+         it 'до следующего уровня 13172 опыта' do
+           expect(client.need_to_levelup).to eq 13172
+         end
        end
      end
-     context 'когда один платеж на 6001р.' do
-       let!(:payment) { FactoryGirl.create :payment, amount: 6001, user: client, table: table }
-       it "уровень равен 2" do
-         client.reload
-         expect(client.level).to eq 2
+     context 'когда клиент 2 уровня' do
+       let(:client) { FactoryGirl.create :user, role: :user, level: 2, experience: 6001 }
+       context 'когда один платеж на 1000р.' do
+         let!(:payment) { FactoryGirl.create :payment, amount: 1000, user: client, table: table }
+         it "уровень равен 2" do
+           client.reload
+           expect(client.level).to eq 2
+         end
+         it 'до следующего уровня 13172 опыта' do
+           expect(client.need_to_levelup).to eq 12172
+         end
        end
-     end
-     context 'когда один платеж на 19200р.' do
-       let!(:payment) { FactoryGirl.create :payment, amount: 19200, user: client, table: table }
-       it "уровень равен 3" do
-         client.reload
-         expect(client.level).to eq 3
+       context 'когда один платеж на 1000р.' do
+         let!(:payment) { FactoryGirl.create :payment, amount: 1000, user: client, table: table }
+         it "уровень равен 2" do
+           client.reload
+           expect(client.level).to eq 2
+         end
+         it 'до следующего уровня 13172 опыта' do
+           expect(client.need_to_levelup).to eq 12172
+         end
        end
      end
    end
