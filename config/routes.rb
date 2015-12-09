@@ -34,7 +34,11 @@ Rails.application.routes.draw do
       end
       resources :payments, only: [:create]
       resources :achievements, only: [:index]
-      resources :users, only: [:update, :show]
+      resources :users, only: [:update, :show] do
+        collection {
+          get :rating
+        }
+      end
     end
   end
 end

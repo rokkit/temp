@@ -18,4 +18,13 @@ class Api::V1::UsersController < Api::V1::BaseController
     @user = User.find(params[:id])
     respond_with @user
   end
+
+  def rating
+    if params[:role] == 'hookmaster'
+      @users = User.hookmasters
+    else
+      @users = User.clients.where('experience > 0')
+    end
+    respond_with @users
+  end
 end
