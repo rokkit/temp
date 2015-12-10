@@ -1,6 +1,6 @@
 ActiveAdmin.register Work do
   menu parent: 'Администрирование'
-  permit_params :user_id, :work_at, :lounge_id
+  permit_params :user_id, :work_at, :lounge_id, :end_work_at, :amount
 
   index do
     selectable_column
