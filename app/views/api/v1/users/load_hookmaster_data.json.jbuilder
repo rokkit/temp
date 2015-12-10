@@ -11,3 +11,7 @@ end
 json.bonuses @bonuses do |bonus|
   json.extract! bonus, :id, :name, :image_url, :slug, :description
 end
+
+json.works @works do |work|
+  json.partial! '/api/v1/works/work', work: work
+end
