@@ -51,6 +51,11 @@ ru:
           many: 'Штрафы'
           other: "Штрафы"
           few: 'Штрафов'
+        penalty:
+          one: "Бонус"
+          many: 'Бонусы'
+          other: "Бонусы"
+          few: 'Бонусов'
       attributes:
         user:
           name: "ФИО"

@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
-  has_and_belongs_to_many :penalties
+  # has_and_belongs_to_many :bonuses, class_name: 'Bonus'
+  # has_and_belongs_to_many :penalties
 
   establish_connection Rails.env.to_sym
 
@@ -14,6 +15,10 @@ class User < ActiveRecord::Base
   has_many :achievements_user
   has_many :achievements, through: :achievements_user
   accepts_nested_attributes_for :achievements_user, :allow_destroy => true
+
+  has_many :bonus_user, class_name: 'BonusUser'
+  has_many :bonuses, through: :bonus_user, class_name: 'Bonus'
+  accepts_nested_attributes_for :bonus_user, :allow_destroy => true
 
   has_many :payments, dependent: :delete_all
   has_many :reservations, dependent: :delete_all

@@ -38,6 +38,9 @@ Rails.application.routes.draw do
         collection {
           get :rating
         }
+        member {
+          get :load_hookmaster_data
+        }
       end
       resources :works, only: [:index]
     end
