@@ -1,4 +1,4 @@
-class Api::V1::WorksController < ApplicationController
+class Api::V1::WorksController < Api::V1::BaseController
   respond_to :json
   before_action :authenticate_user!
   # Получить список столиков для указанного заведения
