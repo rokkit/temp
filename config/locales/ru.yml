@@ -51,7 +51,7 @@ ru:
           many: 'Штрафы'
           other: "Штрафы"
           few: 'Штрафов'
-        penalty:
+        bonus:
           one: "Бонус"
           many: 'Бонусы'
           other: "Бонусы"
