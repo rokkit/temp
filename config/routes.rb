@@ -39,6 +39,7 @@ Rails.application.routes.draw do
           get :rating
         }
       end
+      resources :works, only: [:index]
     end
   end
 end

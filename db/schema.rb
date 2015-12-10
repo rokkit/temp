@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151208122153) do
+ActiveRecord::Schema.define(version: 20151210091000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -220,8 +220,10 @@ ActiveRecord::Schema.define(version: 20151208122153) do
     t.integer  "lounge_id"
     t.integer  "user_id"
     t.datetime "work_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.decimal  "amount"
+    t.datetime "end_work_at"
   end
 
   add_index "works", ["lounge_id"], name: "index_works_on_lounge_id", using: :btree

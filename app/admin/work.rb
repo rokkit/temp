@@ -7,14 +7,18 @@ ActiveAdmin.register Work do
     id_column
     column :user
     column :work_at
+    column :end_work_at
     column :lounge
+    column :amount
     actions
   end
   form do |f|
     f.inputs 'User' do
-        f.input :user, :collection => User.where(role: 3).map{|u| ["#{u.name || ('+'+u.phone)}", u.id]}
+        f.input :user, :collection => User.clients.map{|u| ["#{u.name || ('+'+u.phone)}", u.id]}
         f.input :work_at
+        f.input :end_work_at
         f.input :lounge
+        f.input :amount
     end
     f.actions
   end

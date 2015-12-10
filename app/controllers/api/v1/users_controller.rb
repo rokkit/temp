@@ -4,7 +4,6 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   # Обновить профиль юезера
   def update
-    puts params.inspect
     @user = current_user
     if @user.update_attributes params[:user].permit(:email, :password, :password_confirmation, :phone_token, :name, :city, :employe, :work_company, :hobby)
        respond_with @user

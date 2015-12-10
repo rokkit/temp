@@ -2,7 +2,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
   respond_to :json
   before_action :authenticate_user!
   def index
-    @reservations = current_user.reservations
+    @reservations = current_user.reservations.includes(table: :lounge)
     respond_with @reservations
   end
   # создать бронирование на указанную дату для юзера
@@ -179,7 +179,6 @@ class Api::V1::ReservationsController < Api::V1::BaseController
     @users = User.where.not(id: current_user.id)
     @lounges = Lounge.where(active: true).includes(:tables)
     @payments = current_user.payments
-    #code
   end
 
 
