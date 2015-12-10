@@ -33,6 +33,25 @@ RSpec.describe 'User' do
            expect(user.need_to_levelup).to eq(1225)
          end
        end
+       context 'когда есть платеж и рабочая смена за несколько месяцев и два кальящика' do
+         let!(:payment) { FactoryGirl.create :payment, amount: 1000, user: client, table: table }
+         let!(:payment2) { FactoryGirl.create :payment, amount: 2000, user: client, table: table }
+         let!(:work) { FactoryGirl.create :work, user: user, lounge: lounge}
+         let!(:payment3) { FactoryGirl.create :payment, amount: 1000, user: client, table: table }
+         let!(:work2) { FactoryGirl.create :work, user: user, lounge: lounge, work_at: DateTime.now - 1.month}
+         let(:user2) { FactoryGirl.create :user, role: :hookmaster }
+         before do
+           payment3.update_attribute :created_at, DateTime.now - 1.month
+         end
+         it 'вычисляется опыт' do
+           expect(user.total_experience).to eq(4000)
+           expect(user.need_to_levelup).to eq(1225)
+         end
+         it 'у второго кальянщика не должно быть опыта' do
+           expect(user2.total_experience).to eq(0)
+           expect(user2.need_to_levelup).to eq(5225)
+         end
+       end
      end
    end
    describe "Уровень кальянного мастера" do

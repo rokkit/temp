@@ -105,7 +105,8 @@ class User < ActiveRecord::Base
       payments.sort.each do |day, ps|
         month_amount = ps.map(&:amount).reduce(0) { |p, sum| sum += p }
         month_works_count = Work.where('work_at >= ? AND work_at < ?', day.beginning_of_day, day.end_of_day).count
-        if month_works_count > 0
+        user_works_count =  Work.where(user_id: self.id).where('work_at >= ? AND work_at < ?', day.beginning_of_day, day.end_of_day).count
+        if month_works_count > 0 && user_works_count > 0
           total_amount += (month_amount / month_works_count)
         end
       end
