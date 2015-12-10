@@ -13,8 +13,8 @@ ActiveAdmin.register Work do
     actions
   end
   form do |f|
-    f.inputs 'User' do
-        f.input :user, :collection => User.clients.map{|u| ["#{u.name || ('+'+u.phone)}", u.id]}
+    f.inputs 'Рабочая смена' do
+        f.input :user, :collection => User.hookmasters.map{|u| ["#{u.name || ('+'+u.phone)}", u.id]}
         f.input :work_at
         f.input :end_work_at
         f.input :lounge
