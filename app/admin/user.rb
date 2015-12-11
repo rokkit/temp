@@ -84,16 +84,19 @@ ActiveAdmin.register User do
       f.inputs do
         f.has_many :achievements_user, heading: 'Достижения', new_record: "Добавить достижение" do |a|
           a.input :achievement
+          a.input :_destroy, :as => :boolean
         end
       end
       f.inputs do
         f.has_many :penalties_user, heading: 'Штрафы', new_record: "Добавить штраф" do |a|
           a.input :penalty
+          a.input :_destroy, :as => :boolean
         end
       end
       f.inputs do
         f.has_many :bonus_user, heading: 'Бонусы', new_record: "Добавить бонус" do |a|
           a.input :bonus
+          a.input :_destroy, :as => :boolean
         end
       end
     end
