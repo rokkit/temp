@@ -11,6 +11,6 @@ class Achievement < ActiveRecord::Base
 
   def open?(user_id)
     AchievementsUser.where(user_id: user_id,
-                                     achievement_id: achievement.id).first.present?
+                                     achievement_id: self.id).first.present?
   end
 end
