@@ -8,4 +8,9 @@ class Achievement < ActiveRecord::Base
   def generate_slug
     self.key = self.name.parameterize
   end
+
+  def open?(user_id)
+    AchievementsUser.where(user_id: user_id,
+                                     achievement_id: achievement.id).first.present?
+  end
 end

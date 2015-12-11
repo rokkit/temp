@@ -1,12 +1,11 @@
   uk_external_development:
-    adapter:  postgresql
-    host:     192.168.99.100
-    port: 5432
+    adapter:  sqlserver
+    host:     176.112.198.251
     encoding: unicode
     database: uhp_demo
     pool:     5
-    username: postgres
-    password: vault13
+    username: sa
+    password: Ve8Rohcier
 
   default: &default
     adapter: postgresql

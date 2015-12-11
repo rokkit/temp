@@ -7,6 +7,7 @@ RSpec.describe Api::V1::Auth::RegistrationsController, type: :controller do
       let(:user) { FactoryGirl.attributes_for(:user_credentials) }
       before do
         expect(SMSService).to receive(:send).and_return(true)
+        expect(SoapService).to receive(:call).and_return(true)
         post :create, user, format: :json
       end
       it 'create a user with phone' do

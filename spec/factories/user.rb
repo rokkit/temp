@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :user do
+    name { 'Name' }
     phone { Faker::Number.number(10) }
     password 'password'
     phone_token { Faker::Number.number(4) }

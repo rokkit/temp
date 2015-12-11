@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
   scope :clients, -> { where.not(role: 3).where.not(role: 1) }
   scope :hookmasters, -> { where(role: 3) }
 
-  # after_create :create_user_ext
+  after_create :create_user_ext
 
   def to_s
     "#{self.name} (#{self.phone})"
@@ -171,21 +171,8 @@ class User < ActiveRecord::Base
   end
 
   def create_user_ext
-    _idrref = SecureRandom.hex[0..10].bytes#.join('\\')
-    result = ExtService.execute('select _code from _reference42 order by _code DESC limit 1;')
-    _code = 0000000001
-    if result.ntuples > 0
-      _code = result[0]['_code'].strip.to_i + 1
-    end
-
-    _description = self.name
-    _fld496 = self.phone
-
-    query = "INSERT INTO _reference42 \
-    (_idrref, _version, _marked, _ismetadata, _parentidrref, _folder, _code, _description, _fld494, _fld495, _fld496) VALUES \
-    ('#{_idrref}', 0,   false,   false,   '\\000\\000\\000\\000\\000', true, '#{_code}', '#{_description}', '',  false, '#{_fld496}')"
-    ExtService.execute query
-    self.idrref = _idrref
-    self.save
+    SoapService.call(:create_customer, message: { 'Name' => self.name, 'Tel' => self.phone })
+    # self.idrref = _idrref
+    # self.save
   end
 end
