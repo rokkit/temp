@@ -9,7 +9,12 @@ class UserPolicy
   def index?
     @current_user.admin?
   end
-
+  def new?
+    @current_user.admin?
+  end
+  def create?
+    @current_user.admin?
+  end
   def show?
     @current_user.admin? || @current_user == @model
   end
