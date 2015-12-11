@@ -22,7 +22,7 @@ class Api::V1::SkillsController < Api::V1::BaseController
   # TODO: снятие Очков навыка
   def take
     @skill = Skill.find(params[:id])
-    if @skill && current_user.skill_point - @skill.cost >= 0 && !current_user.skills.include?(@skill.id)
+    if @skill && current_user.skill_point - @skill.cost >= 0 && !current_user.skills.include?(@skill)
       current_user.skills.push @skill
       current_user.skill_point -= @skill.cost
       if current_user.save
