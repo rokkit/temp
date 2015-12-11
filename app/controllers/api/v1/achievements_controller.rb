@@ -12,7 +12,7 @@ class Api::V1::AchievementsController < Api::V1::BaseController
     else
       @achievements = Achievement.where(role: 0).order(:id)
     end
-    @achievements = @achievements.sort_by {|a| a.open?(current_user.id) }
+    @achievements = @achievements.sort_by {|h| [h.open?(current_user.id) ? 0 : 1,h[:id]]}
     respond_with @achievements
   end
 end
