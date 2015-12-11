@@ -13,7 +13,7 @@ end
 has_parent_skill = (user_skills.pluck(:skill_id) & skill.parent_skills).present? || skill.parent_skills.empty?
 
 has_enough_skill_points = current_user.skill_point >= skill.cost
-if has_enough_skill_points && has_parent_skill
+if has_enough_skill_points && !current_user.skills.include?(skill) && has_parent_skill
   json.can_take true
 else
   json.can_take false
