@@ -23,6 +23,10 @@ class UserPolicy
     @current_user.admin?
   end
 
+  def freeze?
+    @current_user.admin?
+  end
+
   def destroy?
     return false if @current_user == @model
     @current_user.admin?

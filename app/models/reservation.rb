@@ -10,10 +10,11 @@ class Reservation < ActiveRecord::Base
   after_create :create_ext_record
   before_save :update_end_visit_date
 
-  enum status: [:active, :deleted]
+  enum status: [:wait, :approve, :deleted]
 
-  scope :active, -> { where(status: 0) }
-  scope :deleted, -> { where(status: 1) }
+  scope :wait, -> { where(status: 0) }
+  scope :approved, -> { where(status: 1) }
+  scope :deleted, -> { where(status: 2) }
 
   ransacker :containing_lounge_table,
           :formatter => ->(lounge) {

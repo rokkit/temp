@@ -5,11 +5,26 @@ ActiveAdmin.register Reservation do
     def destroy
 
       @reservation = Reservation.find(params[:id])
-      
+
       @reservation.status = :deleted
       @reservation.save
       redirect_to admin_reservations_path
     end
+
+
+  end
+  member_action :approve, method: :get do
+    @reservation = Reservation.find(params[:id])
+    @reservation.status = :approve
+    @reservation.save(validate: false)
+    redirect_to admin_reservations_path, notice: "Бронирование подтверждено"
+  end
+
+  member_action :cancel, method: :get do
+    @reservation = Reservation.find(params[:id])
+    @reservation.status = :deleted
+    @reservation.save(validate: false)
+    redirect_to admin_reservations_path, notice: "Бронирование отменено"
   end
 
   # filter :lounge_table_eq, :as => :select,
@@ -33,14 +48,22 @@ ActiveAdmin.register Reservation do
     column :visit_date
     column :end_visit_date
     column do |order|
-      if order.status == 'active'
-        'Активно'
-      else
+      if order.status == 'wait'
+        'Ожидает подтверждения'
+      elsif order.status == 'approve'
+        'Подтверждено'
+      elsif order.status == 'deleted'
         'Отменено'
       end
     end
-    actions
+
+    actions defaults: false do |order|
+      link_to("Отменить", cancel_admin_reservation_path(order)) + ' ' +
+      link_to("Подтвердить", approve_admin_reservation_path(order))
+    end
   end
+
+
 
   form do |f|
     f.inputs 'User' do

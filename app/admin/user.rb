@@ -1,9 +1,18 @@
 ActiveAdmin.register User do
   permit_params :email, :password, :password_confirmation, :phone_token, :role,
-                :name, :city, :employe, :work_company, :hobby, :skills_users_attributes, :country
+                :name, :city, :employe, :work_company, :hobby, :skills_users_attributes, :country, :freezed
 
   scope :clients, default: true
   scope :hookmasters
+
+  member_action :freeze, method: :get do
+    resource.update_attribute :freezed, true
+    redirect_to resource_path, notice: "Freezed!"
+  end
+
+  action_item :view, only: :show do
+  link_to 'Заморозить', freeze_admin_user_path(user)
+end
 
   index do
     selectable_column
@@ -32,6 +41,7 @@ ActiveAdmin.register User do
       row :role
       row :country
       row :created_at
+      row :freezed
       panel "Навыки" do
          table_for user.skills do
            column 'Название' do |skill|
@@ -77,6 +87,7 @@ ActiveAdmin.register User do
       f.input :level
       f.input :country, as: :string
       f.input :experience
+      f.input :freezed
       f.inputs do
         f.has_many :skills_users, heading: 'Навыки', new_record: "Добавить навык" do |a|
           a.input :skill

@@ -1,4 +1,4 @@
-json.extract! user, :id, :name, :phone, :auth_token, :city, :employe, :work_company, :hobby, :role, :country
+json.extract! user, :id, :name, :phone, :auth_token, :city, :employe, :work_company, :hobby, :role, :country, :freezed
 json.avatar user.avatar_url
 json.achievements user.achievements do |a|
   json.id a.id
