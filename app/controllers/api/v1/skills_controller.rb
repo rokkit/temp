@@ -11,7 +11,7 @@ class Api::V1::SkillsController < Api::V1::BaseController
       @skills = Skill.where(role: 1).order(:id)
     end
 
-    user_skills = SkillsUsers.where(user_id: current_user.id).map(&:skill_id)
+    user_skills = SkillsUsers.where(user_id: current_user.id)#.map(&:skill_id)
     @skills = @skills.sort_by {|h| [ user_skills.include?(h.id) ? 0 : 1,h[:id]]}
     respond_with @skills
   end
@@ -23,7 +23,7 @@ class Api::V1::SkillsController < Api::V1::BaseController
   def take
     @skill = Skill.find(params[:id])
 
-    user_skills = SkillsUsers.where(user_id: current_user.id).map(&:skill_id)
+    user_skills = SkillsUsers.where(user_id: current_user.id)
     has_parent_skill = (user_skills.pluck(:skill_id) & @skill.parent_skills).present? || @skill.parent_skills.empty?
     has_enough_skill_points = current_user.skill_point >= @skill.cost
 
