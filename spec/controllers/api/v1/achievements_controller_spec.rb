@@ -10,7 +10,7 @@ RSpec.describe Api::V1::AchievementsController, type: :controller do
      sign_in user
    end
    it 'returns list of total achievements' do
-     get :index, format: :json
+     get :index, role: user.role, format: :json
      expect(json_body).to eq [{
                                id: achievement.id,
                                name: achievement.name,

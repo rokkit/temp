@@ -7,6 +7,11 @@ json.has user_skills.pluck(:skill_id).include?(skill.id)
 if skill_user = user_skills.where(skill_id: skill.id).first
   json.taken_at skill_user.taken_at
   json.used_at skill_user.used_at
+  if skill_user.used_at
+    json.cooldown_used_at (skill_user.used_at + 1.month)
+  else
+    json.cooldown_used_at nil
+  end
 else
   json.taken_at nil
   json.used_at nil

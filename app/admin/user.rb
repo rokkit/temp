@@ -78,6 +78,7 @@ ActiveAdmin.register User do
       f.inputs do
         f.has_many :skills_users, heading: 'Навыки', new_record: "Добавить навык" do |a|
           a.input :skill
+          a.input :_destroy, :as => :boolean
         end
       end
       #

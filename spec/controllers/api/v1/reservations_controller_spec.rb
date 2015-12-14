@@ -206,87 +206,31 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
   describe 'time pre validation' do
     context 'when user try to reserve to time is shorter than now + 1 hour' do
       let(:user) { FactoryGirl.create :user }
+      let!(:lounge) { FactoryGirl.create :lounge }
+      let!(:table) { FactoryGirl.create :table, lounge: lounge }
       before do
         @request.env['devise.mapping'] = Devise.mappings[:user]
         sign_in user
       end
       it 'returns error' do
-        post :create, visit_date: (DateTime.now + 30.minutes).strftime('%Y-%m-%d %R')
+        post :create, visit_date: (DateTime.now + 30.minutes).strftime('%Y-%m-%d %R'), lounge: lounge.id
         expect(json_body[:errors]).to be_present
       end
     end
   end
-
-  # describe 'duration and free validations' do
-  #   let(:user) { FactoryGirl.create :user }
-  #   # let!(:table_ext) { FactoryGirl.create :table_ext }
-  #   let!(:reserv_status_ext) { FactoryGirl.create :reserv_status_ext }
-  #   before do
-  #     @request.env['devise.mapping'] = Devise.mappings[:user]
-  #     sign_in user
-  #   end
-  #   context 'when only one table' do
-  #     let!(:table_ext) { FactoryGirl.create :table_ext }
-  #     before do
-  #       post :create, visit_date: DateTime.now + 3.hours
-  #     end
-  #     context 'when user try to reserve in time of another reserv' do
-  #       it 'reject reservation' do
-  #         post :create, visit_date: DateTime.now + 4.hours
-  #         expect(json_body[:errors]).to be_present
-  #       end
-  #     end
-  #     context 'when user try to reserve later' do
-  #       it 'make a reservation' do
-  #         post :create, visit_date: DateTime.now + 7.hours
-  #         expect(json_body[:errors]).to_not be_present
-  #       end
-  #     end
-  #   end
-    # context 'when two table exists' do
-    #   let!(:table_ext) { FactoryGirl.create :table_ext }
-    #   let!(:table_ext2) { FactoryGirl.create :table_ext }
-    #   before do
-    #     post :create, visit_date: DateTime.now + 3.hours
-    #   end
-    #   context 'when user try to reserve in time of another reserv' do
-    #     it 'reject reservation' do
-    #       post :create, visit_date: DateTime.now + 4.hours
-    #       expect(json_body[:errors]).to_not be_present
-    #     end
-    #   end
-    #   context 'when user try to reserve later' do
-    #     it 'make a reservation' do
-    #       post :create, visit_date: DateTime.now + 7.hours
-    #       expect(json_body[:errors]).to_not be_present
-    #
-    #       post :create, visit_date: DateTime.now + 7.hours
-    #       post :create, visit_date: DateTime.now + 7.hours
-    #       expect(json_body[:errors]).to be_present
-    #     end
-    #   end
-    # end
-  # end
-
-  # describe '#load_data' do
-  #   let!(:user) { FactoryGirl.create :user }
-  #   let!(:user2) { FactoryGirl.create :user }
-  #   let!(:lounge) { FactoryGirl.create :lounge }
-  #   let!(:table) { FactoryGirl.create :table, lounge: lounge }
-  #   it 'returns data with lounges, tables and users' do
-  #     sign_in user
-  #     get :load_data, format: :json
-  #     valid_json = {
-  #       lounges: [{
-  #         id: lounge.id, title: lounge.title, tables: [
-  #           {
-  #             id: table.id, title: table.title
-  #           }
-  #         ]
-  #       }],
-  #       users: [{id: user2.id, name: user2.name}]
-  #     }
-  #     expect(json_body[:lounges]).to be_present
-  #   end
-  # end
+  describe '#destroy' do
+    context 'когда пользователь отменяет свое бронирование' do
+      let(:user) { FactoryGirl.create :user }
+      let!(:lounge) { FactoryGirl.create :lounge }
+      let!(:table) { FactoryGirl.create :table, lounge: lounge }
+      before do
+        sign_in user
+        post :create, visit_date: (DateTime.now + 3.hours).strftime('%Y-%m-%d %R'), lounge: lounge.id
+      end
+      it 'меняет статус на отменено' do
+        post :destroy, id: Reservation.first.id
+        expect(response).to be_success
+      end
+    end
+  end
 end

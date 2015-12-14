@@ -16,10 +16,6 @@ RSpec.describe Api::V1::Auth::RegistrationsController, type: :controller do
       it 'set a phone confirmation token' do
         expect(User.find_by_phone(user[:phone]).phone_token).to be_present
       end
-      it 'create the user in 1C' do
-        expect(UserExt.last).to be_present
-        expect(User.find_by_phone(user[:phone]).idrref).to be_present
-      end
     end
     context 'with invalid params' do
       let(:user) { FactoryGirl.attributes_for(:user_credentials, phone: nil) }

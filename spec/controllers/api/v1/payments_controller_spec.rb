@@ -14,16 +14,16 @@ RSpec.describe Api::V1::PaymentsController, type: :controller do
     describe 'experience logick' do
       it 'add exp point to user 1 ruble == 0.01 exp point' do
         expect { post :create, phone: user.phone, amount: 1000, format: :json }
-          .to change { User.find(user.id).experience }.from(0).to(10)
+          .to change { User.find(user.id).experience }.from(0).to(1000)
       end
 
       describe 'when exp is enought to level-up' do
         it 'upgrade user level' do
-          expect { post :create, phone: user.phone, amount: 100_000, format: :json }
+          expect { post :create, phone: user.phone, amount: 6900, format: :json }
             .to change { User.find(user.id).level }.from(1).to(2)
         end
         it 'add one skill point to user' do
-          expect { post :create, phone: user.phone, amount: 100_000, format: :json }
+          expect { post :create, phone: user.phone, amount: 6900, format: :json }
             .to change { User.find(user.id).skill_point }.from(0).to(1)
         end
       end

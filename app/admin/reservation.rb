@@ -11,6 +11,13 @@ ActiveAdmin.register Reservation do
     end
     column :visit_date
     column :end_visit_date
+    column do |order|
+      if order.status == 'active'
+        'Активно'
+      else
+        'Отменено'
+      end
+    end
     actions
   end
 

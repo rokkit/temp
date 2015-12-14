@@ -36,7 +36,9 @@ RSpec.describe Api::V1::SkillsController, type: :controller do
       it 'add choosen skill to user' do
         post :take, id: skill.id, format: :json
         expect(response).to be_success
-        expect(json_body[:status]).to eq 'ok'
+        expect(json_body[:id]).to eq skill.id
+        expect(json_body[:has]).to eq true
+        expect(json_body[:can_take]).to eq false
       end
       it 'substracts from user the required number of skill point' do
         current_exp_points = user.skill_point
@@ -60,12 +62,17 @@ RSpec.describe Api::V1::SkillsController, type: :controller do
         end
         it "указывает дату использования" do
           post :use, id: skill.id, format: :json
-          expect(json_body[:status]).to eq 'ok'
+          expect(json_body[:id]).to eq skill.id
+          expect(json_body[:used_at]).to be_present
         end
         it "указывает дату использования у связи навык-юзер" do
           expect {
             post :use, id: skill.id, format: :json
           }.to change { SkillsUsers.first.used_at }
+        end
+        it "указывает кулдаун использования у связи навык-юзер" do
+          post :use, id: skill.id, format: :json
+          expect(json_body[:cooldown_used_at]).to be_present
         end
       end
     end

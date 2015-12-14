@@ -10,6 +10,10 @@ class Reservation < ActiveRecord::Base
   after_create :create_ext_record
   before_save :update_end_visit_date
 
+  enum status: [:active, :deleted]
+
+  scope :active, -> { where(status: 0) }
+  scope :deleted, -> { where(status: 1) }
 
 
   private
