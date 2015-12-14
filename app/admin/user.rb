@@ -1,6 +1,6 @@
 ActiveAdmin.register User do
   permit_params :email, :password, :password_confirmation, :phone_token, :role,
-                :name, :city, :employe, :work_company, :hobby, :skills_users_attributes
+                :name, :city, :employe, :work_company, :hobby, :skills_users_attributes, :country
 
   scope :clients, default: true
   scope :hookmasters
@@ -30,6 +30,7 @@ ActiveAdmin.register User do
       row :experience
       row :skill_point
       row :role
+      row :country
       row :created_at
       panel "Навыки" do
          table_for user.skills do
@@ -74,6 +75,7 @@ ActiveAdmin.register User do
       f.input :role, :as => :select, :collection => [:user, :admin, :vip, :hookmaster]
       f.input :skill_point
       f.input :level
+      f.input :country
       f.input :experience
       f.inputs do
         f.has_many :skills_users, heading: 'Навыки', new_record: "Добавить навык" do |a|

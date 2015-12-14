@@ -1,6 +1,17 @@
 ActiveAdmin.register Reservation do
   menu parent: 'Администрирование'
   permit_params :table_id, :user_id, :visit_date, :client_count, :duration
+  controller do
+    def destroy
+      @reservation = Reservation.find(params[:id])
+      @reservation.status = :deleted
+      @reservation.save
+      redirect_to admin_reservations_path
+    end
+  end
+
+  # filter :lounge_table_eq, :as => :select,
+        #  collection: Lounge.order(:id).map { |l| [l.title, l.id] }
 
   index do
     selectable_column

@@ -36,6 +36,15 @@ class User < ActiveRecord::Base
 
   after_create :create_user_ext
 
+
+  # scope :lounge_eq, -> (lounge) { joins(:table).where("tables.lounge_id = ?", lounge) }
+  # ransacker :lounge_table_eq,
+  #         :formatter => ->(lounge) {
+  #            joins(:table).where("tables.lounge_id = ?", lounge).map(&:id)
+  #         } do |parent|
+  #     parent.table[:id]
+  # end
+
   def to_s
     "#{self.name} (#{self.phone})"
   end
