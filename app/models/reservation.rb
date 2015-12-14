@@ -15,6 +15,13 @@ class Reservation < ActiveRecord::Base
   scope :active, -> { where(status: 0) }
   scope :deleted, -> { where(status: 1) }
 
+  ransacker :containing_lounge_table,
+          :formatter => ->(lounge) {
+             results = joins(:table).where("tables.lounge_id = ?", lounge).map(&:id)
+             results = results.present? ? results : nil
+          }, splat_params: true do |parent|
+      parent.table[:id]
+  end
 
   private
   def update_end_visit_date
