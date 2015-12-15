@@ -24,7 +24,7 @@ json.meets @meets do|meet|
   json.owner do |user|
     json.extract! user, :id, :name, :experience, :level
   end
-  json.users meet.user do |user|
-    json.extract! user, :id, :name, :experience, :level
+  json.users meet.reservation.meets do |meet|
+    json.extract! meet.user, :id, :name, :experience, :level
   end
 end
