@@ -174,6 +174,11 @@ RSpec.describe Api::V1::SkillsController, type: :controller do
         post :use, id: skill.id, format: :json
         expect(DateTime.parse(json_body[:cooldown_end_at])).to eq (DateTime.parse(json_body[:used_at]) + skill.cooldown.day)
       end
+      it "кулдаун использования у связи навык-юзер" do
+        expect {
+            post :use, id: skill.id, format: :json
+        }.to change { SkillsUsers.first.cooldown_end_at }
+      end
     end
     context 'клиент использует навык повторно' do
       context 'когда кулдаун больше сегодняшнего' do

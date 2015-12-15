@@ -22,6 +22,7 @@ has_parent_skill = (user_skills.pluck(:skill_id) & skill.parent_skills).present?
 has_enough_skill_points = current_user.skill_point >= skill.cost
 
 can_parallel_take = false
+
 if current_user.role == 'hookmaster'
   can_parallel_take = user_skills.includes(:skill).where(skills: {cost: skill.cost}).empty?
 else

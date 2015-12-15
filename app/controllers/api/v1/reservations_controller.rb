@@ -98,6 +98,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
     @users = User.where.not(id: current_user.id)
     @lounges = Lounge.where(active: true).includes(:tables)
     @payments = current_user.payments
+    @meets = Meet.where(user_id: current_user.id)
   end
 
 
