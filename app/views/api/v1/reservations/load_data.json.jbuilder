@@ -21,8 +21,8 @@ json.meets @meets do|meet|
     json.title res.table.lounge.title
     json.color res.table.lounge.color
   end
-  json.owner do |user|
-    json.extract! user, :id, :name, :experience, :level
+  json.owner do
+    json.extract! meet.reservation.user, :id, :name, :experience, :level
   end
   json.users meet.reservation.meets do |meet|
     json.extract! meet.user, :id, :name, :experience, :level
