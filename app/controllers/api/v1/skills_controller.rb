@@ -52,11 +52,19 @@ class Api::V1::SkillsController < Api::V1::BaseController
   # если у него есть такая возможность
   def use
     @skill = Skill.find(params[:id])
-    if current_user.skills.pluck(:id).include?(@skill.id)
+    if current_user.skills.pluck(:id).include?(@skill.id) &&
       skill_user = SkillsUsers.where(skill_id: @skill.id, user_id: current_user.id).first
-      skill_user.used_at = DateTime.now
-      skill_user.save
-      respond_with @skill
+      if !skill_user.used_at || ( skill_user.cooldown_end_at && skill_user.cooldown_end_at <= Time.zone.now )
+        skill_user.used_at = DateTime.now
+        # puts @skill.cooldown.inspect
+        if @skill.cooldown
+          skill_user.cooldown_end_at = skill_user.used_at + @skill.cooldown.days
+        end
+        skill_user.save
+        respond_with @skill
+      else
+        render json: {errors: {cooldown: 'too_early_for_use'}}
+      end
     end
   end
 end

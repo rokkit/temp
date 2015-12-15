@@ -8,9 +8,9 @@ if skill_user = user_skills.where(skill_id: skill.id).first
   json.taken_at skill_user.taken_at
   json.used_at skill_user.used_at
   if skill_user.used_at
-    json.cooldown_used_at (skill_user.used_at + skill.cooldown.days)
+    json.cooldown_end_at skill_user.cooldown_end_at# (skill_user.used_at + skill.cooldown.days)
   else
-    json.cooldown_used_at nil
+    json.cooldown_end_at nil
   end
 else
   json.taken_at nil

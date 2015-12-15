@@ -168,11 +168,45 @@ RSpec.describe Api::V1::SkillsController, type: :controller do
       end
       it "указывает кулдаун использования у связи навык-юзер" do
         post :use, id: skill.id, format: :json
-        expect(json_body[:cooldown_used_at]).to be_present
+        expect(json_body[:cooldown_end_at]).to be_present
       end
       it "кулдаун использования у связи навык-юзер" do
         post :use, id: skill.id, format: :json
-        expect(DateTime.parse(json_body[:cooldown_used_at])).to eq (DateTime.parse(json_body[:used_at]) + skill.cooldown.day)
+        expect(DateTime.parse(json_body[:cooldown_end_at])).to eq (DateTime.parse(json_body[:used_at]) + skill.cooldown.day)
+      end
+    end
+    context 'клиент использует навык повторно' do
+      context 'когда кулдаун больше сегодняшнего' do
+        let!(:skill) { FactoryGirl.create :skill, cooldown: 30}
+        let!(:user) { FactoryGirl.create :user }
+        let!(:skill_users) { SkillsUsers.create user: user,
+                                                skill: skill,
+                                                used_at: DateTime.now,
+                                                cooldown_end_at: DateTime.now + 30.days
+                           }
+        before do
+          sign_in user
+        end
+        it "кулдаун использования у связи навык-юзер" do
+          post :use, id: skill.id, format: :json
+          expect(json_body[:errors]).to be_present
+        end
+      end
+      context 'когда кулдаун прошел давно' do
+        let!(:skill) { FactoryGirl.create :skill, cooldown: 30}
+        let!(:user) { FactoryGirl.create :user }
+        let!(:skill_users) { SkillsUsers.create user: user,
+                                                skill: skill,
+                                                used_at: DateTime.now - 60.days,
+                                                cooldown_end_at: DateTime.now - 30.days
+                           }
+        before do
+          sign_in user
+        end
+        it "кулдаун использования у связи навык-юзер" do
+          post :use, id: skill.id, format: :json
+          expect(json_body[:errors]).to_not be_present
+        end
       end
     end
   end

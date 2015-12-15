@@ -191,6 +191,11 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
             post :create, meets: [target_user.id], lounge: lounge.id, visit_date: (DateTime.now + 5.hours).strftime('%Y-%m-%d %R')
           }.to change { Meet.count }.from(0).to(1)
         end
+
+        it 'отправляется СМС приглашенному' do
+          expect(SMSService).to receive(:send).and_return(true)
+          post :create, meets: [target_user.id], lounge: lounge.id, visit_date: (DateTime.now + 5.hours).strftime('%Y-%m-%d %R')
+        end
       end
       context 'если уровень таргета выше' do
         let(:user) { FactoryGirl.create :user, level: 0 }

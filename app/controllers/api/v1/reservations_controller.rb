@@ -22,7 +22,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
       return false
     end
     #
-    if Reservation.where(user_id: current_user.id).where('visit_date > ? AND visit_date < ?', visit_date.beginning_of_day, visit_date.end_of_day).present?
+    if Reservation.active.where(user_id: current_user.id).where('visit_date > ? AND visit_date < ?', visit_date.beginning_of_day, visit_date.end_of_day).present?
       render json: { errors: { visit_date: 'wrong_date' } }
       return
     end
@@ -35,7 +35,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
     end
 
 
-    reservations = Reservation.where('end_visit_date > ? AND visit_date < ? ',
+    reservations = Reservation.active.where('end_visit_date > ? AND visit_date < ? ',
                                     visit_date.utc, end_visit_date.utc)
     tables = []
     if current_user.role == 'vip'
