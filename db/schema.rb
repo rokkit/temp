@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151214210561) do
+ActiveRecord::Schema.define(version: 20151215101333) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -156,6 +156,7 @@ ActiveRecord::Schema.define(version: 20151214210561) do
     t.integer  "parent_id"
     t.integer  "role"
     t.integer  "row"
+    t.integer  "cooldown"
   end
 
   create_table "skills_links", force: :cascade do |t|

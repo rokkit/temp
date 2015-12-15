@@ -151,7 +151,7 @@ RSpec.describe Api::V1::SkillsController, type: :controller do
   end
   describe '#use' do
     describe "клиент может использовать навык" do
-      let!(:skill) { FactoryGirl.create :skill }
+      let!(:skill) { FactoryGirl.create :skill, cooldown: 1 }
       let!(:user) { FactoryGirl.create :user, skills: [skill] }
       before do
         sign_in user
@@ -169,6 +169,10 @@ RSpec.describe Api::V1::SkillsController, type: :controller do
       it "указывает кулдаун использования у связи навык-юзер" do
         post :use, id: skill.id, format: :json
         expect(json_body[:cooldown_used_at]).to be_present
+      end
+      it "кулдаун использования у связи навык-юзер" do
+        post :use, id: skill.id, format: :json
+        expect(json_body[:cooldown_used_at]).to eq DateTime.parse(json_body[:used_at]) + skill.cooldown.day
       end
     end
   end
