@@ -9,4 +9,12 @@ class Api::V1::MeetsController < Api::V1::BaseController
       respond_with @meet
     end
   end
+  def decline
+    @meet = Meet.find(params[:id])
+    if @meet.reservation.user == current_user
+      @meet.status = :deleted
+      @meet.save!
+      respond_with @meet
+    end
+  end
 end
