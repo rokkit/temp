@@ -177,7 +177,7 @@ RSpec.describe Api::V1::SkillsController, type: :controller do
       it "кулдаун использования у связи навык-юзер" do
         expect {
             post :use, id: skill.id, format: :json
-        }.to change { SkillsUsers.first.cooldown_end_at }
+        }.to change { SkillsUsers.first.cooldown_end_at }.from(nil)
       end
     end
     context 'клиент использует навык повторно' do
