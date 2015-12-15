@@ -13,6 +13,9 @@ class Api::V1::MeetsController < Api::V1::BaseController
     @meet = Meet.find(params[:id])
     # if @meet.reservation.user == current_user
       @meet.status = :deleted
+      reservation = Reservation.find(@meet.reservation_id)
+      reservation.status = :deleted
+      reservation.save!
       @meet.save!
       respond_with @meet
     # end

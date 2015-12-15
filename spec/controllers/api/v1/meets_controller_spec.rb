@@ -39,5 +39,13 @@ RSpec.describe Api::V1::MeetsController, type: :controller do
         meet.status
       }.from('wait').to('deleted')
     end
+    it "меняет статус бронирования на 'отменено'" do
+      expect {
+         post :decline, id: meet.id, format: :json
+         reservation.reload
+       }.to change {
+        reservation.status
+      }.from('wait').to('deleted')
+    end
   end
 end
