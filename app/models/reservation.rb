@@ -14,7 +14,7 @@ class Reservation < ActiveRecord::Base
 
   scope :wait, -> { where(status: 0) }
   scope :approved, -> { where(status: 1) }
-  scope :active, -> { where('status = 0 OR status = 1') }
+  scope :active, -> { where('reservations.tatus = 0 OR reservations.status = 1') }
   scope :deleted, -> { where(status: 2) }
 
   ransacker :containing_lounge_table,
