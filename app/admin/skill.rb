@@ -3,7 +3,7 @@ ActiveAdmin.register Skill do
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
-  permit_params :name, :image, :ancestry, :ancestry_id, :description, :cost, :parent_id, :role, :row
+  permit_params :name, :image, :ancestry, :ancestry_id, :description, :cost, :parent_id, :role, :row, :cooldown
 
   config.filters = false
   # sortable tree: true,
@@ -40,6 +40,7 @@ ActiveAdmin.register Skill do
     column :cost
     column :row
     column :role
+    column :cooldown
     column do |skill|
       skill.parent_skills_obj.map {|s| "##{s.id} #{s.name}" }.join('; ')
     end
@@ -57,6 +58,7 @@ ActiveAdmin.register Skill do
       row :cost
       row :row
       row :role
+      row :cooldown
     end
     active_admin_comments
   end
@@ -82,6 +84,7 @@ ActiveAdmin.register Skill do
     # end
     f.input :cost
     f.input :row
+    f.input :cooldown
     # f.input do
     # label :name # item content
     # actions

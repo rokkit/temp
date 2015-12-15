@@ -172,7 +172,7 @@ RSpec.describe Api::V1::SkillsController, type: :controller do
       end
       it "кулдаун использования у связи навык-юзер" do
         post :use, id: skill.id, format: :json
-        expect(json_body[:cooldown_used_at]).to eq DateTime.parse(json_body[:used_at]) + skill.cooldown.day
+        expect(DateTime.parse(json_body[:cooldown_used_at])).to eq (DateTime.parse(json_body[:used_at]) + skill.cooldown.day)
       end
     end
   end

@@ -11,6 +11,7 @@ class Api::V1::UsersController < Api::V1::BaseController
                                              :phone,
                                              :name,
                                              :city,
+                                             :country,
                                              :employe,
                                              :work_company,
                                              :hobby)
