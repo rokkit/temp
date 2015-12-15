@@ -88,6 +88,10 @@ class Api::V1::ReservationsController < Api::V1::BaseController
   def destroy
     @reservation = Reservation.find(params[:id])
     if @reservation.user == current_user
+      Meet.where(reservation_id: @reservation.id).each do |meet|
+        meet.status = :deleted
+        meet.save
+      end
       @reservation.status = :deleted
       @reservation.save
     end
@@ -98,7 +102,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
     @users = User.where.not(id: current_user.id)
     @lounges = Lounge.where(active: true).includes(:tables)
     @payments = current_user.payments
-    @meets = Meet.where(user_id: current_user.id)
+    @meets = Meet.active.where(user_id: current_user.id).includes(:reservation).where('reservation.visit_date > ?', Time.zone.now)
   end
 
 

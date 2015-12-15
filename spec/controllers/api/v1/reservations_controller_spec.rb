@@ -157,26 +157,6 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
       end
     end
 
-
-      # it 'create record in 1C' do
-      #
-      #   # let!(:table) { FactoryGirl.create :table }
-      #   expect {
-      #     post :create, visit_date: DateTime.now + 5.hours
-      #   }.to change {
-      #     TableReservExt.count
-      #   }
-      #   expect(response).to be_success
-      # end
-
-    # context 'when past visit date present' do
-    #   it 'rejects request' do
-    #     @request.env['devise.mapping'] = Devise.mappings[:user]
-    #     sign_in user
-    #     post :create, visit_date: DateTime.now - 5.hours
-    #     expect(json_body[:errors]).to be_present
-    #   end
-    # end
     describe 'meetup creation' do
       let!(:lounge) { FactoryGirl.create :lounge }
       let!(:table) { FactoryGirl.create :table, lounge: lounge }
@@ -225,16 +205,24 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
   end
   describe '#destroy' do
     context 'когда пользователь отменяет свое бронирование' do
-      let(:user) { FactoryGirl.create :user }
+      let!(:user) { FactoryGirl.create :user }
+      let!(:target_user) { FactoryGirl.create :user }
       let!(:lounge) { FactoryGirl.create :lounge }
       let!(:table) { FactoryGirl.create :table, lounge: lounge }
+      let!(:reservation) { FactoryGirl.create :reservation, visit_date: DateTime.now + 5.days, table: table, user: user }
+      let!(:meet) { FactoryGirl.create :meet, user: target_user, reservation: reservation }
       before do
         sign_in user
-        post :create, visit_date: (DateTime.now + 3.hours).strftime('%Y-%m-%d %R'), lounge: lounge.id
       end
       it 'меняет статус на отменено' do
-        post :destroy, id: Reservation.first.id
+        post :destroy, id: reservation.id
         expect(response).to be_success
+      end
+      it 'отменяет встречи' do
+        expect {
+          post :destroy, id: Reservation.first.id
+          meet.reload
+        }.to change { meet.status }.from('wait').to('deleted')
       end
     end
   end

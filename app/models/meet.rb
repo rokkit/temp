@@ -3,7 +3,15 @@ class Meet < ActiveRecord::Base
   belongs_to :reservation
   belongs_to :user
 
+  enum status: [:wait, :approved, :deleted]
+
+  scope :wait, -> { where(status: 0) }
+  scope :approved, -> { where(status: 1) }
+  scope :active, -> { where('status = 0 OR status = 1') }
+  scope :deleted, -> { where(status: 2) }
+
   after_create :send_sms_notify
+
 
   private
   def send_sms_notify

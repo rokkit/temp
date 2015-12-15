@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   # mount Upmin::Engine => '/admin'
   root to: 'pages#index'
   get 'pages/schedule', to: 'pages#schedule'
@@ -43,6 +44,12 @@ Rails.application.routes.draw do
         }
       end
       resources :works, only: [:index]
+      resources :meets do
+        member do
+          post :accept
+          post :decline
+        end
+      end
     end
   end
 end
