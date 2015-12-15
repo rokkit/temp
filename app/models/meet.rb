@@ -7,7 +7,7 @@ class Meet < ActiveRecord::Base
 
   scope :wait, -> { where(status: 0) }
   scope :approved, -> { where(status: 1) }
-  scope :active, -> { where('status = 0 OR status = 1') }
+  scope :active, -> { where('meets.status = 0 OR meets.status = 1') }
   scope :deleted, -> { where(status: 2) }
 
   after_create :send_sms_notify
