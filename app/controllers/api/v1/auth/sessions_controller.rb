@@ -6,10 +6,6 @@ class Api::V1::Auth::SessionsController < Api::V1::BaseController
   def create
     @user = User.find_by_phone(params[:phone])
     if @user
-      @user.confirmed_at = DateTime.now
-      @user.save
-    end
-    if @user
       if @user.confirmed_at.present?
         if @user.valid_password?(params[:password])
           respond_with @user

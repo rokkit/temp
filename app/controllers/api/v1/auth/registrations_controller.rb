@@ -5,9 +5,8 @@ class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
   def create
     user = User.new params.permit([:phone, :password, :name])
     # TODO: когда будут СМС переключить на нормальный код
-    user.phone_token = '1234'# 4.times.map { Random.rand(9) }.join
+    user.phone_token = '1234' # 4.times.map { Random.rand(9) }.join
     if user.save
-      sign_in user
       SMSService.send(user.phone, 'invite text')
       render json: { status: :ok }
     else
