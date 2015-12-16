@@ -12,7 +12,7 @@ class Api::V1::SkillsController < Api::V1::BaseController
     end
 
     user_skills = SkillsUsers.where(user_id: current_user.id)#.map(&:skill_id)
-    @skills = @skills.sort_by {|h| [ user_skills.include?(h.id) ? 0 : 1,h[:id]]}
+    @skills = @skills.sort_by {|h| [ user_skills.pluck(:skill_id).include?(h.id) ? 0 : 1,h[:id]]}
     respond_with @skills
   end
 

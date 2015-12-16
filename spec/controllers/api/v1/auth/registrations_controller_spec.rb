@@ -49,6 +49,13 @@ RSpec.describe Api::V1::Auth::RegistrationsController, type: :controller do
           expect(json_body[:status]).to eq 'error'
         end
       end
+      context 'when user already confirmed' do
+        it 'returns error' do
+          user.update_attribute :confirmed_at, DateTime.now
+          post :confirm, code: user.phone_token, format: :json
+          expect(json_body[:status]).to eq 'error'
+        end
+      end
       it 'returns user object' do
         post :confirm, code: user.phone_token, format: :json
         user.reload

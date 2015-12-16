@@ -17,6 +17,10 @@ class Skill < ActiveRecord::Base
     SkillsLink.where(child_id: self.id).map(&:parent)#.map(&:id)
   end
 
+  def has?(user_id)
+    SkillsUsers.where(user_id: user_id, skill_id: self.id).first.present?
+  end
+
   # has_ancestry orphan_strategy: :adopt
   # has_closure_tree
   mount_uploader :image, SkillUploader
