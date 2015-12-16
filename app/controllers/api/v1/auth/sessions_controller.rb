@@ -35,7 +35,7 @@ class Api::V1::Auth::SessionsController < Api::V1::BaseController
       new_password = Devise.friendly_token(5)
       user.update_attribute :password, new_password
       SMSService.send user.phone, "new password: #{new_password}"
-      head :ok
+      render json: { status: 'ok' }
     else
       render json: { status: 'error' }
     end
