@@ -31,9 +31,9 @@ class Api::V1::UsersController < Api::V1::BaseController
     if params[:role] == 'hookmaster'
       @users = User.hookmasters
     else
-      @users = User.clients.where('experience > 0')
+      @users_month = @users_all_time = User.clients.where('experience > 0')
     end
-    respond_with @users
+    respond_with @users_month, @users_all_time
   end
 
 

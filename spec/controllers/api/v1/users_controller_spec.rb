@@ -36,7 +36,6 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   describe '#show' do
     let!(:user) { FactoryGirl.create :user }
     before do
-      @request.env['devise.mapping'] = Devise.mappings[:user]
       sign_in user
     end
     it 'return experience of user' do
@@ -46,6 +45,26 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     it 'returns visits of user' do
       get :show, id: user.id, format: :json
       expect(json_body[:visits]).to_not be_nil
+    end
+  end
+  describe '#rating' do
+    let!(:user) { FactoryGirl.create :user }
+    let!(:user2) { FactoryGirl.create :user }
+    before do
+      sign_in user
+    end
+    it "возвращает рейтинг пользователей пустой" do
+      get :rating, role: 'user', format: :json
+      expect(json_body[:users_month]).to eq []
+      expect(json_body[:users_all_time]).to eq []
+    end
+    describe "рейтинг за месяц" do
+      let!(:user3) { FactoryGirl.create :user, experience: 5000}
+      it "возвращает рейтинг пользователей" do
+        get :rating, role: 'user', format: :json
+        expect(json_body[:users_month]).to eq [{id: user3.id, name: user3.name, exp: user3.total_experience}]
+        expect(json_body[:users_all_time]).to eq [{id: user3.id, name: user3.name, exp: user3.total_experience}]
+      end
     end
   end
 end
