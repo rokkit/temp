@@ -31,6 +31,16 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         end
       end
     end
+    describe 'Достижение "Изобретательность"' do
+      context 'когда провел 1 мероприятие' do
+        it 'добавляет достижение для юзера' do
+          user.update_attribute :party_count, 1
+          user.reload
+          achievement = Achievement.find_by_key('izobretatelnost-i')
+          expect(user.achievements.first).to eq achievement
+        end
+      end
+    end
   end
 
   describe '#show' do
@@ -58,8 +68,8 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       expect(json_body[:users_month]).to eq []
       expect(json_body[:users_all_time]).to eq []
     end
-    describe "рейтинг за месяц" do
-      let!(:user3) { FactoryGirl.create :user, experience: 5000}
+    describe "рейтинг за все время" do
+      let!(:user3) { FactoryGirl.create :user }
       it "возвращает рейтинг пользователей" do
         get :rating, role: 'user', format: :json
         expect(json_body[:users_month]).to eq [{id: user3.id, name: user3.name, exp: user3.total_experience}]

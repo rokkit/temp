@@ -52,6 +52,7 @@ class User < ActiveRecord::Base
   # Проверка на выполнение достижений связанных с юзером
   def check_for_achievements
     self.check_for_open_profile_achievement()
+    self.check_for_izobretatelnost_achievement()
   end
 
   # TODO: MAKE SPEC
@@ -73,6 +74,21 @@ class User < ActiveRecord::Base
       end
     end
 
+  end
+  # Ачимент "Изобретательность"
+  # Проведите мероприятие
+  def check_for_izobretatelnost_achievement
+    if self.party_count > 0
+      if self.party_count == 1
+        achievement = Achievement.find_by_key('izobretatelnost-i')
+        if !achievement
+          achievement = Achievement.create(name: 'Изобретательность I')
+        end
+        if !AchievementsUser.where(user_id: self.id, achievement_id: achievement.id).present?
+            AchievementsUser.create!(user: self, achievement: achievement)
+        end
+      end
+    end
   end
 
   def set_default_role

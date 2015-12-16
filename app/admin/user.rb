@@ -1,6 +1,7 @@
 ActiveAdmin.register User do
   permit_params :email, :password, :password_confirmation, :phone_token, :role,
-                :name, :city, :employe, :work_company, :hobby, :skills_users_attributes, :country, :freezed
+                :name, :city, :employe, :work_company, :hobby, :skills_users_attributes, :country, :freezed,
+                :party_count
 
   scope :clients, default: true
   scope :hookmasters
@@ -42,6 +43,7 @@ end
       row :country
       row :created_at
       row :freezed
+      row :party_count
       panel "Навыки" do
          table_for user.skills do
            column 'Название' do |skill|
@@ -88,6 +90,7 @@ end
       f.input :country, as: :string
       f.input :experience
       f.input :freezed
+      f.input :party_count
       f.inputs do
         f.has_many :skills_users, heading: 'Навыки', new_record: "Добавить навык" do |a|
           a.input :skill

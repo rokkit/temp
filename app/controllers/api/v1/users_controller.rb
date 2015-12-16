@@ -29,7 +29,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def rating
     if params[:role] == 'hookmaster'
-      @users = User.hookmasters
+      @users_month = @users_all_time = User.hookmasters
     else
       @users_month = @users_all_time = User.clients.where('experience > 0')
     end

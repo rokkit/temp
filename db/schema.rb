@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151215141758) do
+ActiveRecord::Schema.define(version: 20151216144124) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -229,6 +229,7 @@ ActiveRecord::Schema.define(version: 20151215141758) do
     t.text     "hobby"
     t.string   "country",                                        default: "Россия"
     t.boolean  "freezed"
+    t.integer  "party_count",                                    default: 0
   end
 
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
