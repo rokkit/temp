@@ -2,8 +2,8 @@ json.id res.id
 json.visit_date res.visit_date
 json.end_visit_date res.end_visit_date
 json.created_at res.created_at
-if res.meet.present?
-  json.client_count res.meet.count
+if res.meets.present?
+  json.client_count res.meets.count
 else
   if res.client_count == 2
     json.client_count '2-3'
