@@ -34,25 +34,12 @@ class Reservation < ActiveRecord::Base
     end
   end
   def create_ext_record
-    # status = ReservStatusExt.where(_enumorder: 1).first
-    # date =  self.visit_date.strftime('%Y-%m-%d %R:01')
-    # date.freeze
-    # puts date.inspect
-    # if status
-    #   reserv_ext = TableReservExt.new _version: 0, _marked: false, _fld1048rref: status._idrref, _fld1050: 1.0
-    #   reserv_ext._idrref = SecureRandom.hex[0..10].bytes
-    #   # reserv_ext._date_time = self.created_at
-    #   reserv_ext._number = 1
-    #   reserv_ext._posted = true
-    #   reserv_ext._fld1046 = "test"
-    #   reserv_ext._fld1047 = date
-    #   reserv_ext._fld1661rref = self.user.idrref
-    #   reserv_ext._fld1049rref = TableExt.first._idrref
-    #   reserv_ext.save
-    # else
-    #   raise "STATUS NOT FOUND IN 1C DATABASE"
-    # end
-
+    # SoapService.call(:reserve_save, message: {
+    #   'КодСтола' => self.table.number,
+    #   'ДатаРезерва' => self.visit_date,
+    #   'Статус' => 'Активен',
+    #   'Дата' => Time.zone.now
+    # })
   end
 
   # Валидатор для проверки даты бронирования
