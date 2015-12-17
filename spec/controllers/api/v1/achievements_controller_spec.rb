@@ -6,7 +6,6 @@ RSpec.describe Api::V1::AchievementsController, type: :controller do
    let!(:achievement) { FactoryGirl.create :achievement }
    let!(:user) { FactoryGirl.create :user }
    before do
-     @request.env['devise.mapping'] = Devise.mappings[:user]
      sign_in user
    end
    it 'returns list of total achievements' do
@@ -16,7 +15,8 @@ RSpec.describe Api::V1::AchievementsController, type: :controller do
                                name: achievement.name,
                                description: achievement.description,
                                image: achievement.image_url,
-                               open: false
+                               open: false,
+                               viewed: false
                               }]
    end
 
@@ -35,9 +35,27 @@ RSpec.describe Api::V1::AchievementsController, type: :controller do
                                  name: achievement.name,
                                  description: achievement.description,
                                  image: achievement.image_url,
-                                 open: true
+                                 open: true,
+                                 viewed: false
                                 }]
      end
+   end
+ end
+
+ describe "#viewed" do
+   let!(:achievement) { FactoryGirl.create :achievement }
+   let!(:user) { FactoryGirl.create :user }
+   let!(:achievement_user) { AchievementsUser.create user: user, achievement: achievement }
+   before do
+     sign_in user
+   end
+   it "обновляет связь ачивка-юзер" do
+      expect {
+        post :viewed, id: achievement.id, format: :json
+        achievement_user.reload
+      }.to change {
+        achievement_user.viewed
+      }.from(false).to(true)
    end
  end
 end

@@ -15,4 +15,17 @@ class Api::V1::AchievementsController < Api::V1::BaseController
     @achievements = @achievements.sort_by {|h| [h.open?(current_user.id) ? 0 : 1,h[:id]]}
     respond_with @achievements
   end
+
+  def viewed
+    @achievement = Achievement.find(params[:id])
+    if @achievement
+      achievements_users = AchievementsUser.where(user_id: current_user.id, achievement_id: @achievement.id).first
+      if achievements_users && achievements_users.viewed == false
+        achievements_users.update_attribute :viewed, true
+        render json: { status: 'ok' }
+        return
+      end
+    end
+    render json: { status: 'error' }
+  end
 end

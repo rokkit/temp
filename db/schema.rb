@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151217125750) do
+ActiveRecord::Schema.define(version: 20151217154423) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,8 +29,9 @@ ActiveRecord::Schema.define(version: 20151217125750) do
   create_table "achievements_users", force: :cascade do |t|
     t.integer  "achievement_id"
     t.integer  "user_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.boolean  "viewed",         default: false
   end
 
   add_index "achievements_users", ["achievement_id"], name: "index_achievements_users_on_achievement_id", using: :btree
