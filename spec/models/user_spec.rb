@@ -112,19 +112,33 @@ RSpec.describe 'User' do
            expect(client.need_to_levelup).to eq 4000
          end
        end
-       context 'когда один платеж на 6001р.' do
-         let!(:payment) { FactoryGirl.create :payment, amount: 6001, user: client, table: table }
+       context 'когда один платеж на 6000р.' do
+         let!(:payment) { FactoryGirl.create :payment, amount: 6000, user: client, table: table }
          it "уровень равен 2" do
            client.reload
            expect(client.level).to eq 2
          end
-         it 'до следующего уровня 13172 опыта' do
-           expect(client.need_to_levelup).to eq 13172
+         it 'до следующего уровня 19200 опыта' do
+           expect(client.need_to_levelup).to eq 19200
+         end
+       end
+       context 'когда один платеж на 6500р.' do
+         let!(:payment) { FactoryGirl.create :payment, amount: 6500, user: client, table: table }
+         it "уровень равен 2" do
+           client.reload
+           expect(client.level).to eq 2
+         end
+         it "уровень равен 2" do
+           client.reload
+           expect(client.skill_point).to eq 1
+         end
+         it 'до следующего уровня 18700 опыта' do
+           expect(client.need_to_levelup).to eq 18700
          end
        end
      end
      context 'когда клиент 2 уровня' do
-       let(:client) { FactoryGirl.create :user, role: :user, level: 2, experience: 6001 }
+       let(:client) { FactoryGirl.create :user, role: :user, level: 2, experience: 6000 }
        context 'когда один платеж на 1000р.' do
          let!(:payment) { FactoryGirl.create :payment, amount: 1000, user: client, table: table }
          it "уровень равен 2" do
@@ -132,17 +146,7 @@ RSpec.describe 'User' do
            expect(client.level).to eq 2
          end
          it 'до следующего уровня 13172 опыта' do
-           expect(client.need_to_levelup).to eq 12172
-         end
-       end
-       context 'когда один платеж на 1000р.' do
-         let!(:payment) { FactoryGirl.create :payment, amount: 1000, user: client, table: table }
-         it "уровень равен 2" do
-           client.reload
-           expect(client.level).to eq 2
-         end
-         it 'до следующего уровня 13172 опыта' do
-           expect(client.need_to_levelup).to eq 12172
+           expect(client.need_to_levelup).to eq 18200
          end
        end
      end

@@ -147,14 +147,23 @@ class User < ActiveRecord::Base
         return 5225 - (self.total_experience - 5225 * (self.current_level - 1) )
       end
     else
-      first_level = 6000
-      if self.level == 1
-        need = first_level
-      else
-        need = ((self.level) * first_level * 1.25 ** 2.1).round
-      end
-      need - self.experience
+      levels_cost = [0, 6000, 19200, 28800]
+
+      need = levels_cost[self.level]
+      need - self.experience + levels_cost[0..self.level - 1].reduce(0) { |lc, sum| sum += lc  }
     end
+  end
+
+  def add_exp_from_payment(amount)
+    levels_cost = [0, 6000, 19200, 28800]
+
+    self.experience += amount
+    need_exp_to_levelup = levels_cost[0..self.level].reduce(0) { |lc, sum| sum += lc  }
+    if self.experience >= need_exp_to_levelup
+      self.level += 1
+      self.skill_point += 1
+    end
+    self.save
   end
 
   def current_level
