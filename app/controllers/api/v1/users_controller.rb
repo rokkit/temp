@@ -15,6 +15,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
        if params[:old_password].present? && params[:new_password].present? && @user.valid_password?(params[:old_password])
          @user.password = params[:new_password]
+         @user.save
        end
        respond_with @user
     else
