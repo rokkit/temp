@@ -31,7 +31,20 @@ class Api::V1::UsersController < Api::V1::BaseController
     current_month_start = Time.zone.now.beginning_of_month
     current_month_end = Time.zone.now.end_of_month
     if params[:role] == 'hookmaster'
-      @users_month = @users_all_time = User.hookmasters
+      @users_all_time = User.hookmasters.joins(:works).uniq.sort_by { |u| u.total_experience }.reverse
+
+
+      works = Work.where('works.work_at >= ? AND works.work_at <= ?',current_month_start, current_month_end)
+      @users_month = works.map(&:user).uniq.sort_by { |u| u.total_experience }.reverse
+      @users_expiriences = {}
+      @users_month.each do |user|
+        month_amount = works.where(user_id: user.id).map(&:amount).reduce(0) { |amount, sum| sum += amount }
+        @users_expiriences[user.id] = month_amount
+      end
+
+
+
+
     else
       @users_all_time = User.clients.where('experience > 0').order(experience: :desc)
 

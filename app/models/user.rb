@@ -22,6 +22,8 @@ class User < ActiveRecord::Base
 
   has_many :payments, dependent: :delete_all
   has_many :reservations, dependent: :delete_all
+  has_many :works, dependent: :delete_all
+
 
   mount_uploader :avatar, AvatarUploader
 
