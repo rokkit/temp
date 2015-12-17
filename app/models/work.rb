@@ -6,6 +6,6 @@ class Work < ActiveRecord::Base
 
   def init
     self.work_at = Time.zone.now if self.work_at.nil?
-    self.end_work_at = Time.zone.now + 8.hours if self.work_at.nil?
+    self.end_work_at = Time.zone.now + 8.hours if self.end_work_at.nil?
   end
 end
