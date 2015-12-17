@@ -129,6 +129,9 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       end
       describe "рейтинг за месяц" do
         let!(:user3) { FactoryGirl.create :user, role: 'hookmaster' }
+        let!(:payment) { FactoryGirl.create :payment, table: table, amount: 1000, payed_at:  DateTime.now, user: client}
+        let!(:payment2) { FactoryGirl.create :payment, table: table, amount: 5000, payed_at:  DateTime.now- 2.months, user: client}
+        let!(:payment3) { FactoryGirl.create :payment, table: table, amount: 3000, payed_at:  DateTime.now- 2.months, user: client}
         let!(:work) { FactoryGirl.create :work, user: user3, amount: 1000, work_at: DateTime.now, lounge: lounge }
         let!(:work2) { FactoryGirl.create :work, user: user3, amount: 5000, work_at: DateTime.now - 2.months, lounge: lounge }
         let!(:work3) { FactoryGirl.create :work, user: user, amount: 3000, work_at: DateTime.now - 2.months, lounge: lounge }
@@ -136,8 +139,8 @@ RSpec.describe Api::V1::UsersController, type: :controller do
           get :rating, role: 'hookmaster', format: :json
           expect(json_body[:users_month]).to eq [{id: user3.id, name: user3.name, exp: 1000}]
           expect(json_body[:users_all_time]).to eq [
-            {id: user3.id, name: user3.name, exp: user3.total_experience},
-            {id: user.id, name: user.name, exp: user.total_experience}
+            {id: user3.id, name: user3.name, exp: 5000},
+            {id: user.id, name: user.name, exp: 4000}
           ]
         end
       end
