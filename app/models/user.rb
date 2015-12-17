@@ -147,15 +147,16 @@ class User < ActiveRecord::Base
         return 5225 - (self.total_experience - 5225 * (self.current_level - 1) )
       end
     else
-      levels_cost = [0, 6000, 19200, 28800]
+      levels_cost = [0, 6000, 19200, 28800, 38400, 48000]
 
       need = levels_cost[self.level]
       need - self.experience + levels_cost[0..self.level - 1].reduce(0) { |lc, sum| sum += lc  }
     end
   end
 
+
   def add_exp_from_payment(amount)
-    levels_cost = [0, 6000, 19200, 28800]
+    levels_cost = [0, 6000, 19200, 28800, 38400, 48000]
 
     self.experience += amount
     need_exp_to_levelup = levels_cost[0..self.level].reduce(0) { |lc, sum| sum += lc  }
@@ -170,7 +171,7 @@ class User < ActiveRecord::Base
     if self.role == 'hookmaster'
     else
       if self.experience > 0
-        levels_cost = [0, 6000, 19200, 28800]
+        levels_cost = [0, 6000, 19200, 28800, 38400, 48000]
         have_work_exp = self.experience - levels_cost[0..self.level-1].reduce(0) { |lc, sum| sum += lc  }
         if have_work_exp > 0
           percents_exp = (have_work_exp * 100 / (levels_cost[self.level])).to_i
