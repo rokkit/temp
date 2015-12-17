@@ -79,11 +79,12 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     describe "рейтинг за месяц" do
       let!(:user3) { FactoryGirl.create :user }
       let!(:payment) { FactoryGirl.create :payment, user: user3, amount: 3000, payed_at: DateTime.now - 3.days }
+      let!(:payment2) { FactoryGirl.create :payment, user: user3, amount: 1000, payed_at: DateTime.now - 2.days }
       let!(:payment_user_old) { FactoryGirl.create :payment, user: user3, amount: 3000, payed_at: DateTime.now - 2.months }
       let!(:payment_old) { FactoryGirl.create :payment, user: user, amount: 2000, payed_at: DateTime.now - 2.months }
       it "возвращает рейтинг пользователей" do
         get :rating, role: 'user', format: :json
-        expect(json_body[:users_month]).to eq [{id: user3.id, name: user3.name, exp: 3000}]
+        expect(json_body[:users_month]).to eq [{id: user3.id, name: user3.name, exp: 4000}]
         expect(json_body[:users_all_time]).to eq [
           {id: user3.id, name: user3.name, exp: user3.total_experience},
           {id: user.id, name: user.name, exp: user.total_experience}

@@ -37,7 +37,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
       payments = Payment.includes(:user)
       .where('payments.payed_at >= ? AND payments.payed_at <= ?',current_month_start, current_month_end)
-      @users_month = payments.map(&:user).sort_by { |u| u.total_experience }
+      @users_month = payments.map(&:user).uniq.sort_by { |u| u.total_experience }
       @users_expiriences = {}
       @users_month.each do |user|
         month_amount = payments.where(user_id: user.id).map(&:amount).reduce(0) { |amount, sum| sum += amount }
