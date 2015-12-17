@@ -6,15 +6,16 @@ class Api::V1::UsersController < Api::V1::BaseController
   def update
     @user = current_user
     if @user.update_attributes params.permit(:avatar,
-                                             :password,
-                                             :password_confirmation,
-                                             :phone,
                                              :name,
                                              :city,
                                              :country,
                                              :employe,
                                              :work_company,
                                              :hobby)
+
+       if params[:old_password].present? && params[:new_password].present? && @user.valid_password?(params[:old_password])
+         @user.password = params[:new_password]
+       end
        respond_with @user
     else
       render json: {status: :error}
