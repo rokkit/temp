@@ -28,10 +28,15 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def rating
+    current_month_start = Time.zone.now.beginning_of_month
+    current_month_end = Time.zone.now.end_of_month
     if params[:role] == 'hookmaster'
       @users_month = @users_all_time = User.hookmasters
     else
-      @users_month = @users_all_time = User.clients.where('experience > 0')
+      @users_all_time = User.clients.where('experience > 0')
+      @users_month = Payment.includes(:user)
+      .where('payments.payed_at >= ? AND payments.payed_at <= ?',current_month_start, current_month_end).map(&:user)
+      .sort_by { |u| u.total_experience }
     end
     respond_with @users_month, @users_all_time
   end
