@@ -70,10 +70,14 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
     describe "рейтинг за все время" do
       let!(:user3) { FactoryGirl.create :user, experience: 3000 }
+      let!(:user4) { FactoryGirl.create :user, experience: 6000 }
       it "возвращает рейтинг пользователей" do
         get :rating, role: 'user', format: :json
         expect(json_body[:users_month]).to eq []
-        expect(json_body[:users_all_time]).to eq [{id: user3.id, name: user3.name, exp: user3.total_experience}]
+        expect(json_body[:users_all_time]).to eq [
+          {id: user4.id, name: user4.name, exp: user4.total_experience},
+          {id: user3.id, name: user3.name, exp: user3.total_experience}
+        ]
       end
     end
     describe "рейтинг за месяц" do

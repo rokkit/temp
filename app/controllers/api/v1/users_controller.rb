@@ -33,7 +33,7 @@ class Api::V1::UsersController < Api::V1::BaseController
     if params[:role] == 'hookmaster'
       @users_month = @users_all_time = User.hookmasters
     else
-      @users_all_time = User.clients.where('experience > 0')
+      @users_all_time = User.clients.where('experience > 0').order(experience: :desc)
 
       payments = Payment.includes(:user)
       .where('payments.payed_at >= ? AND payments.payed_at <= ?',current_month_start, current_month_end)
