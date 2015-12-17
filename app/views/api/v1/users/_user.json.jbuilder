@@ -21,6 +21,7 @@ json.country user.country || ''
 json.exp user.total_experience
 json.level user.current_level
 json.need_to_levelup user.need_to_levelup
+json.percents_exp user.percents_exp
 
 
 json.visits [] #user.visits do |visit|

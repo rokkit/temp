@@ -166,6 +166,21 @@ class User < ActiveRecord::Base
     self.save
   end
 
+  def percents_exp
+    if self.role == 'hookmaster'
+    else
+      if self.experience > 0
+        levels_cost = [0, 6000, 19200, 28800]
+        have_work_exp = self.experience - levels_cost[0..self.level-1].reduce(0) { |lc, sum| sum += lc  }
+        if have_work_exp > 0
+          percents_exp = (have_work_exp * 100 / (levels_cost[self.level])).to_i
+        else
+          0
+        end
+      end
+    end
+  end
+
   def current_level
     if self.role == 'hookmaster'
       grade_one_rate = 5225

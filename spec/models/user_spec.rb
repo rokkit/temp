@@ -111,6 +111,9 @@ RSpec.describe 'User' do
          it 'до следующего уровня 4000 опыта' do
            expect(client.need_to_levelup).to eq 4000
          end
+         it 'проценты опыта равны 30' do
+           expect(client.percents_exp).to eq 33
+         end
        end
        context 'когда один платеж на 6000р.' do
          let!(:payment) { FactoryGirl.create :payment, amount: 6000, user: client, table: table }
@@ -120,6 +123,9 @@ RSpec.describe 'User' do
          end
          it 'до следующего уровня 19200 опыта' do
            expect(client.need_to_levelup).to eq 19200
+         end
+         it 'проценты опыта равны 0' do
+           expect(client.percents_exp).to eq 0
          end
        end
        context 'когда один платеж на 6500р.' do
@@ -134,6 +140,9 @@ RSpec.describe 'User' do
          end
          it 'до следующего уровня 18700 опыта' do
            expect(client.need_to_levelup).to eq 18700
+         end
+         it 'проценты опыта равны 2' do
+           expect(client.percents_exp).to eq 2
          end
        end
      end
