@@ -100,7 +100,9 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     context 'рейтинг кальянщика' do
       let!(:user) { FactoryGirl.create :user, role: 'hookmaster' }
       let!(:user2) { FactoryGirl.create :user, role: 'hookmaster' }
+      let!(:client) { FactoryGirl.create :user, role: 'user' }
       let!(:lounge) { FactoryGirl.create :lounge }
+      let!(:table) { FactoryGirl.create :table, lounge: lounge }
       before do
         sign_in user
       end
@@ -110,6 +112,8 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         expect(json_body[:users_all_time]).to eq []
       end
       describe "рейтинг за все время" do
+        let!(:payment) { FactoryGirl.create :payment, table: table, amount: 1000, payed_at:  DateTime.now - 2.months, user: client}
+        let!(:payment2) { FactoryGirl.create :payment, table: table, amount: 2000, payed_at:  DateTime.now - 2.months, user: client}
         let!(:user3) { FactoryGirl.create :user, role: 'hookmaster' }
         let!(:user4) { FactoryGirl.create :user, role: 'hookmaster' }
         let!(:work) { FactoryGirl.create :work, user: user3, amount: 1000, work_at: DateTime.now - 2.months, lounge: lounge }
@@ -118,7 +122,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
           get :rating, role: 'hookmaster', format: :json
           expect(json_body[:users_month]).to eq []
           expect(json_body[:users_all_time]).to eq [
-            {id: user4.id, name: user4.name, exp: user4.total_experience},
+            {id: user4.id, name: user4.name, exp: 1500},
             {id: user3.id, name: user3.name, exp: user3.total_experience}
           ]
         end

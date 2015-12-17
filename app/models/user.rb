@@ -125,7 +125,7 @@ class User < ActiveRecord::Base
   def total_experience
     if self.role == 'hookmaster'
       # Оборот всех заведений
-      payments = Payment.all.order(:created_at).group_by { |t| t.created_at.beginning_of_day }
+      payments = Payment.all.order(:created_at).group_by { |t| t.payed_at.beginning_of_day }
 
       total_amount = 0
       payments.sort.each do |day, ps|

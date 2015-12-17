@@ -41,10 +41,6 @@ class Api::V1::UsersController < Api::V1::BaseController
         month_amount = works.where(user_id: user.id).map(&:amount).reduce(0) { |amount, sum| sum += amount }
         @users_expiriences[user.id] = month_amount
       end
-
-
-
-
     else
       @users_all_time = User.clients.where('experience > 0').order(experience: :desc)
 
