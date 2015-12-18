@@ -2,7 +2,7 @@
     adapter:  sqlserver
     host:     176.112.198.251
     encoding: unicode
-    database: uhp_demo
+    database: uhp_demo1
     pool:     5
     username: sa
     password: Ve8Rohcier

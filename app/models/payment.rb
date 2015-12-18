@@ -25,8 +25,10 @@ class Payment < ActiveRecord::Base
 
       if meets.length > 0
         divided_exp = self.amount / (meets.length + 1)
-        self.user.add_exp_from_payment(divided_exp.to_i)
+
+        self.reservation.user.add_exp_from_payment(divided_exp.to_i)
         meets.each do |m|
+          # puts m.user.total_experience.to_i.inspect
           m.user.add_exp_from_payment(divided_exp.to_i)
         end
       end

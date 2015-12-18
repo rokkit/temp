@@ -23,8 +23,11 @@ ActiveAdmin.register Table do
   controller do
     def update
       if params[:table][:number].present?
-        tables = Table.tables_from_1c(params[:id])
+
+        tables = Table.tables_from_1c(params[:table][:lounge_id])
+        # raise tables.inspect
         table = tables.select { |t| t[:'Номер'] == params[:table][:number] }
+
         if table.present?
 
           params[:table][:title] = table[0][:'Заголовок']

@@ -5,7 +5,7 @@ class Reservation < ActiveRecord::Base
   validate :visit_date_must_be_in_future
 
   has_many :meets, dependent: :delete_all
-  has_one :payment
+  has_many :payments
 
   # has_many :meet_users, through: :meets, class_name: 'User'
 
@@ -36,12 +36,17 @@ class Reservation < ActiveRecord::Base
     end
   end
   def create_ext_record
-    # SoapService.call(:reserve_save, message: {
-    #   'КодСтола' => self.table.number,
-    #   'ДатаРезерва' => self.visit_date,
-    #   'Статус' => 'Активен',
-    #   'Дата' => Time.zone.now
-    # })
+    if self.table.try :number
+      # SoapService.call(:reserve_save, message: {
+      #   'КодСтола' => self.table.number,
+      #   'ДатаРезерва' => self.visit_date,
+      #   'Статус' => 'Активен',
+      #   'Комментарий' => '',
+      #   'Дата' => Time.zone.now,
+      #   'Телефон' => self.user.phone,
+      #   'Время' => self.duration.to_f
+      # })
+    end
   end
 
   # Валидатор для проверки даты бронирования

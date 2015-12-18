@@ -47,6 +47,16 @@ RSpec.describe Payment, type: :model do
       expect(user.total_experience).to eq 2000
       expect(user_in_meet.total_experience).to eq 2000
     end
+    it 'начисляет поровну опыт всем участникам встречи со всех их платежей' do
+      Meet.create(user: user_in_meet, reservation: reservation, status: 1)
+      Payment.create user: user, reservation: reservation, amount: 4000
+      Payment.create user: user_in_meet, reservation: reservation, amount: 2000
+      user.reload
+      user_in_meet.reload
+      expect(user.total_experience + user_in_meet.total_experience).to eq 6000
+      expect(user.total_experience).to eq 3000
+      expect(user_in_meet.total_experience).to eq 3000
+    end
     context 'если один участник не подтвердил встречу' do
       let(:user_not_meet) { FactoryGirl.create :user }
       it 'начисляет опыт подтвердившим участие' do
