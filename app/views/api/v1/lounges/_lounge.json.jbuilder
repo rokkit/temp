@@ -1,4 +1,4 @@
-json.extract! lounge, :id, :title, :city_id, :color
+json.extract! lounge, :id, :title, :city_id, :color, :slug
 json.blazon request.protocol + request.host_with_port + lounge.blazon_url
 json.city lounge.city.name
 json.slogan lounge.slogan
