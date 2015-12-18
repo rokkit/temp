@@ -44,6 +44,7 @@ Rails.application.routes.draw do
           get :rating
         }
         member {
+          get :load_client_data
           get :load_hookmaster_data
         }
       end

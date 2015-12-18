@@ -61,7 +61,15 @@ class Api::V1::UsersController < Api::V1::BaseController
 
 
   def load_client_data
+    @user = User.find(params[:id])
+    @user_skills = SkillsUsers.where(user_id: @user.id).includes(:skill)
+    @skills = Skill.where(role: 0).order(:id)
+    @achievements = Achievement.where(role: 0).order(:id)
 
+    @users = User.where.not(id: @user.id)
+    @lounges = Lounge.where(active: true).includes(:tables)
+    @payments = @user.payments
+    @meets = Meet.active.where(user_id: @user.id).joins(:reservation).includes(:reservation).where('reservations.visit_date > ?', Time.zone.now)
   end
 
   def load_hookmaster_data
