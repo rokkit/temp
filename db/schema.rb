@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151218093046) do
+ActiveRecord::Schema.define(version: 20151218134009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,10 +79,20 @@ ActiveRecord::Schema.define(version: 20151218093046) do
     t.integer  "city_id"
     t.string   "color"
     t.string   "blazon"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.boolean  "active"
     t.string   "code"
+    t.string   "slogan"
+    t.string   "slogan_ru"
+    t.string   "address"
+    t.string   "phone"
+    t.string   "description_header"
+    t.text     "description_text"
+    t.text     "hookmasters_description"
+    t.string   "map_district"
+    t.text     "map_description"
+    t.string   "vk_link"
   end
 
   add_index "lounges", ["city_id"], name: "index_lounges_on_city_id", using: :btree

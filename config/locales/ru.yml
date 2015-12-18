@@ -78,6 +78,20 @@ ru:
           seats: 'Кол-во мест'
           vip: 'Для постоянников'
           number: 'Номер стола (1С)'
+        lounge:
+          title: 'Название'
+          color: 'Цвет'
+          slogan: 'Девиз'
+          slogan_ru: 'Девиз (рус)'
+          address: "Адрес"
+          phone: "Телефон"
+          description_header: "Заголовок описания"
+          description_text: "Описание ложи"
+          hookmasters_description: "Описание кальянщиков"
+          map_district: "Район"
+          map_description: "Описание (блок карты)"
+          blazon: 'Герб'
+          vk_link: "Группа ВК"
   active_admin:
     dashboard: "Панель управления"
     dashboard_welcome:
