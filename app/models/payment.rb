@@ -21,13 +21,14 @@ class Payment < ActiveRecord::Base
     if !self.reservation
       self.user.add_exp_from_payment(self.amount.to_i)
     elsif self.reservation
-      meets = Meet.where(reservation_id: reservation.id)
+      meets = Meet.where(reservation_id: reservation.id, status: 1)
 
       if meets.length > 0
-
         divided_exp = self.amount / (meets.length + 1)
         self.user.add_exp_from_payment(divided_exp.to_i)
-        meets.each { |m| m.user.add_exp_from_payment(divided_exp.to_i) }
+        meets.each do |m|
+          m.user.add_exp_from_payment(divided_exp.to_i)
+        end
       end
     end
   end
