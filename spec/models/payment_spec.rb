@@ -29,4 +29,23 @@ RSpec.describe Payment, type: :model do
 
     end
   end
+  describe "распределение опыта между участниками встречи" do
+    let(:user) { FactoryGirl.create :user }
+    let(:user_in_meet) { FactoryGirl.create :user }
+    let!(:reservation) {
+      FactoryGirl.create :reservation,
+                         visit_date: DateTime.now + 5.days,
+                         user: user,
+                         meets: []
+    }
+    it 'начисляет поровну опыт всем участникам встречи' do
+      Meet.create(user: user_in_meet, reservation: reservation)
+      Payment.create user: user, reservation: reservation, amount: 4000
+      user.reload
+      user_in_meet.reload
+      expect(user.total_experience + user_in_meet.total_experience).to eq 4000
+      expect(user.total_experience).to eq 2000
+      expect(user_in_meet.total_experience).to eq 2000
+    end
+  end
 end

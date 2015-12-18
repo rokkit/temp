@@ -80,15 +80,39 @@ class User < ActiveRecord::Base
   # Ачимент "Изобретательность"
   # Проведите мероприятие
   def check_for_izobretatelnost_achievement
+    achievement = nil
     if self.party_count > 0
-      if self.party_count == 1
+      case self.party_count
+      when 1
         achievement = Achievement.find_by_key('izobretatelnost-i')
         if !achievement
           achievement = Achievement.create(name: 'Изобретательность I')
         end
-        if !AchievementsUser.where(user_id: self.id, achievement_id: achievement.id).present?
-            AchievementsUser.create!(user: self, achievement: achievement)
+      when 2
+        achievement = Achievement.find_by_key('izobretatelnost-ii')
+        if !achievement
+          achievement = Achievement.create(name: 'Изобретательность II')
         end
+      when 3
+        achievement = Achievement.find_by_key('izobretatelnost-iii')
+        if !achievement
+          achievement = Achievement.create(name: 'Изобретательность III')
+        end
+      when 4
+        achievement = Achievement.find_by_key('izobretatelnost-iv')
+        if !achievement
+          achievement = Achievement.create(name: 'Изобретательность IV')
+        end
+      when 5
+        achievement = Achievement.find_by_key('izobretatelnost-v')
+        if !achievement
+          achievement = Achievement.create(name: 'Изобретательность V')
+        end
+      end
+    end
+    if achievement
+      if !AchievementsUser.where(user_id: self.id, achievement_id: achievement.id).present?
+          AchievementsUser.create!(user: self, achievement: achievement)
       end
     end
   end

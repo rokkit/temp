@@ -5,6 +5,8 @@ class Reservation < ActiveRecord::Base
   validate :visit_date_must_be_in_future
 
   has_many :meets, dependent: :delete_all
+  has_one :payment
+
   # has_many :meet_users, through: :meets, class_name: 'User'
 
   after_create :create_ext_record
