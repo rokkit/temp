@@ -4,4 +4,9 @@ class Api::V1::LoungesController < Api::V1::BaseController
     @lounges = Lounge.all
     respond_with @lounges
   end
+
+  def show
+    @lounge = Lounge.find(params[:id])
+    respond_with @lounge
+  end
 end
