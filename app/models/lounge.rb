@@ -4,4 +4,5 @@ class Lounge < ActiveRecord::Base
   mount_uploader :blazon, BlazonUploader
 
   has_many :tables
+  has_many :hookmasters, class_name: 'User'
 end

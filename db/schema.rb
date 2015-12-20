@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151218145506) do
+ActiveRecord::Schema.define(version: 20151220083834) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,6 +94,8 @@ ActiveRecord::Schema.define(version: 20151218145506) do
     t.text     "map_description"
     t.string   "vk_link"
     t.string   "slug"
+    t.float    "lat"
+    t.float    "lng"
   end
 
   add_index "lounges", ["city_id"], name: "index_lounges_on_city_id", using: :btree
@@ -246,6 +248,7 @@ ActiveRecord::Schema.define(version: 20151218145506) do
     t.string   "country",                                        default: "Россия"
     t.boolean  "freezed"
     t.integer  "party_count",                                    default: 0
+    t.integer  "lounge_id"
   end
 
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree

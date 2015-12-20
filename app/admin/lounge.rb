@@ -25,6 +25,8 @@ ActiveAdmin.register Lounge do
       f.input :slogan
       f.input :slogan_ru
       f.input :address
+      f.input :lat
+      f.input :lng
       f.input :phone
       f.input :description_header
       f.input :description_text

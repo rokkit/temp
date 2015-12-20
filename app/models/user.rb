@@ -24,6 +24,8 @@ class User < ActiveRecord::Base
   has_many :reservations, dependent: :delete_all
   has_many :works, dependent: :delete_all
 
+  belongs_to :lounge
+
 
   mount_uploader :avatar, AvatarUploader
 
