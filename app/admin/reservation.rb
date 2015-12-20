@@ -79,4 +79,20 @@ ActiveAdmin.register Reservation do
     end
     f.actions
   end
+
+  show do
+    attributes_table do
+    row :id
+    row :table
+    row :user
+    row :visit_date
+    row :end_visit_date
+    row :created_at
+    row :code
+    row :client_count
+    row :duration
+    row :status
+  end
+
+  end
 end

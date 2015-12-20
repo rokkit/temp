@@ -56,6 +56,12 @@ class User < ActiveRecord::Base
   #     parent.table[:id]
   # end
 
+  def create_user_ext
+    SoapService.call(:create_customer, message: { 'Name' => self.name, 'Tel' => self.phone })
+    # self.idrref = _idrref
+    # self.save
+  end
+
   def to_s
     "#{self.name} (#{self.phone})"
   end
@@ -258,9 +264,5 @@ class User < ActiveRecord::Base
     end
   end
 
-  def create_user_ext
-    SoapService.call(:create_customer, message: { 'Name' => self.name, 'Tel' => self.phone })
-    # self.idrref = _idrref
-    # self.save
-  end
+
 end

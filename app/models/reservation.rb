@@ -27,7 +27,7 @@ class Reservation < ActiveRecord::Base
       parent.table[:id]
   end
 
-  private
+
   def update_end_visit_date
     if self.user.role == 'vip'
       self.end_visit_date = self.visit_date + 2.hours + 30.minutes
@@ -37,18 +37,20 @@ class Reservation < ActiveRecord::Base
   end
   def create_ext_record
     if self.table.try :number
-      # SoapService.call(:reserve_save, message: {
-      #   'КодСтола' => self.table.number,
-      #   'ДатаРезерва' => self.visit_date,
-      #   'Статус' => 'Активен',
-      #   'Комментарий' => '',
-      #   'Дата' => Time.zone.now,
-      #   'Телефон' => self.user.phone,
-      #   'Время' => self.duration.to_f
-      # })
+      resp = SoapService.call(:reserve_save, message: {
+        'КодСтола' => self.table.number,
+        'ДатаРезерва' => self.visit_date.strftime('%Y-%m-%dT%H:%M:%S'),
+        'Статус' => 'Активен',
+        'Комментарий' => '',
+        'Дата' => Time.zone.now.strftime('%Y-%m-%dT%H:%M:%S'),
+        'Телефон' => self.user.phone,
+        'Время' => self.duration.to_f
+      })
+      self.code = resp[:reserve_save_response][:return]
+      self.save
     end
   end
-
+private
   # Валидатор для проверки даты бронирования
   # Дата должна быть больше текущей
   def visit_date_must_be_in_future
