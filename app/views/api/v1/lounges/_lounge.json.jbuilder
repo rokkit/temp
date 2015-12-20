@@ -11,3 +11,7 @@ json.hookmasters_description lounge.hookmasters_description
 json.map_district lounge.map_district
 json.map_description lounge.map_description
 json.vk_link lounge.vk_link
+json.hookmasters  lounge.hookmasters do |hm|
+  json.id hm.id
+  json.name hm.name
+end
