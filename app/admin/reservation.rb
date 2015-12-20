@@ -58,8 +58,12 @@ ActiveAdmin.register Reservation do
     end
 
     actions defaults: false do |order|
-      link_to("Отменить", cancel_admin_reservation_path(order)) + ' ' +
-      link_to("Подтвердить", approve_admin_reservation_path(order))
+      actions_str = []
+
+      actions_str.push link_to("Отменить", cancel_admin_reservation_path(order)) if order.status == 'wait' || order.status == 'approved'
+      actions_str.push link_to("Подтвердить", approve_admin_reservation_path(order)) if order.status == 'wait'
+      actions_str.join(' ').html_safe
+
     end
   end
 

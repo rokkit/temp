@@ -19,6 +19,7 @@ gem 'activeadmin-select2', github: 'mfairburn/activeadmin-select2'
 gem 'savon', '~> 2.10'
 gem 'tiny_tds'
 gem 'activerecord-sqlserver-adapter'
+gem "jquery-ui-rails"
 
 gem 'rack-cors', :require => 'rack/cors'
 

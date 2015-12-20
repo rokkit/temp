@@ -1,7 +1,7 @@
 ActiveAdmin.register User do
   permit_params :email, :password, :password_confirmation, :phone_token, :role,
                 :name, :city, :employe, :work_company, :hobby, :skills_users_attributes, :country, :freezed,
-                :party_count, :lounge_id
+                :party_count, :lounge_id, :confirmed_at
 
   scope :clients, default: true
   scope :hookmasters
@@ -50,6 +50,12 @@ end
            column 'Название' do |skill|
              skill.name
            end
+           column 'Использован' do |skill|
+             skill.used_at
+           end
+           column 'Следующее использование' do |skill|
+             skill.cooldown_end_at
+           end
          end
       end
       panel "Достижения" do
@@ -82,6 +88,7 @@ end
       f.input :email
       f.input :phone
       f.input :name
+      f.input :birthdate
       f.input :password
       f.input :phone_token
       f.input :auth_token
@@ -93,9 +100,12 @@ end
       f.input :freezed
       f.input :party_count
       f.input :lounge
+      f.input :confirmed_at, :input_html => { :value => Time.zone.now }
       f.inputs do
         f.has_many :skills_users, heading: 'Навыки', new_record: "Добавить навык" do |a|
           a.input :skill
+          a.input :used_at
+          a.input :cooldown_end_at#, :as => :string, :input_html => {:class => "hasDatetimePicker"}
           a.input :_destroy, :as => :boolean
         end
       end

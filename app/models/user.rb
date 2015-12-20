@@ -26,6 +26,9 @@ class User < ActiveRecord::Base
 
   belongs_to :lounge
 
+  validates :level, :numericality => { :less_than_or_equal_to => 30, greater_than_or_equal_to: 0 }
+  validates :experience, :numericality => { greater_than_or_equal_to: 0 }
+
 
   mount_uploader :avatar, AvatarUploader
 
