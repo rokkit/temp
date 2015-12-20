@@ -7,7 +7,7 @@ class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
     # TODO: когда будут СМС переключить на нормальный код
     user.phone_token = 4.times.map { Random.rand(9) }.join
     if user.save
-      SMSService.send(user.phone, "Код подтверждения: #{user.phone_token}")
+      user.send_confirmation_token_to_phone
       render json: { status: :ok }
     else
       render json: { errors: user.errors }

@@ -14,6 +14,7 @@ class Api::V1::Auth::SessionsController < Api::V1::BaseController
           return
         end
       else
+        @user.send_confirmation_token_to_phone
         render json: { errors: { confirmed_at: 'user not confirmed' } }
         return
       end
