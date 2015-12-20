@@ -102,6 +102,7 @@ end
       f.input :party_count
       f.input :lounge
       f.input :confirmed_at, :input_html => { :value => Time.zone.now }
+      f.input :description
       f.inputs do
         f.has_many :skills_users, heading: 'Навыки', new_record: "Добавить навык" do |a|
           a.input :skill
