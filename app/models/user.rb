@@ -127,7 +127,7 @@ class User < ActiveRecord::Base
   end
 
   def send_confirmation_token_to_phone
-    SMSService.send(user.phone, "Код подтверждения: #{self.phone_token}")
+    SMSService.send(self.phone, "Код подтверждения: #{self.phone_token}")
   end
 
   def set_default_role
