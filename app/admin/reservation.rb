@@ -1,6 +1,6 @@
 ActiveAdmin.register Reservation do
   menu parent: 'Администрирование'
-  permit_params :table_id, :user_id, :visit_date, :client_count, :duration
+  permit_params :table_id, :user_id, :visit_date, :client_count, :duration, :code, :meets_attributes
   controller do
     # def destroy
     #
@@ -77,7 +77,8 @@ ActiveAdmin.register Reservation do
       f.input :table
       f.input :client_count
       f.input :duration
-      f.input :status
+      f.input :status, as: :select,:collection => [['wait', 0], ['approve', 1], ['deleted', 2]]
+      f.input :code
     end
     f.inputs do
       f.has_many :meets, heading: 'Встречи', new_record: "Добавить встречу" do |a|

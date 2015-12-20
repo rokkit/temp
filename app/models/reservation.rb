@@ -14,6 +14,8 @@ class Reservation < ActiveRecord::Base
   # has_many :meet_users, through: :meets, class_name: 'User'
 
   after_create :create_ext_record
+  after_update :update_reservation_ext
+  after_destroy :destroy_reservation_ext
   before_save :update_end_visit_date
 
   enum status: [:wait, :approve, :deleted]
@@ -56,6 +58,39 @@ class Reservation < ActiveRecord::Base
       else
         self.destroy()
       end
+    end
+  end
+
+  def update_reservation_ext
+    # КодСтола,ДатаРезерва,Статус,Комментарий, Дата, Номер
+    if self.table.try(:number) && self.code && self.status_changed?
+      new_status = 'Активен'
+      if self.status == 'deleted' || self.status == 2
+        new_status = 'Отменен'
+      end
+
+      resp = SoapService.call(:reserve_edit, message: {
+        'КодСтола' => self.table.number,
+        'ДатаРезерва' => self.visit_date.strftime('%Y-%m-%dT%H:%M:%S'),
+        'Статус' => new_status,
+        'Комментарий' => '',
+        'Дата' => Time.zone.now.strftime('%Y-%m-%dT%H:%M:%S'),
+        'Номер' => self.code
+      })
+    end
+  end
+
+  def destroy_reservation_ext
+    # КодСтола,ДатаРезерва,Статус,Комментарий, Дата, Номер
+    if self.table.try(:number) && self.code
+      resp = SoapService.call(:reserve_edit, message: {
+        'КодСтола' => self.table.number,
+        'ДатаРезерва' => self.visit_date.strftime('%Y-%m-%dT%H:%M:%S'),
+        'Статус' => 'Отменен',
+        'Комментарий' => '',
+        'Дата' => Time.zone.now.strftime('%Y-%m-%dT%H:%M:%S'),
+        'Номер' => self.code
+      })
     end
   end
 private

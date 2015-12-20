@@ -7,9 +7,9 @@ class SoapService
       puts response.body.inspect
       return response.body
       rescue Savon::HTTPError
+        puts "1C ERROR"
       end
     end
-    true
   end
 
   def self.call_raw(method, params)
