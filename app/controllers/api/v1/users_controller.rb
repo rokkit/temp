@@ -11,7 +11,8 @@ class Api::V1::UsersController < Api::V1::BaseController
                                              :country,
                                              :employe,
                                              :work_company,
-                                             :hobby)
+                                             :hobby,
+                                             :birthdate)
 
        if params[:old_password].present? && params[:new_password].present? && @user.valid_password?(params[:old_password])
          @user.password = params[:new_password]

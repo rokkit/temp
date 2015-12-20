@@ -35,6 +35,7 @@ end
     attributes_table do
       row :name
       row :phone
+      row :birthdate
       row :experience
       row :level
       row :experience
@@ -88,7 +89,7 @@ end
       f.input :email
       f.input :phone
       f.input :name
-      f.input :birthdate
+      f.input :birthdate, :start_year => Date.today.year - 18, :end_year => Date.today.year - 80
       f.input :password
       f.input :phone_token
       f.input :auth_token

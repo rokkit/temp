@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
 
   validates :level, :numericality => { :less_than_or_equal_to => 30, greater_than_or_equal_to: 0 }
   validates :experience, :numericality => { greater_than_or_equal_to: 0 }
-
+  validate :birthdate_must_be_18_age
 
   mount_uploader :avatar, AvatarUploader
 
@@ -43,7 +43,9 @@ class User < ActiveRecord::Base
 
   after_create :create_user_ext
 
-
+  def birthdate_must_be_18_age
+    errors.add(:birthdate, 'Возраст меньше 18 лет') if (DateTime.parse(birthdate.to_s) > Date.today - 18.years)
+  end
   # scope :lounge_eq, -> (lounge) { joins(:table).where("tables.lounge_id = ?", lounge) }
   # ransacker :lounge_table_eq,
   #         :formatter => ->(lounge) {
