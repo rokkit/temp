@@ -70,12 +70,20 @@ ActiveAdmin.register Reservation do
 
 
   form do |f|
-    f.inputs 'User' do
+    f.inputs 'Reservation' do
       f.input :visit_date
       f.input :user
       f.input :table
       f.input :client_count
       f.input :duration
+      f.input :status
+    end
+    f.inputs do
+      f.has_many :meets, heading: 'Встречи', new_record: "Добавить встречу" do |a|
+        a.input :user
+        a.input :status
+        a.input :_destroy, :as => :boolean
+      end
     end
     f.actions
   end
@@ -92,6 +100,16 @@ ActiveAdmin.register Reservation do
     row :client_count
     row :duration
     row :status
+    panel "Встречи" do
+       table_for reservation.meets do
+         column 'Клиент' do |meet|
+           meet.user.name
+         end
+         column 'Статус' do |skill|
+           meet.status
+         end
+       end
+    end
   end
 
   end

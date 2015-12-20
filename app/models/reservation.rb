@@ -4,8 +4,12 @@ class Reservation < ActiveRecord::Base
   belongs_to :user
   validate :visit_date_must_be_in_future
 
+
+
   has_many :meets, dependent: :delete_all
+  accepts_nested_attributes_for :meets, :allow_destroy => true
   has_many :payments
+  accepts_nested_attributes_for :payments, :allow_destroy => true
 
   # has_many :meet_users, through: :meets, class_name: 'User'
 
@@ -46,8 +50,12 @@ class Reservation < ActiveRecord::Base
         'Телефон' => self.user.phone,
         'Время' => self.duration.to_f
       })
-      self.code = resp[:reserve_save_response][:return]
-      self.save
+      if resp[:reserve_save_response][:return] != '-1' && resp[:reserve_save_response][:return] != 'busy'
+        self.code = resp[:reserve_save_response][:return]
+        self.save
+      else
+        self.destroy()
+      end
     end
   end
 private
