@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151220120451) do
+ActiveRecord::Schema.define(version: 20151220123031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,6 +73,15 @@ ActiveRecord::Schema.define(version: 20151220120451) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "lounge_photos", force: :cascade do |t|
+    t.string   "image"
+    t.integer  "lounge_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "lounge_photos", ["lounge_id"], name: "index_lounge_photos_on_lounge_id", using: :btree
 
   create_table "lounges", force: :cascade do |t|
     t.string   "title"
@@ -274,6 +283,7 @@ ActiveRecord::Schema.define(version: 20151220120451) do
 
   add_foreign_key "achievements_users", "achievements"
   add_foreign_key "achievements_users", "users"
+  add_foreign_key "lounge_photos", "lounges"
   add_foreign_key "lounges", "cities"
   add_foreign_key "meets", "reservations"
   add_foreign_key "meets", "users"

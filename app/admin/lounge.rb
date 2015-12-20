@@ -34,6 +34,12 @@ ActiveAdmin.register Lounge do
       f.input :map_description
       f.input :blazon
       f.input :vk_link
+      f.inputs do
+        f.has_many :photos, heading: 'Фото', new_record: "Добавить фото" do |a|
+          a.input :image
+          a.input :_destroy, :as => :boolean
+        end
+      end
     end
     f.actions
   end

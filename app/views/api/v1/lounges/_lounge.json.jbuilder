@@ -15,3 +15,6 @@ json.hookmasters  lounge.hookmasters do |hm|
   json.id hm.id
   json.name hm.name
 end
+json.photos  lounge.photos do |l|
+  json.image l.image_url
+end
