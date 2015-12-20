@@ -21,7 +21,6 @@ ActiveAdmin.register Lounge do
       f.input :blazon, as: :file
       f.input :active
       f.input :title
-      f.input :color
       f.input :slogan
       f.input :slogan_ru
       f.input :address
