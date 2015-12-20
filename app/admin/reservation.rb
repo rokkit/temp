@@ -2,14 +2,14 @@ ActiveAdmin.register Reservation do
   menu parent: 'Администрирование'
   permit_params :table_id, :user_id, :visit_date, :client_count, :duration
   controller do
-    def destroy
-
-      @reservation = Reservation.find(params[:id])
-
-      @reservation.status = :deleted
-      @reservation.save
-      redirect_to admin_reservations_path
-    end
+    # def destroy
+    #
+    #   @reservation = Reservation.find(params[:id])
+    #
+    #   @reservation.status = :deleted
+    #   @reservation.save
+    #   redirect_to admin_reservations_path
+    # end
 
 
   end
@@ -57,11 +57,12 @@ ActiveAdmin.register Reservation do
       end
     end
 
-    actions defaults: false do |order|
+    actions do |order|
       actions_str = []
 
       actions_str.push link_to("Отменить", cancel_admin_reservation_path(order)) if order.status == 'wait' || order.status == 'approved'
       actions_str.push link_to("Подтвердить", approve_admin_reservation_path(order)) if order.status == 'wait'
+      # actions_str.push link_to("Удалить", destroy_admin_reservation_path(order))
       actions_str.join(' ').html_safe
 
     end
