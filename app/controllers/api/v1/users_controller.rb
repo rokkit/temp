@@ -38,7 +38,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
 
       works = Work.where('works.work_at >= ? AND works.work_at <= ?',current_month_start, current_month_end)
-      @users_month = works.map(&:user).uniq.sort_by { |u| u.total_experience }.reverse
+      @users_month = works.map(&:user).uniq.sort_by { |u| u.total_experience }
       @users_expiriences = {}
       @users_month.each do |user|
         month_amount = works.where(user_id: user.id).map(&:amount).reduce(0) { |amount, sum| sum += amount }
