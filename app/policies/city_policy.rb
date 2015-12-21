@@ -29,6 +29,9 @@ class CityPolicy
   def destroy?
     @current_user.is_admin?
   end
+  def destroy_all?
+    @current_user.is_admin?
+  end
   class Scope
     attr_reader :user, :scope
 
@@ -38,7 +41,11 @@ class CityPolicy
     end
 
     def resolve
-      scope
+      if @user.is_admin?
+        scope.all
+      elsif @user.is_administrative?
+        scope.where(id: @user.lounge.city_id)
+      end
     end
   end
 end

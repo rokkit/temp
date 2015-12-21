@@ -29,6 +29,10 @@ class PaymentPolicy
   def destroy?
     @current_user.is_admin?
   end
+
+  def destroy_all?
+    @current_user.is_admin?
+  end
   class Scope
     attr_reader :user, :scope
 
@@ -38,7 +42,11 @@ class PaymentPolicy
     end
 
     def resolve
-      scope
+      if @user.is_admin?
+        scope.all
+      elsif @user.is_administrative?
+        scope.includes(:table).where(tables: {lounge_id: @user.lounge_id})
+      end
     end
   end
 end

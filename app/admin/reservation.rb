@@ -77,8 +77,8 @@ ActiveAdmin.register Reservation do
   form do |f|
     f.inputs 'Reservation' do
       f.input :visit_date
-      f.input :user
-      f.input :table
+      f.input :user, collection: UserPolicy::Scope.new(current_user, User).resolve.clients.map {|l| ["#{l.name} (+#{l.phone})", l.id] }
+      f.input :table, collection: TablePolicy::Scope.new(current_user, Table).resolve.all.map {|l| [l.title, l.id] }
       f.input :client_count, as: :select, :collection => [['1-4', '4'], ['5-6', '6']]
       f.input :duration, as: :select, :collection => [['1.5 часа', '1.5'], ['3 часа', '3']]
       f.input :status, as: :select, :collection => [['Ожидается', 'wait'], ['Подтверждено', 'approve'], ['Отменено', 'deleted']]
@@ -86,7 +86,7 @@ ActiveAdmin.register Reservation do
     end
     f.inputs do
       f.has_many :meets, heading: 'Встречи', new_record: "Добавить встречу" do |a|
-        a.input :user
+        a.input :user, collection: UserPolicy::Scope.new(current_user, User).resolve.clients.map {|l| ["#{l.name} (+#{l.phone})", l.id] }
         a.input :status, as: :select, :collection => [['Ожидается', 'wait'], ['Подтверждено', 'approved'], ['Отменено', 'deleted']]
         a.input :_destroy, :as => :boolean
       end

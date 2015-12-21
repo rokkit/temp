@@ -7,28 +7,28 @@ class WorkPolicy
   end
 
   def index?
-    @current_user.admin?
+    @current_user.is_admin? || @current_user.is_administrative?
   end
 
   def show?
-    @current_user.admin?
+    @current_user.is_admin? || (@current_user.is_franchiser? || @current_user.is_hookmaster?) && @current_user.lounge == @model.lounge
   end
 
   def new?
-    @current_user.admin?
+    @current_user.is_admin? || (@current_user.is_franchiser? || @current_user.is_hookmaster?) && @current_user.lounge == @model.lounge
   end
 
   def create?
-    @current_user.admin?
+    @current_user.is_admin? || (@current_user.is_franchiser? || @current_user.is_hookmaster?) && @current_user.lounge == @model.lounge
   end
 
   def update?
-    @current_user.admin?
+    @current_user.is_admin? || (@current_user.is_franchiser? || @current_user.is_hookmaster?) && @current_user.lounge == @model.lounge
   end
 
   def destroy?
     return false if @current_user == @model
-    @current_user.admin?
+    @current_user.is_admin? || @current_user.is_administrative?
   end
   class Scope
     attr_reader :user, :scope
@@ -39,7 +39,11 @@ class WorkPolicy
     end
 
     def resolve
-      scope
+      if @user.is_admin?
+        scope.all
+      else
+        scope.where(user_id: @user.id)
+      end
     end
   end
 end

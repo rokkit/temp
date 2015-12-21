@@ -1,12 +1,13 @@
 class SkillPolicy
   attr_reader :current_user, :model
+
   def initialize(current_user, model)
     @current_user = current_user
     @model = model
   end
 
   def index?
-    @current_user.is_admin?
+    @current_user.is_admin? || @current_user.is_administrative?
   end
 
   def new?
@@ -18,7 +19,7 @@ class SkillPolicy
   end
 
   def show?
-    @current_user.is_admin?
+    @current_user.is_admin? || @current_user.is_administrative?
   end
 
   def update?
@@ -26,6 +27,9 @@ class SkillPolicy
   end
 
   def destroy?
+    @current_user.is_admin?
+  end
+  def destroy_all?
     @current_user.is_admin?
   end
   class Scope

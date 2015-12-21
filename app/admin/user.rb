@@ -108,15 +108,14 @@ end
       f.input :birthdate, :start_year => Date.today.year - 18, :end_year => Date.today.year - 80
       f.input :password
       f.input :phone_token
-      f.input :auth_token
-      f.input :role, :as => :select, :collection => [:user, :admin, :vip, :hookmaster]
+      f.input :role, :as => :select, :collection => [['Клиент',:user], ['Постоянник', :vip], ['Кальянщик', :hookmaster], ['Франчайзер', :franchiser]]
       f.input :skill_point
       f.input :level
       f.input :country, as: :string
       f.input :experience
       f.input :freezed
       f.input :party_count
-      f.input :lounge
+      f.input :lounge, collection: LoungePolicy::Scope.new(current_user, Lounge).resolve.all.map {|l| [l.title, l.id] }
       f.input :confirmed_at, :input_html => { :value => Time.zone.now }
       f.input :description
       f.input :quote
@@ -153,6 +152,9 @@ end
 
   controller do
     def permitted_params
+      if params[:user][:role] == 'admin' && !current_user.is_admin?
+        params[:user][:role] = 'client'
+      end
       params.permit!
     end
     def update

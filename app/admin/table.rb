@@ -12,9 +12,9 @@ ActiveAdmin.register Table do
   end
 
   form do |f|
-    f.inputs 'User' do
-      f.input :lounge
-      f.input :title
+    f.inputs 'Стол' do
+      f.input :lounge, collection: LoungePolicy::Scope.new(current_user, Lounge).resolve.all.map {|l| [l.title, l.id] }
+      # f.input :title
       f.input :number, :as => :select, :collection => Table.tables_from_1c(f.object.lounge_id).map {|t| ["#{t[:'Заголовок']} №#{t[:'Номер']}", t[:'Номер']] }
     end
     f.actions
@@ -25,12 +25,11 @@ ActiveAdmin.register Table do
       if params[:table][:number].present?
 
         tables = Table.tables_from_1c(params[:table][:lounge_id])
-        # raise tables.inspect
         table = tables.select { |t| t[:'Номер'] == params[:table][:number] }
 
         if table.present?
-
           params[:table][:title] = table[0][:'Заголовок']
+          params[:table][:seats] = tables[0][:'_Fld1669']
         end
       end
       super

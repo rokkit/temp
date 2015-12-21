@@ -7,7 +7,7 @@ class AchievementPolicy
   end
 
   def index?
-    @current_user.is_admin?
+    @current_user.is_admin? || @current_user.is_administrative?
   end
 
   def new?
@@ -19,7 +19,7 @@ class AchievementPolicy
   end
 
   def show?
-    @current_user.is_admin?
+    @current_user.is_admin? || @current_user.is_administrative?
   end
 
   def update?
@@ -27,6 +27,9 @@ class AchievementPolicy
   end
 
   def destroy?
+    @current_user.is_admin?
+  end
+  def destroy_all?
     @current_user.is_admin?
   end
   class Scope

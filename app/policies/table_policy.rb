@@ -7,27 +7,27 @@ class TablePolicy
   end
 
   def index?
-    @current_user.is_admin?
+    @current_user.is_admin? || @current_user.is_administrative?
   end
 
   def new?
-    @current_user.is_admin?
+    @current_user.is_admin? || @current_user.is_administrative?
   end
 
   def create?
-    @current_user.is_admin?
+    @current_user.is_admin? || @current_user.is_administrative?
   end
 
   def show?
-    @current_user.is_admin?
+    @current_user.is_admin? || @current_user.is_administrative? && @current_user.lounge == @model.lounge
   end
 
   def update?
-    @current_user.is_admin?
+    @current_user.is_admin? || @current_user.is_administrative? && @current_user.lounge == @model.lounge
   end
 
   def destroy?
-    @current_user.is_admin?
+    @current_user.is_admin? || @current_user.is_administrative? && @current_user.lounge == @model.lounge
   end
   class Scope
     attr_reader :user, :scope
@@ -38,7 +38,11 @@ class TablePolicy
     end
 
     def resolve
-      scope
+      if @user.is_admin?
+        scope.all
+      elsif @user.is_administrative?
+        scope.where(lounge_id: @user.lounge_id)
+      end
     end
   end
 end

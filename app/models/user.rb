@@ -32,10 +32,36 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, AvatarUploader
 
-  enum role: [:user, :admin, :vip, :hookmaster]
+  enum role: [:user, :admin, :vip, :hookmaster, :franchiser]
   after_initialize :set_default_role, if: :new_record?
 
 
+  def set_default_role
+    self.role ||= :user
+  end
+
+  def is_admin?
+    self.role == 'admin'
+  end
+
+  def is_hookmaster?
+    self.role == 'hookmaster'
+  end
+
+  def is_client?
+    self.role == 'user' || self.role == 'vip'
+  end
+  def is_franchiser?
+    self.role == 'franchiser'
+  end
+
+  def is_administrative?
+    self.is_franchiser? || self.is_hookmaster?
+  end
+
+  def send_confirmation_token_to_phone
+    SMSService.send(self.phone, "Код подтверждения: #{self.phone_token}")
+  end
 
   scope :clients, -> { where.not(role: 3).where.not(role: 1) }
   scope :hookmasters, -> { where(role: 3) }
@@ -209,17 +235,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def send_confirmation_token_to_phone
-    SMSService.send(self.phone, "Код подтверждения: #{self.phone_token}")
-  end
 
-  def set_default_role
-    self.role ||= :user
-  end
-
-  def is_admin?
-    self.role == 'admin'
-  end
 
 
 
