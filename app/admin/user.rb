@@ -99,17 +99,16 @@ end
           payments_ext.map { |p| p['_Fld1574'] }.reduce(0) { |a, sum| sum += a }.to_f
         end
       end
-      # panel "Покупки" do
-      #    table_for payments_ext do
-      #      column 'Дата' do |p|
-      #       #  Time.zone.strptime(p['_Period'], "%Y-%m-%d %H:%M")
-      #      end
-      #      column 'Склад' do |p|
-      #       #  p['_Fld1570RRef'].force_encoding("UTF-8")
-      #       #  Time.zone.strptime(p['_Period'], "%Y-%m-%d %H:%M")
-      #      end
-      #    end
-      # end
+      panel "Покупки" do
+         table_for payments_ext do
+           column 'Склад' do |p|
+             Lounge.get_from_ext(p['_Fld1570RRef'])['_Description']
+           end
+           column 'Сумма' do |p|
+             "#{p['_Fld1575']}р."
+           end
+         end
+      end
     end
     active_admin_comments
   end

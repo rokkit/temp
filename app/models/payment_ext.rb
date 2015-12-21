@@ -9,10 +9,10 @@ class PaymentExt < ActiveRecord::Base
   self.table_name = '_accumrg1568'
   self.primary_key = '_period'
 
-  def user
-    self._fld1663rref
-  end
-  def amount
-    self._fld1575
-  end
+  # def user
+  #   self._fld1663rref
+  # end
+  # def amount
+  #   self._fld1575
+  # end
 end
