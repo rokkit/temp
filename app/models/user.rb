@@ -35,12 +35,13 @@ class User < ActiveRecord::Base
   enum role: [:user, :admin, :vip, :hookmaster]
   after_initialize :set_default_role, if: :new_record?
 
-  before_save :set_auth_token
-  after_save :check_for_achievements
+
 
   scope :clients, -> { where.not(role: 3).where.not(role: 1) }
   scope :hookmasters, -> { where(role: 3) }
 
+  before_save :set_auth_token
+  after_save :check_for_achievements, :update_user_ext
   after_create :create_user_ext
 
   def birthdate_must_be_18_age
@@ -64,6 +65,24 @@ class User < ActiveRecord::Base
     end
   end
 
+  def update_user_ext
+    if self.idrref && self.birthdate_changed? && self.role != 'hookmaster'
+      client = TinyTds::Client.new username: 'sa',
+              password: 'Ve8Rohcier',
+              host: '176.112.198.251',
+              port: 1433,
+              database: 'uhp_demo1',
+              azure:false
+
+        idrref_binary = string_to_binary(self.idrref)
+        query = """
+        UPDATE [dbo].[_Reference42] SET [_Fld1664] = '"+self.birthdate.strftime('%Y-%m-%d %H:%M:%S')+"' WHERE [_IDRRef] = #{idrref_binary}
+        """
+        results = client.execute query
+        results.do
+    end
+  end
+
   def string_to_binary(value)
     "0x#{value}"
   end
@@ -76,6 +95,27 @@ class User < ActiveRecord::Base
     else
       value =~ /[^[:xdigit:]]/ ? value : [value].pack('H*')
     end
+  end
+
+  def get_user_ext
+    client = TinyTds::Client.new username: 'sa',
+            password: 'Ve8Rohcier',
+            host: '176.112.198.251',
+            port: 1433,
+            database: 'uhp_demo1',
+            azure:false
+
+      idrref_binary = string_to_binary(self.idrref)
+      query = """
+      EXEC sp_executesql N'SELECT  [_reference42].* FROM [_reference42]
+      WHERE [_reference42].[_IDRRef] = #{idrref_binary}'
+      """
+      results = client.execute query
+      rows = []
+      results.each do |row|
+        rows.push row
+      end
+      return rows[0]
   end
 
   def get_payments_from_ext

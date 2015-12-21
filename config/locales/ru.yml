@@ -74,6 +74,7 @@ ru:
           lounge_id: 'Ложа'
           confirmed_at: 'Аккаунт подтверждён'
           description: 'Описание кальянщика'
+          quote: 'Цитата'
           _destroy: 'Удалить'
         payment:
           amount: 'Сумма'

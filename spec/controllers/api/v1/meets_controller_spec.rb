@@ -28,6 +28,7 @@ RSpec.describe Api::V1::MeetsController, type: :controller do
   describe "POST #decline" do
     let(:user) { FactoryGirl.create :user }
     let(:target_user) { FactoryGirl.create :user }
+    let(:target_user2) { FactoryGirl.create :user }
     let!(:lounge) { FactoryGirl.create :lounge }
     let!(:table) { FactoryGirl.create :table, lounge: lounge }
     let(:reservation) { FactoryGirl.create :reservation, visit_date: DateTime.now + 5.days, table: table, user: user }
@@ -43,13 +44,26 @@ RSpec.describe Api::V1::MeetsController, type: :controller do
         meet.status
       }.from('wait').to('deleted')
     end
-    it "меняет статус бронирования на 'отменено'" do
-      expect {
-         post :decline, id: meet.id, format: :json
-         reservation.reload
-       }.to change {
-        reservation.status
-      }.from('wait').to('deleted')
+    context 'когда больше нет подтвержденных встреч' do
+      it "меняет статус бронирования на 'отменено'" do
+        expect {
+           post :decline, id: meet.id, format: :json
+           reservation.reload
+         }.to change {
+          reservation.status
+        }.from('wait').to('deleted')
+      end
+    end
+    context 'когда есть еще одна встреча' do
+      let!(:meet2) { FactoryGirl.create :meet, user: target_user2, reservation: reservation }
+      it "статус бронирования не меняется" do
+        expect {
+           post :decline, id: meet.id, format: :json
+           reservation.reload
+         }.to_not change {
+          reservation.status
+        }
+      end
     end
   end
 end

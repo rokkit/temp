@@ -18,6 +18,7 @@ ActiveAdmin.register Reservation do
   member_action :approve, method: :get do
     @reservation = Reservation.find(params[:id])
     @reservation.status = :approve
+    SMSService.send @reservation.user.phone, "Ваша бронь на #{@reservation.visit_date.strftime('%H:%M')} #{@reservation.visit_date.strftime('%d.%m.%Y')} подтверждена, ждём вас в \"#{@reservation.table.lounge.title}\""
     @reservation.save(validate: false)
     redirect_to admin_reservations_path, notice: "Бронирование подтверждено"
   end
@@ -25,6 +26,7 @@ ActiveAdmin.register Reservation do
   member_action :cancel, method: :get do
     @reservation = Reservation.find(params[:id])
     @reservation.status = :deleted
+    SMSService.send @reservation.user.phone, "К сожалению, Ваша бронь на #{@reservation.visit_date.strftime('%H:%M')} #{@reservation.visit_date.strftime('%d.%m.%Y')} отменена"
     @reservation.save(validate: false)
     redirect_to admin_reservations_path, notice: "Бронирование отменено"
   end
@@ -123,7 +125,7 @@ ActiveAdmin.register Reservation do
           '0x' + reservation.idrref
         end
         row :status_ext do
-          
+
         end
       end
     end

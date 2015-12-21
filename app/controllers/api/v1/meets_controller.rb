@@ -3,21 +3,27 @@ class Api::V1::MeetsController < Api::V1::BaseController
   respond_to :json
   def accept
     @meet = Meet.find(params[:id])
-    # if @meet.reservation.user == current_user
+    if @meet.status == 'wait'
       @meet.status = :approved
       @meet.save!
       respond_with @meet
-    # end
+    end
   end
   def decline
     @meet = Meet.find(params[:id])
-    # if @meet.reservation.user == current_user
+    puts @meet.status.inspect
+    if @meet.status == 'wait' && @meet.status == 'approved'
       @meet.status = :deleted
-      reservation = Reservation.find(@meet.reservation_id)
-      reservation.status = :deleted
-      reservation.save!
       @meet.save!
+      reservation = Reservation.find(@meet.reservation_id)
+      # raise Meet.where(user: @meet.id, reservation_id: reservation.id).where.not(status: 2).inspect
+
+      if !Meet.where(reservation_id: reservation.id).where.not(status: 2).present?
+        reservation.status = :deleted
+        reservation.save!
+      end
+
       respond_with @meet
-    # end
+    end
   end
 end

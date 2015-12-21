@@ -7,15 +7,22 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   end
 
   describe '#update' do
-    let!(:user) { FactoryGirl.create :user, avatar: nil }
+    let!(:user) { FactoryGirl.create :user, name: 'Name' }
     before do
-      @request.env['devise.mapping'] = Devise.mappings[:user]
       sign_in user
+
     end
     it "updates user profile" do
-      put :update, id: user.id, user: {name: 'New Name', avatar: Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'support', 'gerb_spb_liberty.svg'))}, format: :json
+      put :update, id: user.id, user: {name: 'New Name' }, format: :json
       user.reload
-      expect(json_body[:avatar]).to eq user.avatar_url
+      expect(json_body[:name]).to eq user.name
+    end
+    context 'когда клиент обновляет дату рождения' do
+      it "обновляется запись в 1с" do
+        put :update, id: user.id, user: {birthdate: (Date.today - 20.years)}, format: :json
+        user.reload
+        expect(json_body[:birthdate]).to be_present
+      end
     end
     describe '"Open Profile" achievement' do
       context 'when all profile attributes filled' do
@@ -59,7 +66,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       end
       describe "рейтинг за все время" do
         let!(:user3) { FactoryGirl.create :user, experience: 3000 }
-        let!(:user4) { FactoryGirl.create :user, experience: 6000 }
+        let!(:user4) { FactoryGirl.create :user, experience: 8000 }
         it "возвращает рейтинг пользователей" do
           get :rating, role: 'user', format: :json
           expect(json_body[:users_month]).to eq []
