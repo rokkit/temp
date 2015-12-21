@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::AchievementsController, type: :controller do
  render_views
+ before do
+    allow_any_instance_of(User).to receive(:create_user_ext).and_return('1234')
+ end
  describe '#index' do
    let!(:achievement) { FactoryGirl.create :achievement }
    let!(:user) { FactoryGirl.create :user }

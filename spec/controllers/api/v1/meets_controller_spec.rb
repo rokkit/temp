@@ -2,6 +2,10 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::MeetsController, type: :controller do
   render_views
+  before do
+    #  expect_any_instance_of(User).to receive(:create_user_ext).and_return('1234')
+     allow_any_instance_of(User).to receive(:create_user_ext).and_return('1234')
+  end
   describe "POST #accept" do
     let(:user) { FactoryGirl.create :user }
     let(:target_user) { FactoryGirl.create :user }

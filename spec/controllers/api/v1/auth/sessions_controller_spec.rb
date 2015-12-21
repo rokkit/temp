@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::Auth::SessionsController, type: :controller do
   render_views
+  before do
+     allow_any_instance_of(User).to receive(:create_user_ext).and_return('1234')
+  end
   describe 'session creation when user exists' do
     let!(:user) { FactoryGirl.create(:user) }
     describe 'when phone and password valid' do

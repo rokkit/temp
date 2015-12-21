@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::UsersController, type: :controller do
   render_views
+  before do
+     allow_any_instance_of(User).to receive(:create_user_ext).and_return('1234')
+  end
 
   describe '#update' do
     let!(:user) { FactoryGirl.create :user, avatar: nil }
@@ -19,7 +22,6 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         it 'add achievement to user' do
           put :update, id: user.id,
             name: 'New Name',
-            avatar: Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'support', 'gerb_spb_liberty.svg')),
             hobby: 'Hobby',
             employe: 'employe',
             work_company: 'work',
@@ -43,20 +45,6 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
   end
 
-  describe '#show' do
-    let!(:user) { FactoryGirl.create :user }
-    before do
-      sign_in user
-    end
-    it 'return experience of user' do
-      get :show, id: user.id, format: :json
-      expect(json_body[:exp]).to be_present
-    end
-    it 'returns visits of user' do
-      get :show, id: user.id, format: :json
-      expect(json_body[:visits]).to_not be_nil
-    end
-  end
   describe '#rating' do
     context 'рейтинг клиентов' do
       let!(:user) { FactoryGirl.create :user }

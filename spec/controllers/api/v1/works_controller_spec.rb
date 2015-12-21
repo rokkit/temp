@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::WorksController, type: :controller do
   render_views
+  before do
+     allow_any_instance_of(User).to receive(:create_user_ext).and_return('1234')
+  end
   let!(:user) { FactoryGirl.create :user, role: :hookmaster }
   let!(:lounge) { FactoryGirl.create :lounge }
   before do

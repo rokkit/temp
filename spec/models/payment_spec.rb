@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Payment, type: :model do
+  before do
+     allow_any_instance_of(User).to receive(:create_user_ext).and_return('1234')
+  end
   describe "Добавление опыта клиенту после создания" do
     let(:user) { FactoryGirl.create :user }
     context 'когда платеж 1000р.' do

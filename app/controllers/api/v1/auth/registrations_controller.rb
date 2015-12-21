@@ -19,6 +19,7 @@ class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
     @user = User.find_by_phone_token(params[:code])
     if @user && @user.confirmed_at.nil?
       @user.update_attribute :confirmed_at, DateTime.now
+      @user.create_user_ext()
       sign_in @user
       respond_with @user
     else

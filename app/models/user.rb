@@ -44,25 +44,24 @@ class User < ActiveRecord::Base
   after_create :create_user_ext
 
   def birthdate_must_be_18_age
-    if self.confirmed_at.present?
-      errors.add(:birthdate, 'Возраст меньше 18 лет') if (DateTime.parse(self.birthdate.to_s) > Date.today - 18.years)
-    end
+    # if self.confirmed_at.present?
+      # errors.add(:birthdate, 'Возраст меньше 18 лет') if (DateTime.parse(self.birthdate.to_s) > Date.today - 18.years)
+    # end
   end
-  # scope :lounge_eq, -> (lounge) { joins(:table).where("tables.lounge_id = ?", lounge) }
-  # ransacker :lounge_table_eq,
-  #         :formatter => ->(lounge) {
-  #            joins(:table).where("tables.lounge_id = ?", lounge).map(&:id)
-  #         } do |parent|
-  #     parent.table[:id]
-  # end
+
   def get_from_ext
     UserExt.where(_Fld496: self.phone).first
   end
   def create_user_ext
-    SoapService.call(:create_customer, message: { 'Name' => self.name, 'Tel' => self.phone })
-    user_ext = self.get_from_ext()
-    self.idrref = binary_to_string(user_ext._IDRRef)
-    self.save!
+    puts 'create_user_ext'
+    if self.role != 'hookmaster'
+      SoapService.call(:create_customer, message: { 'Name' => self.name, 'Tel' => self.phone })
+      user_ext = self.get_from_ext()
+      if user_ext && user_ext._IDRRef
+        self.idrref = binary_to_string(user_ext._IDRRef)
+        self.save!
+      end
+    end
   end
 
   def string_to_binary(value)
@@ -129,7 +128,6 @@ class User < ActiveRecord::Base
           AchievementsUser.create!(user: self, achievement: achievement)
       end
     end
-
   end
   # Ачимент "Изобретательность"
   # Проведите мероприятие

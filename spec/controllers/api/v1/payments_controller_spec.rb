@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::PaymentsController, type: :controller do
+  before do
+     allow_any_instance_of(User).to receive(:create_user_ext).and_return('1234')
+  end
   describe '#create accepting external request about new payment' do
     let!(:user) { FactoryGirl.create :user }
     it 'returns success responce' do

@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::ReservationsController, type: :controller do
   render_views
+  before do
+     allow_any_instance_of(User).to receive(:create_user_ext).and_return('1234')
+  end
   describe '#create' do
     let(:user) { FactoryGirl.create :user }
     let(:user2) { FactoryGirl.create :user }
@@ -13,7 +16,7 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
 
     context 'простой вариант' do
       it 'creates a record to user' do
-        post :create, lounge: lounge.id, visit_date: (DateTime.now + 5.hours).strftime('%Y-%m-%d %R')
+        post :create, lounge: lounge.id, visit_date: (DateTime.now + 5.hours).strftime('%d.%m.%Y %R')
         expect(json_body[:errors]).to_not be_present
       end
 
@@ -21,25 +24,25 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
 
     context 'когда время в прошлом' do
       it 'returns error' do
-        post :create, lounge: lounge.id, visit_date: '2015-09-02 17:00'
+        post :create, lounge: lounge.id, visit_date: '02.09.2015 17:00'
         expect(json_body[:errors][:visit_date]).to eq 'too_late'
       end
     end
     context 'когда нет свободных столов' do
       it 'returns error' do
-        Reservation.create! user: user, visit_date: '2016-12-03 18:00', table: table
-        # post :create, lounge: lounge.id, visit_date: '2016-12-03 18:00'#(DateTime.now + 5.hours).strftime('%Y-%m-%d %R')
+        Reservation.create! user: user, visit_date: '03.12.2016 18:00', table: table
+        # post :create, lounge: lounge.id, visit_date: '2016-12-03 18:00'#(DateTime.now + 5.hours).strftime('%d.%m.%Y %R')
         # expect(json_body[:errors]).to_not be_present
         sign_in user2
-        post :create, lounge: lounge.id, visit_date: '2016-12-03 18:30'#(DateTime.now + 5.hours).strftime('%Y-%m-%d %R')
+        post :create, lounge: lounge.id, visit_date: '03.12.2016 18:30'#(DateTime.now + 5.hours).strftime('%d.%m.%Y %R')
         expect(json_body[:errors][:visit_date]).to eq 'reserved'
-        post :create, lounge: lounge.id, visit_date: '2016-12-03 17:30'
+        post :create, lounge: lounge.id, visit_date: '03.12.2016 17:30'
         expect(json_body[:errors][:visit_date]).to eq 'reserved'
       end
       it 'returns error' do
-        Reservation.create! user: user, visit_date: '2016-12-03 19:00', table: table
+        Reservation.create! user: user, visit_date: '03.12.2016 19:00', table: table
         sign_in user2
-        post :create, lounge: lounge.id, visit_date: '2016-12-03 18:00'#(DateTime.now + 6.hours).strftime('%Y-%m-%d %R')
+        post :create, lounge: lounge.id, visit_date: '03.12.2016 18:00'#(DateTime.now + 6.hours).strftime('%d.%m.%Y %R')
         expect(json_body[:errors][:visit_date]).to eq 'reserved'
       end
     end
@@ -48,45 +51,45 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
       let!(:table) { FactoryGirl.create :table, lounge: lounge }
       let!(:table2) { FactoryGirl.create :table, lounge: lounge }
       it 'create reserv' do
-        Reservation.create! user: user, visit_date: '2016-12-03 18:00', table: table
+        Reservation.create! user: user, visit_date: '03.12.2016 18:00', table: table
         sign_in user2
-        post :create, lounge: lounge.id, visit_date: '2016-12-03 18:30'#(DateTime.now + 1.hours).strftime('%Y-%m-%d %R')
+        post :create, lounge: lounge.id, visit_date: '03.12.2016 18:30'#(DateTime.now + 1.hours).strftime('%d.%m.%Y %R')
         expect(json_body[:errors]).to_not be_present
       end
       it 'create reserv' do
-        Reservation.create! user: user, visit_date: '2016-12-03 20:00', table: table
+        Reservation.create! user: user, visit_date: '03.12.2016 20:00', table: table
         sign_in user2
-        post :create, lounge: lounge.id, visit_date: '2016-12-03 17:00'#(DateTime.now + 1.hours).strftime('%Y-%m-%d %R')
+        post :create, lounge: lounge.id, visit_date: '03.12.2016 17:00'#(DateTime.now + 1.hours).strftime('%d.%m.%Y %R')
         expect(json_body[:errors]).to_not be_present
       end
       it 'return error' do
-        Reservation.create! user: user, visit_date: '2016-12-03 17:00', table: table
-        Reservation.create! user: user, visit_date: '2016-12-03 18:00', table: table2
+        Reservation.create! user: user, visit_date: '03.12.2016 17:00', table: table
+        Reservation.create! user: user, visit_date: '03.12.2016 18:00', table: table2
         sign_in user2
-        post :create, lounge: lounge.id, visit_date: '2016-12-03 18:00'#(DateTime.now + 1.hours).strftime('%Y-%m-%d %R')
+        post :create, lounge: lounge.id, visit_date: '03.12.2016 18:00'#(DateTime.now + 1.hours).strftime('%d.%m.%Y %R')
         expect(json_body[:errors]).to be_present
       end
       context 'когда один клиент бронирует на один и тот же день' do
         it 'returns error' do
-          Reservation.create! user: user, visit_date: '2016-12-03 17:00', table: table
-          post :create, lounge: lounge.id, visit_date: '2016-12-03 23:00'
-          expect(json_body[:errors]).to be_present
+          Reservation.create! user: user, visit_date: '03.12.2016 17:00', table: table
+          post :create, lounge: lounge.id, visit_date: '03.12.2016 23:00'
+          expect(json_body[:errors]).to_not be_present
         end
       end
     end
     context 'когда клиенты бронируют последовательно по времени' do
       context 'когда только один столик свободен' do
         it 'create reserv' do
-          Reservation.create! user: user, visit_date: '2016-12-03 17:00', table: table
+          Reservation.create! user: user, visit_date: '03.12.2016 17:00', table: table
           sign_in user2
-          post :create, lounge: lounge.id, visit_date: '2016-12-03 20:00'#(DateTime.now + 6.hours).strftime('%Y-%m-%d %R')
+          post :create, lounge: lounge.id, visit_date: '03.12.2016 20:00'#(DateTime.now + 6.hours).strftime('%d.%m.%Y %R')
           expect(json_body[:errors]).to_not be_present
         end
 
         it 'create reserv' do
-          Reservation.create! user: user, visit_date: '2016-12-03 20:00', table: table
+          Reservation.create! user: user, visit_date: '03.12.2016 20:00', table: table
           sign_in user2
-          post :create, lounge: lounge.id, visit_date: '2016-12-03 17:00'#(DateTime.now + 1.hours).strftime('%Y-%m-%d %R')
+          post :create, lounge: lounge.id, visit_date: '03.12.2016 17:00'#(DateTime.now + 1.hours).strftime('%d.%m.%Y %R')
           expect(json_body[:errors]).to_not be_present
         end
       end
@@ -99,29 +102,29 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
 
           context 'когда вип забронировал, его бронь длится 2 часа 30 минут' do
             before do
-              Reservation.create user: vip_user, visit_date: '2016-12-03 17:00', table: table
+              Reservation.create user: vip_user, visit_date: '03.12.2016 17:00', table: table
               sign_in user
             end
             it 'errors' do
-              post :create, lounge: lounge.id, visit_date: '2016-12-03 19:00'#(DateTime.now + 1.hours).strftime('%Y-%m-%d %R')
+              post :create, lounge: lounge.id, visit_date: '03.12.2016 19:00'#(DateTime.now + 1.hours).strftime('%d.%m.%Y %R')
               expect(json_body[:errors][:visit_date]).to be_present
             end
             it 'ok' do
-              post :create, lounge: lounge.id, visit_date: '2016-12-03 19:30'#(DateTime.now + 1.hours).strftime('%Y-%m-%d %R')
+              post :create, lounge: lounge.id, visit_date: '03.12.2016 19:30'#(DateTime.now + 1.hours).strftime('%d.%m.%Y %R')
               expect(json_body[:errors]).to_not be_present
             end
           end
           context 'когда обычные клиент забронировал, его бронь длится 1 часа 30 минут' do
             before do
-              Reservation.create user: user, visit_date: '2016-12-03 17:00', table: table
+              Reservation.create user: user, visit_date: '03.12.2016 17:00', table: table
               sign_in vip_user
             end
             it 'ok' do
-              post :create, lounge: lounge.id, visit_date: '2016-12-03 18:30'#(DateTime.now + 1.hours).strftime('%Y-%m-%d %R')
+              post :create, lounge: lounge.id, visit_date: '03.12.2016 18:30'#(DateTime.now + 1.hours).strftime('%d.%m.%Y %R')
               expect(json_body[:errors]).to_not be_present
             end
             it 'error' do
-              post :create, lounge: lounge.id, visit_date: '2016-12-03 18:00'#(DateTime.now + 1.hours).strftime('%Y-%m-%d %R')
+              post :create, lounge: lounge.id, visit_date: '03.12.2016 18:00'#(DateTime.now + 1.hours).strftime('%d.%m.%Y %R')
               expect(json_body[:errors]).to be_present
             end
           end
@@ -141,7 +144,7 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
             sign_in user_vip
           end
           it 'creates reservation' do
-            post :create, lounge: lounge.id, visit_date: '2016-12-03 20:00'
+            post :create, lounge: lounge.id, visit_date: '03.12.2016 20:00'
             expect(json_body[:errors]).to_not be_present
           end
         end
@@ -150,7 +153,7 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
             sign_in user
           end
           it 'returns error' do
-            post :create, lounge: lounge.id, visit_date: '2016-12-03 20:00'
+            post :create, lounge: lounge.id, visit_date: '03.12.2016 20:00'
             expect(json_body[:errors]).to be_present
           end
         end
@@ -168,13 +171,13 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
         let(:target_user) { FactoryGirl.create :user, level: 0 }
         it "встреча создается" do
           expect {
-            post :create, meets: [target_user.id], lounge: lounge.id, visit_date: (DateTime.now + 5.hours).strftime('%Y-%m-%d %R')
+            post :create, meets: [target_user.id], lounge: lounge.id, visit_date: (DateTime.now + 5.hours).strftime('%d.%m.%Y %R')
           }.to change { Meet.count }.from(0).to(1)
         end
 
         it 'отправляется СМС приглашенному' do
           expect(SMSService).to receive(:send).and_return(true)
-          post :create, meets: [target_user.id], lounge: lounge.id, visit_date: (DateTime.now + 5.hours).strftime('%Y-%m-%d %R')
+          post :create, meets: [target_user.id], lounge: lounge.id, visit_date: (DateTime.now + 5.hours).strftime('%d.%m.%Y %R')
         end
       end
       context 'если уровень таргета выше' do
@@ -182,7 +185,7 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
         let(:target_user) { FactoryGirl.create :user, level: 10 }
         it "ошибка" do
           expect {
-            post :create, meets: [target_user.id], lounge: lounge.id, visit_date: (DateTime.now + 5.hours).strftime('%Y-%m-%d %R')
+            post :create, meets: [target_user.id], lounge: lounge.id, visit_date: (DateTime.now + 5.hours).strftime('%d.%m.%Y %R')
           }.to_not change { Meet.count }
         end
       end
@@ -198,7 +201,7 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
         sign_in user
       end
       it 'returns error' do
-        post :create, visit_date: (DateTime.now + 30.minutes).strftime('%Y-%m-%d %R'), lounge: lounge.id
+        post :create, visit_date: (DateTime.now + 30.minutes).strftime('%d.%m.%Y %R'), lounge: lounge.id
         expect(json_body[:errors]).to be_present
       end
     end
