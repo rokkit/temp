@@ -89,7 +89,9 @@ end
     panel 'Данные 1C' do
       attributes_table_for user do
         row :idrref do
-          '0x' + user.idrref
+          if user.idrref
+            '0x' + user.idrref
+          end
         end
         row 'Потратил всего' do
           user.get_payments_from_ext.map { |p| p['_Fld1574'] }.reduce(0) { |a, sum| sum += a }.to_f
