@@ -5,6 +5,7 @@ json.parents SkillsLink.where(child_id: skill.id).pluck(:parent_id)
 json.has user_skills.pluck(:skill_id).include?(skill.id)
 
 if skill_user = user_skills.where(skill_id: skill.id).first
+  json.used_count skill_user.used_count
   json.taken_at skill_user.taken_at
   json.used_at skill_user.used_at
   if skill_user.used_at

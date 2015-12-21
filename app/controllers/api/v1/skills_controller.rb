@@ -56,6 +56,7 @@ class Api::V1::SkillsController < Api::V1::BaseController
       skill_user = SkillsUsers.where(skill_id: @skill.id, user_id: current_user.id).first
       if !skill_user.used_at || ( skill_user.cooldown_end_at && skill_user.cooldown_end_at <= Time.zone.now )
         skill_user.used_at = DateTime.now
+        skill_user.used_count += 1
         # puts @skill.cooldown.inspect
         if @skill.cooldown
           skill_user.cooldown_end_at = skill_user.used_at + @skill.cooldown.days

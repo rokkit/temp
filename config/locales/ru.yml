@@ -110,6 +110,10 @@ ru:
           map_description: "Описание (блок карты)"
           blazon: 'Герб'
           vk_link: "Группа ВК"
+        skills_users:
+          skill: 'Навык'
+          used_at: 'Использован'
+          cooldown_end_at: 'Кулдаун навыка'
   active_admin:
     dashboard: "Панель управления"
     dashboard_welcome:

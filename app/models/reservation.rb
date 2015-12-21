@@ -3,6 +3,7 @@ class Reservation < ActiveRecord::Base
   belongs_to :table
   belongs_to :user
   validate :visit_date_must_be_in_future
+  validate :client_age_must_be_18
 
 
 
@@ -183,5 +184,9 @@ private
   # Дата должна быть больше текущей
   def visit_date_must_be_in_future
     errors.add(:visit_date, 'reservation.past_date') if visit_date < DateTime.now
+  end
+
+  def client_age_must_be_18
+    errors.add(:user, 'wrong_age.') if self.user.birthdate > Date.today - 18.years
   end
 end

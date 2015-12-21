@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
 
   validates :level, :numericality => { :less_than_or_equal_to => 30, greater_than_or_equal_to: 0 }
   validates :experience, :numericality => { greater_than_or_equal_to: 0 }
+  validates :skill_point, :numericality => { greater_than_or_equal_to: 0 }
   validate :birthdate_must_be_18_age
 
   mount_uploader :avatar, AvatarUploader
@@ -153,7 +154,7 @@ class User < ActiveRecord::Base
             azure:false
 
       idrref_binary = string_to_binary(self.idrref)
-      # idrref_binary = string_to_binary('A988D43D7E29EA8F11E5961EEED895B2')
+      idrref_binary = string_to_binary('A988D43D7E29EA8F11E5961EEED895B2')
       query = """
       EXEC sp_executesql N'SELECT  [_accumrg1568].* FROM [_accumrg1568]
       WHERE [_accumrg1568].[_Fld1663rref] = #{idrref_binary}'

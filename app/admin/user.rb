@@ -52,15 +52,15 @@ end
       row :quote
 
       panel "Навыки" do
-         table_for user.skills do
+         table_for SkillsUsers.where(user_id: user.id) do
            column 'Название' do |skill|
-             skill.name
+             skill.skill.name
            end
            column 'Использован' do |skill|
-             skill.used_at
+             skill.skill.used_at
            end
            column 'Следующее использование' do |skill|
-             skill.cooldown_end_at
+             skill.skill.cooldown_end_at
            end
          end
       end
@@ -87,16 +87,29 @@ end
       end
     end
     panel 'Данные 1C' do
+      payments_ext = user.get_payments_from_ext()
       attributes_table_for user do
+
         row :idrref do
           if user.idrref
             '0x' + user.idrref
           end
         end
         row 'Потратил всего' do
-          user.get_payments_from_ext.map { |p| p['_Fld1574'] }.reduce(0) { |a, sum| sum += a }.to_f
+          payments_ext.map { |p| p['_Fld1574'] }.reduce(0) { |a, sum| sum += a }.to_f
         end
       end
+      # panel "Покупки" do
+      #    table_for payments_ext do
+      #      column 'Дата' do |p|
+      #       #  Time.zone.strptime(p['_Period'], "%Y-%m-%d %H:%M")
+      #      end
+      #      column 'Склад' do |p|
+      #       #  p['_Fld1570RRef'].force_encoding("UTF-8")
+      #       #  Time.zone.strptime(p['_Period'], "%Y-%m-%d %H:%M")
+      #      end
+      #    end
+      # end
     end
     active_admin_comments
   end
@@ -109,10 +122,7 @@ end
       f.input :password
       f.input :phone_token
       f.input :role, :as => :select, :collection => [['Клиент',:user], ['Постоянник', :vip], ['Кальянщик', :hookmaster], ['Франчайзер', :franchiser]]
-      f.input :skill_point
-      f.input :level
       f.input :country, as: :string
-      f.input :experience
       f.input :freezed
       f.input :party_count
       f.input :lounge, collection: LoungePolicy::Scope.new(current_user, Lounge).resolve.all.map {|l| [l.title, l.id] }
@@ -155,6 +165,7 @@ end
       if params[:user][:role] == 'admin' && !current_user.is_admin?
         params[:user][:role] = 'client'
       end
+
       params.permit!
     end
     def update
@@ -162,7 +173,10 @@ end
         params[:user].delete("password")
         params[:user].delete("password_confirmation")
       end
-      super
+      @user = User.find(params[:id])
+      if @user.update_attributes permitted_params[:user]
+        redirect_to admin_user_path(@user), notice: 'Профиль успешно сохранен'
+      end
     end
   end
   batch_action :destroy do |ids|

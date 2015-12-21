@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151221143004) do
+ActiveRecord::Schema.define(version: 20151221181033) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -203,6 +203,7 @@ ActiveRecord::Schema.define(version: 20151221143004) do
     t.datetime "used_at"
     t.datetime "taken_at"
     t.datetime "cooldown_end_at"
+    t.integer  "used_count",      default: 0
   end
 
   create_table "tables", force: :cascade do |t|
