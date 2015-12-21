@@ -14,11 +14,13 @@ json.lounges @lounges do |lounge|
     json.extract! table, :id, :title
   end
 end
-json.users User.clients.order(:experience) do|user|
+json.users User.clients.order(:experience).where('level <= ?', @user.level) do|user|
   json.extract! user, :id, :name, :experience, :level
 end
-json.payments @payments do|payment|
+json.payments @payments do |payment|
   json.extract! payment, :id, :amount, :created_at
+  json.lounge payment.table.lounge.title
+  json.color payment.table.lounge.color
 end
 
 json.meets @meets do|meet|
