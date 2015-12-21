@@ -384,7 +384,7 @@ DEPENDENCIES
   active_admin-sortable_tree
   activeadmin (~> 1.0.0.pre1)
   activeadmin-select2!
-  activerecord-sqlserver-adapter
+  activerecord-sqlserver-adapter (~> 4.2.6)
   airborne
   ancestry
   better_errors

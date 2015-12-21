@@ -55,11 +55,50 @@ class User < ActiveRecord::Base
   #         } do |parent|
   #     parent.table[:id]
   # end
-
+  def get_from_ext
+    UserExt.where(_Fld496: self.phone).first
+  end
   def create_user_ext
     SoapService.call(:create_customer, message: { 'Name' => self.name, 'Tel' => self.phone })
-    # self.idrref = _idrref
-    # self.save
+    user_ext = self.get_from_ext()
+    self.idrref = binary_to_string(user_ext._IDRRef)
+    self.save!
+  end
+
+  def string_to_binary(value)
+    "0x#{value}"
+  end
+
+
+
+  def binary_to_string(value)
+    if value.length == 16
+      value = value.unpack('C*').map{ |b| "%02X" % b }.join('')
+    else
+      value =~ /[^[:xdigit:]]/ ? value : [value].pack('H*')
+    end
+  end
+
+  def get_payments_from_ext
+    client = TinyTds::Client.new username: 'sa',
+            password: 'Ve8Rohcier',
+            host: '176.112.198.251',
+            port: 1433,
+            database: 'uhp_demo1',
+            azure:false
+
+      idrref_binary = string_to_binary(self.idrref)
+      # idrref_binary = string_to_binary('A988D43D7E29EA8F11E5961EEED895B2')
+      query = """
+      EXEC sp_executesql N'SELECT  [_accumrg1568].* FROM [_accumrg1568]
+      WHERE [_accumrg1568].[_Fld1663rref] = #{idrref_binary}'
+      """
+      results = client.execute query
+      rows = []
+      results.each do |row|
+        rows.push row
+      end
+      return rows
   end
 
   def to_s

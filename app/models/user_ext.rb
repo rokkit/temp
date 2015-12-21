@@ -18,4 +18,21 @@ class UserExt < ActiveRecord::Base
   def phone=(p)
     self._fld496 = p
   end
+
+  def get_idrref
+    binary_to_string(self._IDRRef)
+  end
+
+  def string_to_binary(value)
+    "0x#{value}"
+  end
+
+
+  def binary_to_string(value)
+    if value.length == 16
+      value = value.unpack('C*').map{ |b| "%02X" % b }.join('')
+    else
+      value =~ /[^[:xdigit:]]/ ? value : [value].pack('H*')
+    end
+  end
 end

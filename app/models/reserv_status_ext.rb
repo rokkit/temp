@@ -7,4 +7,5 @@ class ReservStatusExt < ActiveRecord::Base
     :database => "uhp_demo1"
   })
   self.table_name = '_enum113'
+  self.primary_key = '_IDRRef'
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151221000255) do
+ActiveRecord::Schema.define(version: 20151221071557) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -155,12 +155,12 @@ ActiveRecord::Schema.define(version: 20151221000255) do
     t.integer  "user_id"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.binary   "idrref"
     t.integer  "client_count"
     t.string   "duration"
     t.datetime "end_visit_date"
     t.integer  "status",         default: 0
     t.string   "code"
+    t.string   "idrref"
   end
 
   add_index "reservations", ["table_id"], name: "index_reservations_on_table_id", using: :btree
@@ -252,7 +252,6 @@ ActiveRecord::Schema.define(version: 20151221000255) do
     t.string   "auth_token"
     t.string   "email"
     t.decimal  "spent_money",            precision: 8, scale: 2
-    t.binary   "idrref"
     t.string   "city"
     t.string   "employe"
     t.string   "work_company"
@@ -263,6 +262,7 @@ ActiveRecord::Schema.define(version: 20151221000255) do
     t.date     "birthdate"
     t.string   "country",                                        default: ""
     t.text     "description"
+    t.string   "idrref"
   end
 
   add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree

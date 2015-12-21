@@ -1,3 +1,4 @@
+# encoding: UTF-8
 ActiveAdmin.register User do
   permit_params :email, :password, :password_confirmation, :phone_token, :role,
                 :name, :city, :employe, :work_company, :hobby, :skills_users_attributes, :country, :freezed,
@@ -32,6 +33,7 @@ end
   filter :created_at
 
   show do
+
     attributes_table do
       row :name
       row :phone
@@ -46,6 +48,7 @@ end
       row :freezed
       row :party_count
       row :lounge
+
       panel "Навыки" do
          table_for user.skills do
            column 'Название' do |skill|
@@ -81,12 +84,21 @@ end
          end
       end
     end
+    panel 'Данные 1C' do
+      attributes_table_for user do
+        row :idrref do
+          '0x' + user.idrref
+        end
+        row 'Потратил всего' do
+          user.get_payments_from_ext.map { |p| p['_Fld1574'] }.reduce(0) { |a, sum| sum += a }.to_f
+        end
+      end
+    end
     active_admin_comments
   end
 
   form do |f|
     f.inputs 'User' do
-      f.input :email
       f.input :phone
       f.input :name
       f.input :birthdate, :start_year => Date.today.year - 18, :end_year => Date.today.year - 80

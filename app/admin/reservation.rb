@@ -94,29 +94,38 @@ ActiveAdmin.register Reservation do
 
   show do
     attributes_table do
-    row :id
-    row :code
-    row :table
-    row :user
-    row :visit_date
-    row :end_visit_date
-    row :created_at
-    row :client_count
-    row :duration
-    row :status do |r|
-      Reservation.format_status r.status
-    end
-    panel "Встречи" do
-       table_for reservation.meets do
-         column 'Клиент' do |meet|
-           meet.user.name
+      row :id
+      row :code
+      row :table
+      row :user
+      row :visit_date
+      row :end_visit_date
+      row :created_at
+      row :client_count
+      row :duration
+      row :status do |r|
+        Reservation.format_status r.status
+      end
+      panel "Встречи" do
+         table_for reservation.meets do
+           column 'Клиент' do |meet|
+             meet.user.name
+           end
+           column 'Статус' do |meet|
+             Meet.format_status(meet.status)
+           end
          end
-         column 'Статус' do |meet|
-           Meet.format_status(meet.status)
-         end
-       end
+      end
     end
-  end
-
+    panel 'Данные 1C' do
+      attributes_table_for reservation do
+        row :idrref do
+          '0x' + reservation.idrref
+        end
+        row :status_ext do
+          
+        end
+      end
+    end
   end
 end
