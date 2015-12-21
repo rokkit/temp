@@ -15,7 +15,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
       render json: { errors: { visit_date: 'wrong_date' } }
       return false
     end
-    visit_date = Time.zone.strptime(params[:visit_date], "%Y-%m-%d %H:%M")
+    visit_date = Time.zone.strptime(params[:visit_date], "%d.%m.%Y %H:%M")
 
     if visit_date < Time.zone.now + 50.minutes
       render json: { errors: { visit_date: 'too_late' } }

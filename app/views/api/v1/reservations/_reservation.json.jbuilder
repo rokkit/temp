@@ -5,10 +5,10 @@ json.created_at res.created_at
 if res.meets.present?
   json.client_count res.meets.count + 1
 else
-  if res.client_count == 2
-    json.client_count '2-3'
+  if res.client_count == 4
+    json.client_count '1-4'
   else
-    json.client_count '4-5'
+    json.client_count '4-6'
   end
 end
 json.lounge do
