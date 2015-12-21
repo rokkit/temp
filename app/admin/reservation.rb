@@ -122,10 +122,14 @@ ActiveAdmin.register Reservation do
     panel 'Данные 1C' do
       attributes_table_for reservation do
         row :idrref do
-          '0x' + reservation.idrref
+          if reservation.idrref
+            '0x' + reservation.idrref
+          end
         end
         row :status_ext do
-
+          if reservation.idrref
+            reservation.get_status_from_ext()
+          end
         end
       end
     end

@@ -46,7 +46,7 @@ class Reservation < ActiveRecord::Base
     end
   end
   def create_ext_record
-    if self.table.try :number
+    if self.table.try(:number) && self.user.idrref
       resp = SoapService.call(:reserve_save, message: {
         'КодСтола' => self.table.number,
         'ДатаРезерва' => self.visit_date.strftime('%Y-%m-%dT%H:%M:%S'),

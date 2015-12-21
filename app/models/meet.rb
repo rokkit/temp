@@ -18,7 +18,7 @@ class Meet < ActiveRecord::Base
   end
   private
   def send_sms_notify
-    text = "Вас пригласили на встречу"
+    text = "Вас пригласил на встречу в \"#{self.reservation.lounge.title}\" #{self.reservation.visit_date.strftime('%d.%m.%Y')} в #{self.reservation.visit_date.strftime('%H:%M')}  пользователь #{self.reservation.user.name}, пожалуйста перейдите в личный кабинет, чтобы дать ответ."
     SMSService.send(self.user.phone, text)
   end
 end
