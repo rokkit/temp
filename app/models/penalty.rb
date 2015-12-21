@@ -10,4 +10,8 @@ class Penalty < ActiveRecord::Base
   def generate_slug
     self.slug = self.name.parameterize
   end
+
+  def has?(user_id, penalties_users)
+    penalties_users.where(user_id: user_id, penalty_id: self.id).first.present?
+  end
 end

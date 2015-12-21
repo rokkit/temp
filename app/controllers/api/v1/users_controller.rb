@@ -81,8 +81,11 @@ class Api::V1::UsersController < Api::V1::BaseController
 
     @penalties_users = PenaltiesUser.where(user_id: @user.id)
     @penalties = Penalty.all.order(:id)
+    @penalties = @penalties.sort_by {|h| [h.has?(@user.id, @penalties_users) ? 0 : 1,h[:id]]}
+
     @bonuses_users = BonusUser.where(user_id: @user.id)
     @bonuses = Bonus.all.order(:id)
+    @bonuses = @bonuses.sort_by {|h| [h.has?(@user.id, @bonuses_users) ? 0 : 1,h[:id]]}
 
     @works = Work.where(user_id: @user.id).includes(:lounge)
              .order(work_at: :desc)
