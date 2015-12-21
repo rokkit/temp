@@ -187,6 +187,6 @@ private
   end
 
   def client_age_must_be_18
-    errors.add(:user, 'wrong_age.') if self.user.birthdate > Date.today - 18.years
+    errors.add(:user, 'wrong_age.') if self.user.birthdate && self.user.birthdate > (Date.today - 18.years)
   end
 end
