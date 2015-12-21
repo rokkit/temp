@@ -78,8 +78,12 @@ class Api::V1::UsersController < Api::V1::BaseController
     @user_skills = SkillsUsers.where(user_id: @user.id)
     @skills = Skill.where(role: 1).order(:id)
     @achievements = Achievement.where(role: 1).order(:id)
-    @penalties = PenaltiesUser.where(user_id: @user.id).includes(:penalty).order(:id).map(&:penalty)
-    @bonuses = BonusUser.where(user_id: @user.id).includes(:bonus).order(:id).map(&:bonus)
+
+    @penalties_users = PenaltiesUser.where(user_id: @user.id)
+    @penalties = Penalty.all.order(:id)
+    @bonuses_users = BonusUser.where(user_id: @user.id)
+    @bonuses = Bonus.all.order(:id)
+
     @works = Work.where(user_id: @user.id).includes(:lounge)
              .order(work_at: :desc)
   end

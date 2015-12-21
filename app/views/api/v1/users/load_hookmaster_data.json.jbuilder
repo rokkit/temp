@@ -6,10 +6,11 @@ json.achievements @achievements do |achievement|
 end
 json.penalties @penalties do |penalty|
   json.extract! penalty, :id, :name, :image_url, :slug, :description
+  json.has @penalties_users.pluck(:id).include?(penalty.id)
 end
-
 json.bonuses @bonuses do |bonus|
   json.extract! bonus, :id, :name, :image_url, :slug, :description
+  json.has @bonuses_users.pluck(:id).include?(bonus.id)
 end
 
 json.works @works do |work|

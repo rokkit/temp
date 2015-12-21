@@ -12,7 +12,10 @@ class Meet < ActiveRecord::Base
 
   after_create :send_sms_notify
 
-
+  def self.format_status(status)
+    statuses = {'wait': 'Ожидается', 'approved': 'Подтверждено', 'deleted': 'Отменено'}
+    statuses[status.to_sym]
+  end
   private
   def send_sms_notify
     text = "Вас пригласили на встречу"

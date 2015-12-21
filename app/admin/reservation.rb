@@ -11,7 +11,9 @@ ActiveAdmin.register Reservation do
     #   redirect_to admin_reservations_path
     # end
 
-
+    def permitted_params
+      params.permit!
+    end
   end
   member_action :approve, method: :get do
     @reservation = Reservation.find(params[:id])
@@ -75,15 +77,15 @@ ActiveAdmin.register Reservation do
       f.input :visit_date
       f.input :user
       f.input :table
-      f.input :client_count
-      f.input :duration
-      f.input :status, as: :select,:collection => [['wait', 0], ['approve', 1], ['deleted', 2]]
+      f.input :client_count, as: :select, :collection => [['1-4', '4'], ['5-6', '6']]
+      f.input :duration, as: :select, :collection => [['1.5 часа', '1.5'], ['3 часа', '3']]
+      f.input :status, as: :select, :collection => [['Ожидается', 'wait'], ['Подтверждено', 'approve'], ['Отменено', 'deleted']]
       f.input :code
     end
     f.inputs do
       f.has_many :meets, heading: 'Встречи', new_record: "Добавить встречу" do |a|
         a.input :user
-        a.input :status
+        a.input :status, as: :select, :collection => [['Ожидается', 'wait'], ['Подтверждено', 'approved'], ['Отменено', 'deleted']]
         a.input :_destroy, :as => :boolean
       end
     end
@@ -93,22 +95,24 @@ ActiveAdmin.register Reservation do
   show do
     attributes_table do
     row :id
+    row :code
     row :table
     row :user
     row :visit_date
     row :end_visit_date
     row :created_at
-    row :code
     row :client_count
     row :duration
-    row :status
+    row :status do |r|
+      Reservation.format_status r.status
+    end
     panel "Встречи" do
        table_for reservation.meets do
          column 'Клиент' do |meet|
            meet.user.name
          end
-         column 'Статус' do |skill|
-           meet.status
+         column 'Статус' do |meet|
+           Meet.format_status(meet.status)
          end
        end
     end

@@ -10,8 +10,9 @@ ActiveAdmin.register_page 'Dashboard' do
         panel "Бронирования" do
           table_for Reservation.order(:id => :desc).limit(15) do
             column("Клиент")   {|order|    order.user.name + " +#{order.user.phone}"   }
-            column("Стол") {|order| link_to("#{order.table.lounge.title} №#{order.table.id}", admin_table_path(order.table)) }
-            column("Дата визита")   {|order| order.visit_date.strftime('%d-%m-%Y %R')  }
+            column("Заведение") {|order| link_to("#{order.table.lounge.title}", admin_lounge_path(order.table.lounge)) }
+            column("Стол") {|order| link_to("#{order.table.title}", admin_table_path(order.table)) }
+            column("Дата визита")   {|order| order.visit_date.strftime('%d.%m.%Y %R')  }
           end
         end
       end

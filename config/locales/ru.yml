@@ -72,6 +72,12 @@ ru:
           visit_date: 'Дата посещения'
           user: 'Клиент'
           table: 'Стол'
+          end_visit_date: 'Окончание бронирования'
+          created_at: 'Добавлено'
+          client_count: 'Кол-во гостей'
+          code: 'Код 1С'
+          duration: 'Продолжительность'
+          status: 'Статус'
         table:
           lounge: 'Ложа'
           title: 'Название'

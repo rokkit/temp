@@ -20,6 +20,10 @@ class Reservation < ActiveRecord::Base
 
   enum status: [:wait, :approve, :deleted]
 
+  def self.format_status(status)
+    statuses = {'wait': 'Ожидается', 'approve': 'Подтверждено', 'deleted': 'Отменено'}
+    statuses[status.to_sym]
+  end
   scope :wait, -> { where(status: 0) }
   scope :approved, -> { where(status: 1) }
   scope :active, -> { where('reservations.status = 0 OR reservations.status = 1') }
