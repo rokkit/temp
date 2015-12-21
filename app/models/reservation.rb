@@ -60,6 +60,25 @@ class Reservation < ActiveRecord::Base
         self.code = resp[:reserve_save_response][:return]
         self.idrref = binary_to_string(find_from_ext_by_code()[:_IDRRef])
         self.save
+
+        if self.user.idrref
+          client = TinyTds::Client.new username: 'sa',
+                  password: 'Ve8Rohcier',
+                  host: '176.112.198.251',
+                  port: 1433,
+                  database: 'uhp_demo1',
+                  azure:false
+
+            idrref_binary = string_to_binary(self.user.idrref)
+            reserv_idrref_binary = string_to_binary(self.idrref)
+            query = """
+            UPDATE [dbo].[_Document74] SET [_Fld1661RRef] = #{idrref_binary} WHERE [_IDRRef] = #{reserv_idrref_binary}
+            """
+            results = client.execute query
+            results.do
+        end
+
+
       else
         self.destroy()
       end
