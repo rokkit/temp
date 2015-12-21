@@ -6,12 +6,12 @@ json.achievements @achievements do |achievement|
 end
 json.penalties @penalties do |penalty|
   json.extract! penalty, :id, :name, :slug, :description
-  json.image penalty.image_url
+  json.image request.protocol + request.host_with_port + penalty.image_url
   json.has penalty.has?(@user.id, @penalties_users)
 end
 json.bonuses @bonuses do |bonus|
   json.extract! bonus, :id, :name, :slug, :description
-  json.image bonus.image_url
+  json.image request.protocol + request.host_with_port + bonus.image_url
   json.has bonus.has?(@user.id, @bonuses_users)
 end
 
