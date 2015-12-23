@@ -9,7 +9,7 @@ else
   if res.client_count == 4
     json.client_count '1-4'
   else
-    json.client_count '4-6'
+    json.client_count '5-6'
   end
 end
 json.lounge do

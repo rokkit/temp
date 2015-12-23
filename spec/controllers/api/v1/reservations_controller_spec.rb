@@ -73,7 +73,7 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
         it 'returns error' do
           Reservation.create! user: user, visit_date: '03.12.2016 17:00', table: table
           post :create, lounge: lounge.id, visit_date: '03.12.2016 23:00'
-          expect(json_body[:errors]).to_not be_present
+          expect(json_body[:errors]).to be_present
         end
       end
     end
@@ -176,8 +176,16 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
         end
 
         it 'отправляется СМС приглашенному' do
-          expect(SMSService).to receive(:send).and_return(true)
+          expect(SMSService).to receive(:send).and_return(true).twice
           post :create, meets: [target_user.id], lounge: lounge.id, visit_date: (DateTime.now + 5.hours).strftime('%d.%m.%Y %R')
+        end
+      end
+      describe 'когда пытаешься пригласить сам себя' do
+        context 'когда один во встрече' do
+          it 'добавляется ачивка'
+        end
+        context 'когда есть еще люди' do
+          it 'ошибка'
         end
       end
       context 'если уровень таргета выше' do

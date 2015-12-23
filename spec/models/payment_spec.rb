@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Payment, type: :model do
+  let!(:lounge) { FactoryGirl.create :lounge }
+  let!(:table) { FactoryGirl.create :table, lounge: lounge }
   before do
      allow_any_instance_of(User).to receive(:create_user_ext).and_return('1234')
   end
@@ -39,7 +41,7 @@ RSpec.describe Payment, type: :model do
       FactoryGirl.create :reservation,
                          visit_date: DateTime.now + 5.days,
                          user: user,
-                         meets: []
+                         table: table
     }
     it 'начисляет поровну опыт всем участникам встречи' do
       Meet.create(user: user_in_meet, reservation: reservation, status: 1)

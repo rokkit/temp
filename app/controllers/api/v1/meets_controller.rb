@@ -11,12 +11,13 @@ class Api::V1::MeetsController < Api::V1::BaseController
   end
   def decline
     @meet = Meet.find(params[:id])
-    puts @meet.status.inspect
-    if @meet.status == 'wait' && @meet.status == 'approved'
+
+    if @meet.status == 'wait' || @meet.status == 'approved'
       @meet.status = :deleted
       @meet.save!
       reservation = Reservation.find(@meet.reservation_id)
       # raise Meet.where(user: @meet.id, reservation_id: reservation.id).where.not(status: 2).inspect
+
 
       if !Meet.where(reservation_id: reservation.id).where.not(status: 2).present?
         reservation.status = :deleted

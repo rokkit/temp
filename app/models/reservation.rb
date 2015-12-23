@@ -4,6 +4,7 @@ class Reservation < ActiveRecord::Base
   belongs_to :user
   validate :visit_date_must_be_in_future
   validate :client_age_must_be_18
+  validates :table, presence: true
 
 
 
