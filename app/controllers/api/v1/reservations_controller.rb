@@ -22,10 +22,10 @@ class Api::V1::ReservationsController < Api::V1::BaseController
       return false
     end
     #
-    # if Reservation.active.where(user_id: current_user.id).where('visit_date > ? AND visit_date < ?', visit_date.beginning_of_day, visit_date.end_of_day).present?
-    #   render json: { errors: { visit_date: 'wrong_date' } }
-    #   return
-    # end
+    if Reservation.active.where(user_id: current_user.id).where('visit_date > ? AND visit_date < ?', visit_date.beginning_of_day, visit_date.end_of_day).present?
+      render json: { errors: { visit_date: 'wrong_date' } }
+      return
+    end
 
     end_visit_date = nil
     if current_user.role == 'vip'
