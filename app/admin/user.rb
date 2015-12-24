@@ -37,6 +37,9 @@ end
     attributes_table do
       row :name
       row :phone
+      row :avatar do
+        image_tag user.avatar_url, width: '200px'
+      end
       row :birthdate
       row :experience
       row :level
@@ -52,7 +55,7 @@ end
       row :quote
 
       panel "Навыки" do
-         table_for SkillsUsers.where(user_id: user.id) do
+         table_for SkillsUsers.where(user_id: user.id).joins(:skill) do
            column 'Название' do |skill|
              skill.skill.name
            end

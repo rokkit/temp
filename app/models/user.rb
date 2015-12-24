@@ -4,19 +4,19 @@ class User < ActiveRecord::Base
 
   establish_connection Rails.env.to_sym
 
-  has_many :skills_users, class_name: 'SkillsUsers'
+  has_many :skills_users, class_name: 'SkillsUsers', dependent: :delete_all
   has_many :skills, through: :skills_users
   accepts_nested_attributes_for :skills_users, :allow_destroy => true
 
-  has_many :penalties_user
+  has_many :penalties_user, dependent: :delete_all
   has_many :penalties, through: :penalties_user
   accepts_nested_attributes_for :penalties_user, :allow_destroy => true
 
-  has_many :achievements_user
+  has_many :achievements_user, dependent: :delete_all
   has_many :achievements, through: :achievements_user
   accepts_nested_attributes_for :achievements_user, :allow_destroy => true
 
-  has_many :bonus_user, class_name: 'BonusUser'
+  has_many :bonus_user, class_name: 'BonusUser', dependent: :delete_all
   has_many :bonuses, through: :bonus_user, class_name: 'Bonus'
   accepts_nested_attributes_for :bonus_user, :allow_destroy => true
 

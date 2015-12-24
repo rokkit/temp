@@ -8,6 +8,8 @@ class Skill < ActiveRecord::Base
 
   enum role: [:user, :hookmaster]
 
+  validates :name, presence: true
+
   # belongs_to :parent, class_name: 'Skill'
 
   def parent_skills
