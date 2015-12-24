@@ -11,7 +11,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
       render json: { errors: { lounge: 'not_found' } }
       return false
     end
-    if !params[:visit_date].present? || params[:visit_date] == 'undefined' || params[:visit_date].include? 'null'
+    if !params[:visit_date].present? || params[:visit_date] == 'undefined' || params[:visit_date].include?('null')
       render json: { errors: { visit_date: 'wrong_date' } }
       return false
     end
