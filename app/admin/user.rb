@@ -161,7 +161,7 @@ end
 
   controller do
     def permitted_params
-      if params[:user][:role] == 'admin' && !current_user.is_admin?
+      if params[:user] && params[:user][:role] == 'admin' && !current_user.is_admin?
         params[:user][:role] = 'client'
       end
 
