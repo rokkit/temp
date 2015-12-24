@@ -75,6 +75,21 @@ class Api::V1::ReservationsController < Api::V1::BaseController
                                    duration: duration
     meets = []
     if params[:meets].present?
+
+      # Если приглашает самого себя, то дать ачивку
+      if params[:meets].include?(current_user.id.to_s)
+        if params[:meets].length == 1
+          achievement = Achievement.find_by_key('naedine-s-soboy')
+          if !achievement
+            achievement = Achievement.create(name: 'Наедине с собой')
+          end
+          if !AchievementsUser.where(user_id: current_user.id, achievement_id: achievement.id).present?
+              AchievementsUser.create!(user: current_user, achievement: achievement)
+          end
+        else
+          params[:meets].delete_if {|m| m == current_user.id }
+        end
+      end
       params[:meets].each do |user_id|
         user = User.find(user_id)
         if user.level <= current_user.level

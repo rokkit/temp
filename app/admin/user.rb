@@ -70,21 +70,21 @@ end
              achievement.name
            end
          end
-      end
+      end if user.role != 'hookmaster'
       panel "Штрафы" do
          table_for user.penalties do
            column 'Название' do |penalty|
              penalty.name
            end
          end
-      end
+      end if user.role == 'hookmaster'
       panel "Бонусы" do
          table_for user.bonus_user do
            column 'Название' do |bu|
              bu.bonus.name
            end
          end
-      end
+      end if user.role == 'hookmaster'
     end
     panel 'Данные 1C' do
       payments_ext = user.get_payments_from_ext()
@@ -109,7 +109,7 @@ end
            end
          end
       end
-    end
+    end if user.is_client?
     active_admin_comments
   end
 
@@ -123,6 +123,7 @@ end
       f.input :role, :as => :select, :collection => [['Клиент',:user], ['Постоянник', :vip], ['Кальянщик', :hookmaster], ['Франчайзер', :franchiser]]
       f.input :country, as: :string
       f.input :freezed
+      f.input :skill_point
       f.input :party_count
       f.input :lounge, collection: LoungePolicy::Scope.new(current_user, Lounge).resolve.all.map {|l| [l.title, l.id] }
       f.input :confirmed_at, :input_html => { :value => Time.zone.now }

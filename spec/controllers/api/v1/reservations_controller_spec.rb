@@ -182,10 +182,19 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
       end
       describe 'когда пытаешься пригласить сам себя' do
         context 'когда один во встрече' do
-          it 'добавляется ачивка'
+          it 'добавляется ачивка' do
+            post :create, meets: [user.id], lounge: lounge.id, visit_date: (DateTime.now + 5.hours).strftime('%d.%m.%Y %R')
+            user.reload
+            expect(user.achievements.length). to eq(1)
+          end
         end
         context 'когда есть еще люди' do
-          it 'ошибка'
+          let(:target_user) { FactoryGirl.create :user, level: 10 }
+          it 'ошибка' do
+            post :create, meets: [user.id, target_user.id], lounge: lounge.id, visit_date: (DateTime.now + 5.hours).strftime('%d.%m.%Y %R')
+            user.reload
+            expect(user.achievements.length). to eq(0)
+          end
         end
       end
       context 'если уровень таргета выше' do
