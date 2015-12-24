@@ -18,5 +18,6 @@ json.lounge do
   json.color res.table.lounge.color
 end
 json.meets res.meets do |meet|
-  json.extract! meet.user, :id, :name, :experience, :level, :status
+  json.extract! meet.user, :id, :name, :experience, :level
+  json.status meet.status
 end
