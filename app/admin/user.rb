@@ -57,10 +57,10 @@ end
              skill.skill.name
            end
            column 'Использован' do |skill|
-             skill.skill.used_at
+             skill.used_at
            end
            column 'Следующее использование' do |skill|
-             skill.skill.cooldown_end_at
+             skill.cooldown_end_at
            end
          end
       end
