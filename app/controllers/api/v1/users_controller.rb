@@ -69,7 +69,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
     @users = User.where.not(id: @user.id)
     @lounges = Lounge.where(active: true).includes(:tables)
-    @payments = @user.payments
+    @payments = @user.payments.order(id: :desc)
     @meets = Meet.active.where(user_id: @user.id).joins(:reservation).includes(:reservation).where('reservations.visit_date > ?', Time.zone.now)
   end
 
