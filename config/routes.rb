@@ -12,11 +12,13 @@ Rails.application.routes.draw do
         resources :registrations, only: [:create] do
           collection do
             post :confirm
+            post :resend_code
           end
         end
         resources :sessions, only: [:create] do
           collection do
             post :forgot
+
           end
         end
       end

@@ -14,7 +14,7 @@ class Api::V1::Auth::SessionsController < Api::V1::BaseController
           return
         end
       else
-        @user.send_confirmation_token_to_phone
+        # @user.send_confirmation_token_to_phone
         render json: { errors: { confirmed_at: 'user not confirmed' } }
         return
       end
@@ -29,12 +29,13 @@ class Api::V1::Auth::SessionsController < Api::V1::BaseController
   def forgot
     user = User.find_by_phone(params[:phone])
     if user
-      new_password = Devise.friendly_token(5)
+      new_password = Devise.friendly_token(6)
       user.update_attribute :password, new_password
-      SMSService.send user.phone, "new password: #{new_password}"
+      SMSService.send user.phone, "Ваш новый пароль: #{new_password}"
       render json: { status: 'ok' }
     else
       render json: { status: 'error' }
     end
   end
+
 end

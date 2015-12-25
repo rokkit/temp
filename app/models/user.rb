@@ -62,6 +62,8 @@ class User < ActiveRecord::Base
 
   def send_confirmation_token_to_phone
     SMSService.send(self.phone, "Код подтверждения: #{self.phone_token}")
+    self.code_sent_at = DateTime.now
+    self.save
   end
 
   scope :clients, -> { where.not(role: 3).where.not(role: 1) }

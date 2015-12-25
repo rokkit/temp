@@ -26,4 +26,18 @@ class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
       render json: { status: :error }
     end
   end
+
+
+  #Отправить смс повторно
+  def resend_code
+    @user = User.find_by_phone(params[:phone])
+    if @user
+      if !@user.confirmed_at.present?
+        if !@user.code_sent_at || @user.code_sent_at < DateTime.now - 5.minutes
+          @user.send_confirmation_token_to_phone
+        end
+        render json: {status: 'ok'}
+      end
+    end
+  end
 end

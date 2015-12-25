@@ -70,6 +70,23 @@ RSpec.describe Api::V1::Auth::RegistrationsController, type: :controller do
           user.reload
           expect(user.confirmed_at).to be_present
         end
+        describe "повторное отправление" do
+          before do
+
+          end
+          it "отправляет смс с кодом" do
+            expect(SMSService).to receive(:send)
+            post :resend_code, phone: user.phone, format: :json
+          end
+          describe "интервал между смс 5 минут" do
+            it "отправляет смс с кодом один раз" do
+              expect(SMSService).to receive(:send)
+              post :resend_code, phone: user.phone, format: :json
+              post :resend_code, phone: user.phone, format: :json
+            end
+          end
+
+        end
       end
     end
   end

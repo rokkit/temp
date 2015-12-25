@@ -70,9 +70,14 @@ RSpec.describe Api::V1::ReservationsController, type: :controller do
         expect(json_body[:errors]).to be_present
       end
       context 'когда один клиент бронирует на один и тот же день' do
-        it 'returns error' do
+        it 'not error' do
           Reservation.create! user: user, visit_date: '03.12.2016 17:00', table: table
           post :create, lounge: lounge.id, visit_date: '03.12.2016 23:00'
+          expect(json_body[:errors]).to_not be_present
+        end
+        it 'returns error' do
+          Reservation.create! user: user, visit_date: '03.12.2016 17:00', table: table
+          post :create, lounge: lounge.id, visit_date: '03.12.2016 18:00'
           expect(json_body[:errors]).to be_present
         end
       end

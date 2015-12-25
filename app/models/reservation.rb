@@ -4,7 +4,7 @@ class Reservation < ActiveRecord::Base
   belongs_to :user
   validate :visit_date_must_be_in_future
   validate :client_age_must_be_18
-  validates :table, presence: true
+  validates :table, :user, presence: true
 
 
 
@@ -188,6 +188,6 @@ private
   end
 
   def client_age_must_be_18
-    errors.add(:user, 'wrong_age.') if self.user.birthdate && self.user.birthdate > (Date.today - 18.years)
+    # errors.add(:user, 'wrong_age.') if self.user.birthdate && self.user.birthdate > (Date.today - 18.years)
   end
 end

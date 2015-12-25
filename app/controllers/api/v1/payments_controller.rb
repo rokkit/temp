@@ -7,6 +7,12 @@ class Api::V1::PaymentsController < ApplicationController
     user = User.find_by_phone(params[:phone])
     if user
       payment = Payment.new(user: user, amount: params[:amount])
+      if params[:reservation_code].present?
+        reservation = Reservation.where(code: params[:reservation_code]).first
+        if reservation
+          payment.reservation = reservation
+        end
+      end
       if payment.save
         # Добавить юзеру опыт по формуле от его суммы покупки в коллбеке
         head :ok if user.save
