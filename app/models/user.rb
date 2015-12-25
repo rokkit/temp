@@ -179,8 +179,10 @@ class User < ActiveRecord::Base
 
   # Проверка на выполнение достижений связанных с юзером
   def check_for_achievements
-    self.check_for_open_profile_achievement()
-    self.check_for_izobretatelnost_achievement()
+    if self.is_client?
+      self.check_for_open_profile_achievement()
+      self.check_for_izobretatelnost_achievement()
+    end
   end
 
   # TODO: MAKE SPEC

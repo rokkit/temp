@@ -8,6 +8,10 @@ class Api::V1::Auth::SessionsController < Api::V1::BaseController
     if @user
       if @user.confirmed_at.present?
         if @user.valid_password?(params[:password])
+          if @user.phone_token.present?
+            @user.phone_token = nil
+            @user.save
+          end
           respond_with @user
         else
           render json: { errors: { password: 'wrong password' } }
