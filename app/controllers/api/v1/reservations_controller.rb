@@ -21,7 +21,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
       render json: { errors: { visit_date: 'too_late' } }
       return false
     end
-    
+
     end_visit_date = nil
     if current_user.role == 'vip'
       end_visit_date = visit_date + 2.hours + 30.minutes
