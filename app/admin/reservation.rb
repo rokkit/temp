@@ -19,6 +19,7 @@ ActiveAdmin.register Reservation do
     @reservation = Reservation.find(params[:id])
     @reservation.status = :approve
     @reservation.save(validate: false)
+    SMSService.send @reservation.user.phone, "Ваша бронь на #{@reservation.visit_date.strftime('%H:%M')} #{@reservation.visit_date.strftime('%d.%m.%Y')} принята, ждём вас в \"#{@reservation.table.lounge.title}\""
     redirect_to admin_reservations_path, notice: "Бронирование подтверждено"
   end
 

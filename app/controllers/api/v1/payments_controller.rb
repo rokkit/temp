@@ -14,9 +14,11 @@ class Api::V1::PaymentsController < ApplicationController
         end
       end
       if payment.save
-        # Добавить юзеру опыт по формуле от его суммы покупки в коллбеке
-        head :ok if user.save
+        head :ok
+        return
       end
+    else
+      render json: {error: 'user not found'}
     end
   end
 end

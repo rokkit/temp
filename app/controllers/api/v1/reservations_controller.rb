@@ -2,7 +2,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
   respond_to :json
   before_action :authenticate_user!
   def index
-    @reservations = current_user.reservations.active.includes(table: :lounge)
+    @reservations = current_user.reservations.active.includes(table: :lounge).order(id: :desc)
     respond_with @reservations
   end
 
@@ -100,7 +100,6 @@ class Api::V1::ReservationsController < Api::V1::BaseController
       end
     end
     if @reservation.save!
-      SMSService.send @reservation.user.phone, "Ваша бронь на #{@reservation.visit_date.strftime('%H:%M')} #{@reservation.visit_date.strftime('%d.%m.%Y')} принята, ждём вас в \"#{@reservation.table.lounge.title}\""
       meets.each { |m| m.reservation = @reservation; m.save }
       render json: @reservation
     else

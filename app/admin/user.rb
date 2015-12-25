@@ -2,7 +2,7 @@
 ActiveAdmin.register User do
   permit_params :email, :password, :password_confirmation, :phone_token, :role,
                 :name, :city, :employe, :work_company, :hobby, :skills_users_attributes, :country, :freezed,
-                :party_count, :lounge_id, :confirmed_at, :quote
+                :party_count, :lounge_id, :confirmed_at, :quote, :avatar
 
   scope :clients, default: true
   scope :hookmasters
@@ -120,6 +120,7 @@ end
     f.inputs 'User' do
       f.input :phone
       f.input :name
+      f.input :avatar
       f.input :birthdate, :start_year => Date.today.year - 18, :end_year => Date.today.year - 80
       f.input :password
       f.input :phone_token
