@@ -61,6 +61,10 @@ class User < ActiveRecord::Base
   end
 
   def send_confirmation_token_to_phone
+    if self.phone_token.nil?
+      self.phone_token = 4.times.map { Random.rand(9) }.join
+      self.save
+    end
     SMSService.send(self.phone, "Код подтверждения: #{self.phone_token}")
     self.code_sent_at = DateTime.now
     self.save

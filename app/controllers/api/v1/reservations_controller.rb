@@ -83,7 +83,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
         if params[:meets].length == 1
           achievement = Achievement.find_by_key('naedine-s-soboy')
           if !achievement
-            achievement = Achievement.create(name: 'Наедине с собой')
+            achievement = Achievement.create(name: 'Наедине с собой', role: 'user')
           end
           if !AchievementsUser.where(user_id: current_user.id, achievement_id: achievement.id).present?
               AchievementsUser.create!(user: current_user, achievement: achievement)
