@@ -116,7 +116,9 @@ end
     panel 'Данные кальянщика 1C' do
       attributes_table_for user do
         row :idrref do
-          '0x' + user.idrref
+          if user.idrref
+            '0x' + user.idrref
+          end
         end
         row :name do
           user.get_hookmaster_ext.try :_Description
