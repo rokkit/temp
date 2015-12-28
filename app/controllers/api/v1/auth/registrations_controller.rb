@@ -3,14 +3,14 @@ class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
   # Создание аккаунта с отправкой кода подтверждения на указанный номер.
   # Params: phone, password
   def create
-    user = User.new params.permit([:phone, :password, :name])
+    @user = User.new params.permit([:phone, :password, :name])
     # TODO: когда будут СМС переключить на нормальный код
-    user.phone_token = 4.times.map { Random.rand(9) }.join
-    if user.save
-      user.send_confirmation_token_to_phone
-      render json: { status: :ok }
+    @user.phone_token = 4.times.map { Random.rand(9) }.join
+    if @user.save
+      @user.send_confirmation_token_to_phone
+      respond_with @user
     else
-      render json: { errors: user.errors }
+      render json: { errors: @user.errors }
     end
   end
   # Поддтверждение аккаунта кодом, высланным на телефон при регистрации

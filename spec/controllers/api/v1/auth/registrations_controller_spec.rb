@@ -10,11 +10,11 @@ RSpec.describe Api::V1::Auth::RegistrationsController, type: :controller do
       let(:user) { FactoryGirl.attributes_for(:user_credentials) }
       before do
         expect(SMSService).to receive(:send).and_return(true)
-
-        post :create, user, format: :json
+        user[:format] = :json
+        post :create, user
       end
       it 'create a user with phone' do
-        expect(json_body[:status]).to eq('ok')
+        expect(json_body[:id]).to be_present
       end
       it 'set a phone confirmation token' do
         expect(User.find_by_phone(user[:phone]).phone_token).to be_present

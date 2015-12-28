@@ -26,7 +26,7 @@ RSpec.describe Api::V1::Auth::SessionsController, type: :controller do
         it 'returns error' do
           user.update_attribute :confirmed_at, nil
           post :create, phone: user.phone, password: 'password', format: :json
-          expect(json_body[:errors][:confirmed_at]).to be_present
+          expect(json_body[:id]).to eq user.id
         end
       end
     end
