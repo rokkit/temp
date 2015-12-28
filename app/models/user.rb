@@ -329,6 +329,7 @@ class User < ActiveRecord::Base
 
   def percents_exp
     if self.role == 'hookmaster'
+      0
     else
       if self.experience > 0
         levels_cost = [0, 6000, 19200, 28800, 38400, 48000]
@@ -338,6 +339,8 @@ class User < ActiveRecord::Base
         else
           0
         end
+      else
+        0
       end
     end
   end
