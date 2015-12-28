@@ -85,38 +85,7 @@ class User < ActiveRecord::Base
     # end
   end
 
-  def get_from_ext
-    UserExt.where(_Fld496: self.phone).first
-  end
-  def create_user_ext
-    puts 'create_user_ext'
-    if self.role != 'hookmaster'
-      SoapService.call(:create_customer, message: { 'Name' => self.name, 'Tel' => self.phone })
-      user_ext = self.get_from_ext()
-      if user_ext && user_ext._IDRRef
-        self.idrref = binary_to_string(user_ext._IDRRef)
-        self.save!
-      end
-    end
-  end
 
-  def update_user_ext
-    if self.idrref && self.birthdate_changed? && self.role != 'hookmaster'
-      client = TinyTds::Client.new username: 'sa',
-              password: 'Ve8Rohcier',
-              host: '176.112.198.251',
-              port: 1433,
-              database: 'uhp_demo1',
-              azure:false
-
-        idrref_binary = string_to_binary(self.idrref)
-        query = """
-        UPDATE [dbo].[_Reference42] SET [_Fld1664] = '"+self.birthdate.strftime('%Y-%m-%d %H:%M:%S')+"' WHERE [_IDRRef] = #{idrref_binary}
-        """
-        results = client.execute query
-        results.do
-    end
-  end
 
   def string_to_binary(value)
     "0x#{value}"
@@ -139,52 +108,11 @@ class User < ActiveRecord::Base
     end
   end
 
-  def get_user_ext
-    client = TinyTds::Client.new username: 'sa',
-            password: 'Ve8Rohcier',
-            host: '176.112.198.251',
-            port: 1433,
-            database: 'uhp_demo1',
-            azure:false
 
-      idrref_binary = string_to_binary(self.idrref)
-      query = """
-      EXEC sp_executesql N'SELECT  [_reference42].* FROM [_reference42]
-      WHERE [_reference42].[_IDRRef] = #{idrref_binary}'
-      """
-      results = client.execute query
-      rows = []
-      results.each do |row|
-        rows.push row
-      end
-      return rows[0]
-  end
 
-  def get_hookmaster_ext
-    HookmasterExt.where(_IDRRef: User.binary_to_string(self.idrref)).first
-  end
 
-  def get_payments_from_ext
-    client = TinyTds::Client.new username: 'sa',
-            password: 'Ve8Rohcier',
-            host: '176.112.198.251',
-            port: 1433,
-            database: 'uhp_demo1',
-            azure:false
 
-      idrref_binary = string_to_binary(self.idrref)
-      idrref_binary = string_to_binary('A988D43D7E29EA8F11E5961EEED895B2')
-      query = """
-      EXEC sp_executesql N'SELECT  [_accumrg1568].* FROM [_accumrg1568]
-      WHERE [_accumrg1568].[_Fld1663rref] = #{idrref_binary}'
-      """
-      results = client.execute query
-      rows = []
-      results.each do |row|
-        rows.push row
-      end
-      return rows
-  end
+
 
   def to_s
     "#{self.name} (#{self.phone})"
@@ -203,59 +131,7 @@ class User < ActiveRecord::Base
     self.auth_token = SecureRandom.hex if self.auth_token.nil?
   end
 
-  # Ачимент "Открытость"
-  # Заполните свой профиль на 100%
-  def check_for_open_profile_achievement
 
-    if self.hobby.present? && self.employe.present? && self.work_company.present? && self.city.present?
-      achievement = Achievement.find_by_key('otkrytost')
-      if !achievement
-        achievement = Achievement.create(name: 'Открытость')
-      end
-      if !AchievementsUser.where(user_id: self.id, achievement_id: achievement.id).present?
-          AchievementsUser.create!(user: self, achievement: achievement)
-      end
-    end
-  end
-  # Ачимент "Изобретательность"
-  # Проведите мероприятие
-  def check_for_izobretatelnost_achievement
-    achievement = nil
-    if self.party_count > 0
-      case self.party_count
-      when 1
-        achievement = Achievement.find_by_key('izobretatelnost-i')
-        if !achievement
-          achievement = Achievement.create(name: 'Изобретательность I')
-        end
-      when 2
-        achievement = Achievement.find_by_key('izobretatelnost-ii')
-        if !achievement
-          achievement = Achievement.create(name: 'Изобретательность II')
-        end
-      when 3
-        achievement = Achievement.find_by_key('izobretatelnost-iii')
-        if !achievement
-          achievement = Achievement.create(name: 'Изобретательность III')
-        end
-      when 4
-        achievement = Achievement.find_by_key('izobretatelnost-iv')
-        if !achievement
-          achievement = Achievement.create(name: 'Изобретательность IV')
-        end
-      when 5
-        achievement = Achievement.find_by_key('izobretatelnost-v')
-        if !achievement
-          achievement = Achievement.create(name: 'Изобретательность V')
-        end
-      end
-    end
-    if achievement
-      if !AchievementsUser.where(user_id: self.id, achievement_id: achievement.id).present?
-          AchievementsUser.create!(user: self, achievement: achievement)
-      end
-    end
-  end
 
 
 
@@ -315,17 +191,7 @@ class User < ActiveRecord::Base
   end
 
 
-  def add_exp_from_payment(amount)
-    levels_cost = [0, 6000, 19200, 28800, 38400, 48000]
 
-    self.experience += amount
-    need_exp_to_levelup = levels_cost[0..self.level].reduce(0) { |lc, sum| sum += lc  }
-    if self.experience >= need_exp_to_levelup
-      self.level += 1
-      self.skill_point += 1
-    end
-    self.save
-  end
 
   def percents_exp
     if self.role == 'hookmaster'
@@ -373,14 +239,161 @@ class User < ActiveRecord::Base
     end
   end
 
-  def visits
-    visits_ext = ExtService.execute("select * from _AccumRg1568 WHERE _fld1663rref = E'#{self.idrref}'")
-    if visits_ext.ntuples > 0
-      visits_ext
-    else
-      []
+
+
+  #### Методы клиента
+
+  # Начислить опыт из платежа
+  def add_exp_from_payment(amount)
+    levels_cost = [0, 6000, 19200, 28800, 38400, 48000]
+
+    self.experience += amount
+    need_exp_to_levelup = levels_cost[0..self.level].reduce(0) { |lc, sum| sum += lc  }
+    if self.experience >= need_exp_to_levelup
+      self.level += 1
+      self.skill_point += 1
+    end
+    self.save
+  end
+
+  # Получить платежи клиента
+  def get_payments_from_ext
+    client = TinyTds::Client.new username: 'sa',
+            password: 'Ve8Rohcier',
+            host: '176.112.198.251',
+            port: 1433,
+            database: 'uhp_demo1',
+            azure:false
+
+      idrref_binary = string_to_binary(self.idrref)
+      idrref_binary = string_to_binary('A988D43D7E29EA8F11E5961EEED895B2')
+      query = """
+      EXEC sp_executesql N'SELECT  [_accumrg1568].* FROM [_accumrg1568]
+      WHERE [_accumrg1568].[_Fld1663rref] = #{idrref_binary}'
+      """
+      results = client.execute query
+      rows = []
+      results.each do |row|
+        rows.push row
+      end
+      return rows
+  end
+
+  # Получить запись клиента из 1С
+  def get_user_ext
+    client = TinyTds::Client.new username: 'sa',
+            password: 'Ve8Rohcier',
+            host: '176.112.198.251',
+            port: 1433,
+            database: 'uhp_demo1',
+            azure:false
+
+      idrref_binary = string_to_binary(self.idrref)
+      query = """
+      EXEC sp_executesql N'SELECT  [_reference42].* FROM [_reference42]
+      WHERE [_reference42].[_IDRRef] = #{idrref_binary}'
+      """
+      results = client.execute query
+      rows = []
+      results.each do |row|
+        rows.push row
+      end
+      return rows[0]
+  end
+
+  # Найти в 1С по номеру телефона
+  def get_from_ext
+    UserExt.where(_Fld496: self.phone).first
+  end
+  def create_user_ext
+    puts 'create_user_ext'
+    if self.role != 'hookmaster'
+      SoapService.call(:create_customer, message: { 'Name' => self.name, 'Tel' => self.phone })
+      user_ext = self.get_from_ext()
+      if user_ext && user_ext._IDRRef
+        self.idrref = binary_to_string(user_ext._IDRRef)
+        self.save!
+      end
     end
   end
 
+  def update_user_ext
+    if self.idrref && self.birthdate_changed? && self.role != 'hookmaster'
+      client = TinyTds::Client.new username: 'sa',
+              password: 'Ve8Rohcier',
+              host: '176.112.198.251',
+              port: 1433,
+              database: 'uhp_demo1',
+              azure:false
+
+        idrref_binary = string_to_binary(self.idrref)
+        query = """
+        UPDATE [dbo].[_Reference42] SET [_Fld1664] = '"+self.birthdate.strftime('%Y-%m-%d %H:%M:%S')+"' WHERE [_IDRRef] = #{idrref_binary}
+        """
+        results = client.execute query
+        results.do
+    end
+  end
+
+  # Ачимент "Открытость"
+  # Заполните свой профиль на 100%
+  def check_for_open_profile_achievement
+
+    if self.hobby.present? && self.employe.present? && self.work_company.present? && self.city.present?
+      achievement = Achievement.find_by_key('otkrytost')
+      if !achievement
+        achievement = Achievement.create(name: 'Открытость')
+      end
+      if !AchievementsUser.where(user_id: self.id, achievement_id: achievement.id).present?
+          AchievementsUser.create!(user: self, achievement: achievement)
+      end
+    end
+  end
+  # Ачимент "Изобретательность"
+  # Проведите мероприятие
+  def check_for_izobretatelnost_achievement
+    achievement = nil
+    if self.party_count > 0
+      case self.party_count
+      when 1
+        achievement = Achievement.find_by_key('izobretatelnost-i')
+        if !achievement
+          achievement = Achievement.create(name: 'Изобретательность I')
+        end
+      when 2
+        achievement = Achievement.find_by_key('izobretatelnost-ii')
+        if !achievement
+          achievement = Achievement.create(name: 'Изобретательность II')
+        end
+      when 3
+        achievement = Achievement.find_by_key('izobretatelnost-iii')
+        if !achievement
+          achievement = Achievement.create(name: 'Изобретательность III')
+        end
+      when 4
+        achievement = Achievement.find_by_key('izobretatelnost-iv')
+        if !achievement
+          achievement = Achievement.create(name: 'Изобретательность IV')
+        end
+      when 5
+        achievement = Achievement.find_by_key('izobretatelnost-v')
+        if !achievement
+          achievement = Achievement.create(name: 'Изобретательность V')
+        end
+      end
+    end
+    if achievement
+      if !AchievementsUser.where(user_id: self.id, achievement_id: achievement.id).present?
+          AchievementsUser.create!(user: self, achievement: achievement)
+      end
+    end
+  end
+
+  #### Методы кальянщика
+
+  # Получить запись кальянщика из 1С
+  def get_hookmaster_ext
+    HookmasterExt.where(_IDRRef: User.binary_to_string(self.idrref)).first
+  end
 
 end

@@ -14,7 +14,7 @@ json.lounges @lounges do |lounge|
     json.extract! table, :id, :title
   end
 end
-json.users User.clients.order(:name).where('level <= ?', @user.level) do|user|
+json.users User.clients.order(:name).where('level <= ?', @user.level).where.not(id: @user.id) do|user|
   json.extract! user, :id, :name, :experience, :level
 end
 json.payments @payments do |payment|

@@ -126,14 +126,14 @@ end
         works_ext = user.get_hookmaster_ext.works_ext
         table_for works_ext do
           column 'Дата' do |p|
-              p._Period
+              p._Period.strftime('%d.%m.%Y %R')
           end
           column 'Тип' do |p|
-              p.action_type.inspect
+              p.action_type
           end
         end
     end if user.is_hookmaster?
-    active_admin_comments
+
   end
 
   form do |f|
