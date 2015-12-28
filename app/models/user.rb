@@ -101,10 +101,12 @@ class User < ActiveRecord::Base
     end
   end
   def self.binary_to_string(value)
-    if value.length == 16
-      value = value.unpack('C*').map{ |b| "%02X" % b }.join('')
-    else
-      value =~ /[^[:xdigit:]]/ ? value : [value].pack('H*')
+    if value
+      if value.length == 16
+        value = value.unpack('C*').map{ |b| "%02X" % b }.join('')
+      else
+        value =~ /[^[:xdigit:]]/ ? value : [value].pack('H*')
+      end
     end
   end
 
