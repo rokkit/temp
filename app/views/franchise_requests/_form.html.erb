@@ -1,0 +1,53 @@
+<%= form_for(@franchise_request) do |f| %>
+  <% if @franchise_request.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@franchise_request.errors.count, "error") %> prohibited this franchise_request from being saved:</h2>
+
+      <ul>
+      <% @franchise_request.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :fio %><br>
+    <%= f.text_field :fio %>
+  </div>
+  <div class="field">
+    <%= f.label :contact_phone %><br>
+    <%= f.text_field :contact_phone %>
+  </div>
+  <div class="field">
+    <%= f.label :email %><br>
+    <%= f.text_field :email %>
+  </div>
+  <div class="field">
+    <%= f.label :city %><br>
+    <%= f.text_field :city %>
+  </div>
+  <div class="field">
+    <%= f.label :about %><br>
+    <%= f.text_field :about %>
+  </div>
+  <div class="field">
+    <%= f.label :employe_phone %><br>
+    <%= f.text_field :employe_phone %>
+  </div>
+  <div class="field">
+    <%= f.label :employe_status %><br>
+    <%= f.text_field :employe_status %>
+  </div>
+  <div class="field">
+    <%= f.label :first_payment %><br>
+    <%= f.text_field :first_payment %>
+  </div>
+  <div class="field">
+    <%= f.label :total_payment %><br>
+    <%= f.text_field :total_payment %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

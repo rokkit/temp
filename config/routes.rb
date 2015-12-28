@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :franchise_requests
   # mount Upmin::Engine => '/admin'
   root to: 'pages#index'
   get 'pages/schedule', to: 'pages#schedule'

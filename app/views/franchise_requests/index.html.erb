@@ -1,0 +1,43 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Franchise Requests</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Fio</th>
+      <th>Contact phone</th>
+      <th>Email</th>
+      <th>City</th>
+      <th>About</th>
+      <th>Employe phone</th>
+      <th>Employe status</th>
+      <th>First payment</th>
+      <th>Total payment</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @franchise_requests.each do |franchise_request| %>
+      <tr>
+        <td><%= franchise_request.fio %></td>
+        <td><%= franchise_request.contact_phone %></td>
+        <td><%= franchise_request.email %></td>
+        <td><%= franchise_request.city %></td>
+        <td><%= franchise_request.about %></td>
+        <td><%= franchise_request.employe_phone %></td>
+        <td><%= franchise_request.employe_status %></td>
+        <td><%= franchise_request.first_payment %></td>
+        <td><%= franchise_request.total_payment %></td>
+        <td><%= link_to 'Show', franchise_request %></td>
+        <td><%= link_to 'Edit', edit_franchise_request_path(franchise_request) %></td>
+        <td><%= link_to 'Destroy', franchise_request, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Franchise request', new_franchise_request_path %>

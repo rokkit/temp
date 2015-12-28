@@ -56,6 +56,11 @@ ru:
           many: 'Бонусы'
           other: "Бонусы"
           few: 'Бонусов'
+        franchise_request:
+          one: "Заявка франшизы"
+          many: 'Заявок франшизы'
+          other: "Заявки франшизы"
+          few: "Заявок франшизы"
       attributes:
         user:
           name: "ФИО"
@@ -77,6 +82,7 @@ ru:
           quote: 'Цитата'
           phone_token: 'СМС код'
           _destroy: 'Удалить'
+          hook_idrref: 'Идентификатор кальянщика (1C)'
         payment:
           amount: 'Сумма'
           user: 'Клиент'
@@ -114,6 +120,16 @@ ru:
           skill: 'Навык'
           used_at: 'Использован'
           cooldown_end_at: 'Кулдаун навыка'
+        franchise_request:
+          fio: 'ФИО'
+          contact_phone: 'Контактный телефон'
+          email: E-mail
+          city: Город
+          about: О себе
+          employe_phone: 'Компания работодатель'
+          employe_status: 'Должность'
+          first_payment: 'Первый взнос'
+          total_payment: 'Общая сумма'
   active_admin:
     dashboard: "Панель управления"
     dashboard_welcome:

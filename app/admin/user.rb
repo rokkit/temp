@@ -113,6 +113,26 @@ end
          end
       end
     end if user.is_client?
+    panel 'Данные кальянщика 1C' do
+      attributes_table_for user do
+        row :idrref do
+          '0x' + user.idrref
+        end
+        row :name do
+          user.get_hookmaster_ext._Description
+        end
+
+      end
+        works_ext = user.get_hookmaster_ext.works_ext
+        table_for works_ext do
+          column 'Дата' do |p|
+              p._Period
+          end
+          column 'Тип' do |p|
+              p.action_type.inspect
+          end
+        end
+    end if user.is_hookmaster?
     active_admin_comments
   end
 
@@ -133,6 +153,7 @@ end
       f.input :confirmed_at, :input_html => { :value => Time.zone.now }
       f.input :description
       f.input :quote
+      f.input :hook_idrref, as: :select, collection: HookmasterExt.all.map {|hm| [hm._Description.to_s.force_encoding("UTF-8"), User.binary_to_string(hm._IDRRef)] }
       f.inputs do
         f.has_many :skills_users, heading: 'Навыки', new_record: "Добавить навык" do |a|
           a.input :skill
@@ -173,11 +194,16 @@ end
       params.permit!
     end
     def update
-      if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
-        params[:user].delete("password")
-        params[:user].delete("password_confirmation")
+      if permitted_params[:user][:password].blank? && permitted_params[:user][:password_confirmation].blank?
+        permitted_params[:user].delete("password")
+        permitted_params[:user].delete("password_confirmation")
       end
+      if permitted_params[:user][:role] == 'hookmaster'
+        permitted_params[:user][:idrref] = params[:user][:hook_idrref]
+      end
+      permitted_params[:user].delete("hook_idrref")
       @user = User.find(params[:id])
+
       if @user.update_attributes permitted_params[:user]
         redirect_to admin_user_path(@user), notice: 'Профиль успешно сохранен'
       end

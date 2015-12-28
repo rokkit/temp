@@ -44,6 +44,8 @@ class UserPolicy
       else
         if @user.is_administrative?
           scope.where('lounge_id =? OR role = 0', @user.lounge_id)
+        else
+          scope
         end
       end
     end

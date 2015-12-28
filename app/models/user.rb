@@ -36,6 +36,8 @@ class User < ActiveRecord::Base
   enum role: [:user, :admin, :vip, :hookmaster, :franchiser]
   after_initialize :set_default_role, if: :new_record?
 
+  attr_accessor :hook_idrref
+
 
   def set_default_role
     self.role ||= :user
@@ -129,6 +131,13 @@ class User < ActiveRecord::Base
       value =~ /[^[:xdigit:]]/ ? value : [value].pack('H*')
     end
   end
+  def self.binary_to_string(value)
+    if value.length == 16
+      value = value.unpack('C*').map{ |b| "%02X" % b }.join('')
+    else
+      value =~ /[^[:xdigit:]]/ ? value : [value].pack('H*')
+    end
+  end
 
   def get_user_ext
     client = TinyTds::Client.new username: 'sa',
@@ -149,6 +158,10 @@ class User < ActiveRecord::Base
         rows.push row
       end
       return rows[0]
+  end
+
+  def get_hookmaster_ext
+    HookmasterExt.where(_IDRRef: User.binary_to_string(self.idrref)).first
   end
 
   def get_payments_from_ext
