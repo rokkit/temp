@@ -123,7 +123,7 @@ end
         end
 
       end
-        works_ext = user.get_hookmaster_ext.works_ext
+        works_ext = user.get_hookmaster_ext.try(:works_ext) || []
         table_for works_ext do
           column 'Дата' do |p|
               p._Period.strftime('%d.%m.%Y %R')
