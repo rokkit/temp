@@ -119,7 +119,7 @@ end
           '0x' + user.idrref
         end
         row :name do
-          user.get_hookmaster_ext._Description
+          user.get_hookmaster_ext.try :_Description
         end
 
       end
