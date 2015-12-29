@@ -8,6 +8,7 @@ class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
     @user.phone_token = 4.times.map { Random.rand(9) }.join
     if @user.save
       @user.send_confirmation_token_to_phone
+      sign_in @user
       respond_with @user
     else
       render json: { errors: @user.errors }
@@ -24,7 +25,6 @@ class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
         @user.save
       end
       @user.create_user_ext()
-      sign_in @user
       respond_with @user
     else
       render json: { status: :error }
