@@ -16,8 +16,8 @@ class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
   # Поддтверждение аккаунта кодом, высланным на телефон при регистрации
   # Params: code
   def confirm
-    @user = User.find_by_phone_token(params[:code])
-    if @user && @user.confirmed_at.nil?
+    @user = User.find_by_phone(params[:phone])
+    if @user && @user.phone_token == params[:code] && @user.confirmed_at.nil?
       @user.update_attribute :confirmed_at, DateTime.now
       if @user.phone_token.present?
         @user.phone_token = nil

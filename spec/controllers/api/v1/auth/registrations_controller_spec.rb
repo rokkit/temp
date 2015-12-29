@@ -40,7 +40,7 @@ RSpec.describe Api::V1::Auth::RegistrationsController, type: :controller do
         let!(:user) { FactoryGirl.create(:user_with_code) }
         it 'returns error' do
           expect(SoapService).to_not receive(:call)
-          post :confirm, code: 'wrongcode'
+          post :confirm, code: 'wrongcode', phone: user.phone
           expect(json_body[:status]).to eq 'error'
         end
       end
@@ -49,7 +49,7 @@ RSpec.describe Api::V1::Auth::RegistrationsController, type: :controller do
         it 'returns error' do
           expect(SoapService).to_not receive(:call)
           user.update_attribute :confirmed_at, DateTime.now
-          post :confirm, code: user.phone_token, format: :json
+          post :confirm, code: user.phone_token, phone: user.phone, format: :json
           expect(json_body[:status]).to eq 'error'
         end
       end
@@ -59,14 +59,14 @@ RSpec.describe Api::V1::Auth::RegistrationsController, type: :controller do
           # expect(SoapService).to receive(:call)
         end
         it 'returns user object' do
-          post :confirm, code: user.phone_token, format: :json
+          post :confirm, code: user.phone_token, phone: user.phone, format: :json
           user.reload
           expect(json_body[:id]).to eq(user.id)
           expect(json_body[:auth_token]).to eq(user.auth_token)
           expect(json_body[:avatar]).to eq(user.avatar_url)
         end
         it 'confirm user if token valid' do
-          post :confirm, code: user.phone_token, format: :json
+          post :confirm, code: user.phone_token, phone: user.phone, format: :json
           user.reload
           expect(user.confirmed_at).to be_present
         end
