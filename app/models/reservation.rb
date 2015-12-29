@@ -8,9 +8,9 @@ class Reservation < ActiveRecord::Base
 
 
 
-  has_many :meets, dependent: :delete_all
+  has_many :meets, dependent: :destroy
   accepts_nested_attributes_for :meets, :allow_destroy => true
-  has_many :payments
+  has_many :payments, dependent: :destroy
   accepts_nested_attributes_for :payments, :allow_destroy => true
 
   # has_many :meet_users, through: :meets, class_name: 'User'
