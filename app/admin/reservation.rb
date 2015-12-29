@@ -20,7 +20,7 @@ ActiveAdmin.register Reservation do
     @reservation.status = :approve
     @reservation.save(validate: false)
     SMSService.send @reservation.user.phone, "Ваша бронь на #{@reservation.visit_date.strftime('%H:%M')} #{@reservation.visit_date.strftime('%d.%m.%Y')} принята, ждём вас в \"#{@reservation.table.lounge.title}\""
-    redirect_to admin_reservations_path, notice: "Бронирование подтверждено"
+    redirect_to admin_reservation_path(@reservation), notice: "Бронирование подтверждено"
   end
 
   member_action :cancel, method: :get do
@@ -28,7 +28,17 @@ ActiveAdmin.register Reservation do
     @reservation.status = :deleted
     SMSService.send @reservation.user.phone, "К сожалению, Ваша бронь на #{@reservation.visit_date.strftime('%H:%M')} #{@reservation.visit_date.strftime('%d.%m.%Y')} отменена"
     @reservation.save(validate: false)
-    redirect_to admin_reservations_path, notice: "Бронирование отменено"
+    redirect_to admin_reservation_path(@reservation), notice: "Бронирование отменено"
+  end
+
+
+
+  action_item :view, only: :show do
+    link_to 'Подтвердить бронирование', approve_admin_reservation_path(reservation)
+  end
+
+  action_item :view, only: :show do
+    link_to 'Отклонить бронирование', cancel_admin_reservation_path(reservation)
   end
 
   # filter :lounge_table_eq, :as => :select,
@@ -62,13 +72,14 @@ ActiveAdmin.register Reservation do
     end
 
     actions do |order|
-      actions_str = []
-
-      actions_str.push link_to("Отменить", cancel_admin_reservation_path(order)) if order.status == 'wait' || order.status == 'approved'
-      actions_str.push link_to("Подтвердить", approve_admin_reservation_path(order)) if order.status == 'wait'
-      # actions_str.push link_to("Удалить", destroy_admin_reservation_path(order))
-      actions_str.join(' ').html_safe
-
+    #   actions_str = []
+    #
+    #   actions_str.push link_to("Отменить", cancel_admin_reservation_path(order)) if order.status == 'wait' || order.status == 'approved'
+    #   actions_str.push link_to("Подтвердить", approve_admin_reservation_path(order)) if order.status == 'wait'
+    #   # actions_str.push link_to("Удалить", destroy_admin_reservation_path(order))
+    #   actions_str.join(' ').html_safe
+    #
+    # link_to("Подробно", admin_reservation_path(order))
     end
   end
 

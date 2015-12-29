@@ -13,8 +13,9 @@ ActiveAdmin.register User do
   end
 
   action_item :view, only: :show do
-  link_to 'Заморозить', freeze_admin_user_path(user)
-end
+    link_to 'Заморозить', freeze_admin_user_path(user)
+  end
+
 
   index do
     selectable_column
