@@ -37,6 +37,7 @@ class User < ActiveRecord::Base
   after_initialize :set_default_role, if: :new_record?
 
   attr_accessor :hook_idrref
+  attr_accessor :remove_avatar
 
 
   def set_default_role

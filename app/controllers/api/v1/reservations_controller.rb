@@ -2,7 +2,7 @@ class Api::V1::ReservationsController < Api::V1::BaseController
   respond_to :json
   before_action :authenticate_user!
   def index
-    @reservations = current_user.reservations.active.includes(table: :lounge).order(id: :desc)
+    @reservations = current_user.reservations.active.includes(table: :lounge).order(id: :desc).where('reservations.visit_date >= ?', Time.zone.now)
     respond_with @reservations
   end
 
