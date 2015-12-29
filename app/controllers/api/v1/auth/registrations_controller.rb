@@ -15,7 +15,7 @@ class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
     end
   end
   # Поддтверждение аккаунта кодом, высланным на телефон при регистрации
-  # Params: code
+  # Params: code, phone
   def confirm
     @user = User.find_by_phone(params[:phone])
     if @user && @user.phone_token == params[:code] && @user.confirmed_at.nil?
@@ -24,7 +24,6 @@ class Api::V1::Auth::RegistrationsController < Api::V1::BaseController
         @user.phone_token = nil
         @user.save
       end
-      @user.create_user_ext()
       respond_with @user
     else
       render json: { status: :error }
