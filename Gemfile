@@ -20,6 +20,7 @@ gem 'savon', '~> 2.10'
 gem 'tiny_tds'
 gem 'activerecord-sqlserver-adapter', '~>4.2.6'
 gem "jquery-ui-rails"
+gem 'rails-jquery-autocomplete'
 
 gem 'rack-cors', :require => 'rack/cors'
 

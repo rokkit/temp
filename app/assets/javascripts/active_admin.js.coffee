@@ -3,6 +3,8 @@
 #= require active_admin/select2
 #=require jquery-ui
 #=require jquery-ui-timepicker-addon.min
+#= require jquery-ui/autocomplete
+#= require autocomplete-rails
 #= require_tree .
 
 # $(document).ready ->

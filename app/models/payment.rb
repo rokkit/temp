@@ -11,6 +11,12 @@ class Payment < ActiveRecord::Base
 
   after_initialize :init
 
+  attr_accessor :user_phone # for autocomplete
+  def user_phone
+    @user_phone ||= self.try(:user).try(:phone)
+    return @user_phone
+  end
+
   def init
     self.payed_at = Time.zone.now if self.payed_at.nil?
   end

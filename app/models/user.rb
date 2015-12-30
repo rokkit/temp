@@ -85,6 +85,10 @@ class User < ActiveRecord::Base
     # end
   end
 
+  def to_full_description
+    "+#{self.phone} #{self.name}"
+  end
+
 
 
   def string_to_binary(value)

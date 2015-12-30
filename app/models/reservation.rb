@@ -30,6 +30,7 @@ class Reservation < ActiveRecord::Base
   scope :approved, -> { where(status: 1) }
   scope :active, -> { where('reservations.status = 0 OR reservations.status = 1') }
   scope :deleted, -> { where(status: 2) }
+  scope :passed, -> { where(status: 1).where('visit_date <= ?', Time.zone.now)  }
 
   ransacker :containing_lounge_table,
           :formatter => ->(lounge) {
@@ -38,7 +39,13 @@ class Reservation < ActiveRecord::Base
           }, splat_params: true do |parent|
       parent.table[:id]
   end
-
+  ransacker :containing_user,
+          :formatter => ->(user) {
+             results = where(user_id: user).map(&:id)
+             results = results.present? ? results : nil
+          }, splat_params: true do |parent|
+      parent.table[:id]
+  end
 
   def update_end_visit_date
     if self.user.role == 'vip'
@@ -46,6 +53,10 @@ class Reservation < ActiveRecord::Base
     else
       self.end_visit_date = self.visit_date + 1.hours + 30.minutes
     end
+  end
+
+  def to_full_description
+    "#{self.visit_date.strftime('%d.%m.%Y %R')} №#{self.id}"
   end
   def create_ext_record
     if self.table.try(:number) && self.user.idrref

@@ -1,4 +1,11 @@
 ru:
+  formtastic:
+    yes: 'Да'
+    no: 'Нет'
+    create: 'Создать %{model}'
+    update: 'Сохранить %{model}'
+    submit: 'Сохранить %{model}'
+    required: 'обязательное'
   activerecord:
       models:
         user:
@@ -84,8 +91,13 @@ ru:
           _destroy: 'Удалить'
           hook_idrref: 'Идентификатор кальянщика (1C)'
         payment:
-          amount: 'Сумма'
+          amount: 'Сумма (руб)'
           user: 'Клиент'
+          user_phone: 'Телефон клиента'
+          payed_at: 'Дата платежа'
+          table: 'Стол'
+          reservation: 'Бронирование'
+          created_at: 'Создан'
         reservation:
           visit_date: 'Дата посещения'
           user: 'Клиент'
@@ -157,7 +169,9 @@ ru:
         clear: "Очистить"
       predicates:
         contains: "Содержит"
+        cont: "Содержит"
         equals: "Равно"
+        eq: 'Равен'
         starts_with: "Начинается с"
         ends_with: "Заканчивается"
         greater_than: "больше"

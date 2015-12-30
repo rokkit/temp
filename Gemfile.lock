@@ -255,6 +255,8 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.2)
       loofah (~> 2.0)
+    rails-jquery-autocomplete (1.0.3)
+      rails (>= 3.2)
     rails_layout (1.0.27)
     railties (4.2.4)
       actionpack (= 4.2.4)
@@ -413,6 +415,7 @@ DEPENDENCIES
   quiet_assets
   rack-cors
   rails (= 4.2.4)
+  rails-jquery-autocomplete
   rails_layout
   rspec-rails (~> 3.0)
   rubocop (= 0.30)

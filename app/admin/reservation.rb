@@ -48,6 +48,7 @@ ActiveAdmin.register Reservation do
       as: :select,
       label: 'Ложа',
       collection: Lounge.all
+  filter :user, collection: -> { User.clients }
 
   index do
     selectable_column

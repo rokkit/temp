@@ -28,10 +28,14 @@ ActiveAdmin.register User do
     actions
   end
 
-  filter :email
-  filter :current_sign_in_at
-  filter :sign_in_count
+  filter :phone
   filter :created_at
+
+  collection_action :autocomplete_user_phone, :method => :get
+
+  controller do
+    autocomplete :user, :phone, :full => true, display_value: :to_full_description, extra_data: [:name]
+  end
 
   show do
 
