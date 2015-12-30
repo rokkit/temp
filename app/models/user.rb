@@ -272,7 +272,6 @@ class User < ActiveRecord::Base
             azure:false
 
       idrref_binary = string_to_binary(self.idrref)
-      idrref_binary = string_to_binary('A988D43D7E29EA8F11E5961EEED895B2')
       query = """
       EXEC sp_executesql N'SELECT  [_accumrg1568].* FROM [_accumrg1568]
       WHERE [_accumrg1568].[_Fld1663rref] = #{idrref_binary}'
