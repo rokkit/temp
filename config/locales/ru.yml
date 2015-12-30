@@ -101,7 +101,9 @@ ru:
         reservation:
           visit_date: 'Дата посещения'
           user: 'Клиент'
+          user_phone: 'Телефон клиента'
           table: 'Стол'
+          lounge: 'Ложа'
           end_visit_date: 'Окончание бронирования'
           created_at: 'Добавлено'
           client_count: 'Кол-во гостей'

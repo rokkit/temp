@@ -23,7 +23,6 @@ ActiveAdmin.register User do
     column :phone
     column :name
     column :current_sign_in_at
-    column :created_at
     column :role
     actions
   end

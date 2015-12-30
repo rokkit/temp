@@ -89,12 +89,19 @@ ActiveAdmin.register Reservation do
   form do |f|
     f.inputs 'Reservation' do
       f.input :visit_date
-      f.input :user, collection: UserPolicy::Scope.new(current_user, User).resolve.clients.map {|l| ["#{l.name} (+#{l.phone})", l.id] }
+      # f.input :user, collection: UserPolicy::Scope.new(current_user, User).resolve.clients.map {|l| ["#{l.name} (+#{l.phone})", l.id] }
+      f.input :user_phone, :as => :autocomplete,
+      :url => autocomplete_user_phone_admin_users_path,
+      :input_html => {:id_element => '#reservation_user_id',
+                      'data-auto-focus' => true,
+                      value: reservation.new_record? && params[:user_id].present? ? User.find_by_id(params[:user_id]).try(:phone) : reservation.user_phone}
+
+      f.input :user_id, :as => :hidden, :input_html => {value: reservation.new_record? && params[:user_id].present? ? params[:user_id] : reservation.user_id}
+
       f.input :table, collection: TablePolicy::Scope.new(current_user, Table).resolve.all.map {|l| [l.title, l.id] }
       f.input :client_count, as: :select, :collection => [['1-4', '4'], ['5-6', '6']]
       f.input :duration, as: :select, :collection => [['1.5 часа', '1.5'], ['3 часа', '3']]
       f.input :status, as: :select, :collection => [['Ожидается', 'wait'], ['Подтверждено', 'approve'], ['Отменено', 'deleted']]
-      f.input :code
     end
     f.inputs do
       f.has_many :meets, heading: 'Встречи', new_record: "Добавить встречу" do |a|
@@ -102,6 +109,14 @@ ActiveAdmin.register Reservation do
         a.input :status, as: :select, :collection => [['Ожидается', 'wait'], ['Подтверждено', 'approved'], ['Отменено', 'deleted']]
         a.input :_destroy, :as => :boolean
       end
+    end
+
+    f.inputs "Справка" do
+    "<div id=\"admin_help\">
+      Поиск клиента производится по номеру телефона. Формат: 7XXXXXXXXXX<br>
+      Дата посещения должна быть больше текущей.<br>
+      <b>Внимание!</b> При добавлении бронирования через панель администрирования занятость столов не учитывается.
+    </div>".html_safe
     end
     f.actions
   end

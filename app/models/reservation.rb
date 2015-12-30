@@ -47,6 +47,12 @@ class Reservation < ActiveRecord::Base
       parent.table[:id]
   end
 
+  attr_accessor :user_phone # for autocomplete
+  def user_phone
+    @user_phone ||= self.try(:user).try(:phone)
+    return @user_phone
+  end
+
   def update_end_visit_date
     if self.user.role == 'vip'
       self.end_visit_date = self.visit_date + 2.hours + 30.minutes
