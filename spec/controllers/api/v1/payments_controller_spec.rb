@@ -9,7 +9,7 @@ RSpec.describe Api::V1::PaymentsController, type: :controller do
     let!(:lounge) { FactoryGirl.create :lounge }
     let!(:table) { FactoryGirl.create :table, lounge: lounge }
     it 'returns success responce' do
-      post :create, phone: user.phone, amount: 1000, format: :json
+      post :create, phone: user.phone, format: :json
       expect(response).to be_success
     end
     it 'creates a new payment' do

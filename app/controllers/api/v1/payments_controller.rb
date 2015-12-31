@@ -5,6 +5,7 @@ class Api::V1::PaymentsController < ApplicationController
   # TODO: Пока непонятно какие данные кроме суммы мы можем получить от 1С
   def create
     user = User.find_by_phone(params[:phone])
+    params[:amount] ||= 100
     if user
       payment = Payment.new(user: user, amount: params[:amount])
       if params[:reservation_code].present?
