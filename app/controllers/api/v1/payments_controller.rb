@@ -1,4 +1,4 @@
-class Api::V1::PaymentsController < ApplicationController
+class Api::V1::PaymentsController < Api::V1::BaseController
   respond_to :json
   # Внешнее API для принятия оповещений о новой оплате
   # от 1C
