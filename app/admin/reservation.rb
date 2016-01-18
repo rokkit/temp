@@ -44,11 +44,12 @@ ActiveAdmin.register Reservation do
   # filter :lounge_table_eq, :as => :select,
         #  collection: Lounge.order(:id).map { |l| [l.title, l.id] }
 
-  filter :containing_lounge_table_in,
-      as: :select,
-      label: 'Ложа',
-      collection: Lounge.all
-  filter :user, collection: -> { User.clients }
+  # filter :containing_lounge_table_in,
+  #     as: :select,
+  #     label: 'Ложа',
+  #     collection: Lounge.all
+  # filter :user, collection: -> { User.clients }
+  config.filters = false
 
   index do
     selectable_column
