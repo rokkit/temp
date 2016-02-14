@@ -5,7 +5,7 @@
     database: uhp_demo1
     pool:     5
     username: sa
-    password: Ve8Rohcier
+    password: kpa64Mys
 
   default: &default
     adapter: postgresql

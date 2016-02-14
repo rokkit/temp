@@ -11,7 +11,7 @@ class Lounge < ActiveRecord::Base
 
   def get_from_ext_by_title
      client = TinyTds::Client.new username: 'sa',
-            password: 'Ve8Rohcier',
+            password: 'kpa64Mys',
             host: '176.112.198.251',
             port: 1433,
             database: 'uhp_demo1',
@@ -32,7 +32,7 @@ class Lounge < ActiveRecord::Base
 
   def self.get_from_ext(idrref)
     client = TinyTds::Client.new username: 'sa',
-            password: 'Ve8Rohcier',
+            password: 'kpa64Mys',
             host: '176.112.198.251',
             port: 1433,
             database: 'uhp_demo1',

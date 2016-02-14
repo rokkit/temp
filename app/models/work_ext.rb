@@ -3,7 +3,7 @@ class WorkExt < ActiveRecord::Base
     :adapter     => "sqlserver",
     :host          => "176.112.198.251",
     :username => "sa",
-    :password => "Ve8Rohcier",
+    :password => "kpa64Mys",
     :database => "uhp_demo1"
   })
   self.table_name = '_InfoRg1666'
