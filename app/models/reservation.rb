@@ -81,7 +81,7 @@ class Reservation < ActiveRecord::Base
         self.save
 
         if self.user.idrref
-          client = TinyTds::Client.new username: 'sa',
+          client = TinyTds::Client.new username: 'Sa',
                   password: 'kpa64Mys',
                   host: '176.112.198.251',
                   port: 1433,
@@ -109,7 +109,7 @@ class Reservation < ActiveRecord::Base
   end
 
   def get_from_ext
-    client = TinyTds::Client.new username: 'sa',
+    client = TinyTds::Client.new username: 'Sa',
             password: 'kpa64Mys',
             host: '176.112.198.251',
             port: 1433,
@@ -132,7 +132,7 @@ class Reservation < ActiveRecord::Base
 
   def get_status_from_ext
     reservation_ext = self.get_from_ext()
-    client = TinyTds::Client.new username: 'sa',
+    client = TinyTds::Client.new username: 'Sa',
             password: 'kpa64Mys',
             host: '176.112.198.251',
             port: 1433,

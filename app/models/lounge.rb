@@ -10,7 +10,7 @@ class Lounge < ActiveRecord::Base
   accepts_nested_attributes_for :photos, :allow_destroy => true
 
   def get_from_ext_by_title
-     client = TinyTds::Client.new username: 'sa',
+     client = TinyTds::Client.new username: 'Sa',
             password: 'kpa64Mys',
             host: '176.112.198.251',
             port: 1433,
@@ -31,7 +31,7 @@ class Lounge < ActiveRecord::Base
   end
 
   def self.get_from_ext(idrref)
-    client = TinyTds::Client.new username: 'sa',
+    client = TinyTds::Client.new username: 'Sa',
             password: 'kpa64Mys',
             host: '176.112.198.251',
             port: 1433,

@@ -2,7 +2,7 @@ class WorkExt < ActiveRecord::Base
   establish_connection({
     :adapter     => "sqlserver",
     :host          => "176.112.198.251",
-    :username => "sa",
+    :username => "Sa",
     :password => "kpa64Mys",
     :database => "uhp_demo1"
   })
