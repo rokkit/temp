@@ -7,6 +7,11 @@ class Api::V1::ReservationsController < Api::V1::BaseController
   end
 
   def create
+	if current_user.freezed
+		render json: { errors: { error: 'Can\'t create a reservation due to user being frozen.' } }
+		return false
+	end
+
     if !params[:lounge].present?
       render json: { errors: { lounge: 'not_found' } }
       return false

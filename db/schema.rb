@@ -267,6 +267,7 @@ ActiveRecord::Schema.define(version: 20151228105139) do
     t.string   "auth_token"
     t.string   "email"
     t.decimal  "spent_money",            precision: 8, scale: 2
+    t.binary   "idrref"
     t.string   "city"
     t.string   "employe"
     t.string   "work_company"
@@ -277,7 +278,6 @@ ActiveRecord::Schema.define(version: 20151228105139) do
     t.date     "birthdate"
     t.string   "country",                                        default: ""
     t.text     "description"
-    t.string   "idrref"
     t.text     "quote"
     t.datetime "code_sent_at"
   end
