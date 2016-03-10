@@ -60,7 +60,6 @@ class Api::V1::UsersController < Api::V1::BaseController
     respond_with @users_month, @users_all_time
   end
 
-
   def load_client_data
     @user = User.find(params[:id])
     @user_skills = SkillsUsers.where(user_id: @user.id).includes(:skill)

@@ -42,6 +42,7 @@ Rails.application.routes.draw do
           post :viewed
         }
       end
+      resources :search, only: [:index]
       resources :users, only: [:update, :show] do
         collection {
           get :rating
