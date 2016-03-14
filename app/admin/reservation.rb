@@ -16,7 +16,13 @@ ActiveAdmin.register Reservation do
     end
   end
   member_action :approve, method: :get do
-    @reservation = Reservation.find(params[:id])
+    if (current_user.role == "franchiser")
+    	@reservation = Reservation.joins(:table).where(:"tables.lounge_id" => current_user.lounge_id).find(params[:id])
+	else
+		@reservation = Reservation.find(params[:id])
+	end
+
+    #@reservation = Reservation.find(params[:id])
     @reservation.status = :approve
     @reservation.save(validate: false)
     SMSService.send @reservation.user.phone, "Ваша бронь на #{@reservation.visit_date.strftime('%H:%M')} #{@reservation.visit_date.strftime('%d.%m.%Y')} принята, ждём вас в \"#{@reservation.table.lounge.title}\""
@@ -24,8 +30,14 @@ ActiveAdmin.register Reservation do
   end
 
   member_action :cancel, method: :get do
-    @reservation = Reservation.find(params[:id])
-    @reservation.status = :deleted
+    if (current_user.role == "franchiser")
+    	@reservation = Reservation.joins(:table).where(:"tables.lounge_id" => current_user.lounge_id).find(params[:id])
+	else
+		@reservation = Reservation.find(params[:id])
+	end
+
+    #@reservation = Reservation.find(params[:id])
+	@reservation.status = :deleted
     SMSService.send @reservation.user.phone, "К сожалению, Ваша бронь на #{@reservation.visit_date.strftime('%H:%M')} #{@reservation.visit_date.strftime('%d.%m.%Y')} отменена"
     @reservation.save(validate: false)
     redirect_to admin_reservation_path(@reservation), notice: "Бронирование отменено"

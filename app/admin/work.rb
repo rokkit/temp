@@ -12,6 +12,7 @@ ActiveAdmin.register Work do
     column :amount
     actions
   end
+
   form do |f|
     f.inputs 'Рабочая смена' do
         f.input :user, :collection => User.hookmasters.map{|u| ["#{u.name || ('+'+u.phone)}", u.id]}

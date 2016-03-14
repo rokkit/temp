@@ -4,16 +4,26 @@ ActiveAdmin.register_page 'Dashboard' do
   content title: proc { I18n.t('active_admin.dashboard') } do
 
     # Here is an example of a simple dashboard with columns and panels.
-    #
+    # current_user.name
+    if (current_user.role == "franchiser")
+		res_array = Reservation.joins(:table).where(:"tables.lounge_id" => current_user.lounge_id).order(:id => :desc).limit(15);
+	else
+		res_array = Reservation.order(:id => :desc).limit(15);
+	end
+
     columns do
       column do
         panel "Бронирования" do
-          table_for Reservation.order(:id => :desc).limit(15) do
-            column("Клиент")   {|order|    order.user.name + " +#{order.user.phone}"   }
-            column("Заведение") {|order| link_to("#{order.table.lounge.title}", admin_lounge_path(order.table.lounge)) }
-            column("Стол") {|order| link_to("#{order.table.title}", admin_table_path(order.table)) }
-            column("Дата визита")   {|order| order.visit_date.strftime('%d.%m.%Y %R')  }
-          end
+			if res_array.any?
+				table_for res_array do
+					column("Клиент")   {|order|    order.user.name + " +#{order.user.phone}"   }
+					column("Заведение") {|order| link_to("#{order.table.lounge.title}", admin_lounge_path(order.table.lounge)) }
+					column("Стол") {|order| link_to("#{order.table.title}", admin_table_path(order.table)) }
+					column("Дата визита")   {|order| order.visit_date.strftime('%d.%m.%Y %R')  }
+				end
+			else
+				para "Резерваций нет."
+			end
         end
       end
 

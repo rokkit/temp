@@ -7,7 +7,7 @@ class SkillPolicy
   end
 
   def index?
-    @current_user.is_admin? || @current_user.is_administrative?
+    @current_user.is_admin?
   end
 
   def new?
@@ -19,7 +19,7 @@ class SkillPolicy
   end
 
   def show?
-    @current_user.is_admin? || @current_user.is_administrative?
+    @current_user.is_admin?
   end
 
   def update?

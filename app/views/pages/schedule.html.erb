@@ -29,12 +29,18 @@
 		text-align:left !important;
 	}
 </style>
-
+<%
+if (current_user.role == "franchiser")
+	reserv = Reservation.joins(:table).where(:"tables.lounge_id" => current_user.lounge_id).all.to_json(include: [:table, :user]).html_safe
+else
+	reserv = Reservation.all.to_json(include: [:table, :user]).html_safe
+end
+%>
 <script type="text/javascript" charset="utf-8">
 
 	function init() {
     var lounges = <%= Lounge.where(active: true).to_json(:include => :tables).html_safe %>;
-    var reservations = <%= Reservation.all.to_json(include: [:table, :user]).html_safe %>;
+	var reservations = <%= reserv %>
 
     var reservations_json = []
 
