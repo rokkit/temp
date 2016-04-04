@@ -35,6 +35,8 @@ ActiveAdmin.register Lounge do
       f.input :blazon
       f.input :vk_link
       f.input :work_hours
+      f.input :open_hour_wd
+      f.input :open_hour_we
       f.input :order_number
       f.inputs do
         f.has_many :photos, heading: 'Фото', new_record: "Добавить фото" do |a|

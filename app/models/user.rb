@@ -126,9 +126,15 @@ class User < ActiveRecord::Base
 
   # Проверка на выполнение достижений связанных с юзером
   def check_for_achievements
+	if self.is_hookmaster?
+	  self.check_for_org_genius_achievement()
+	end
     if self.is_client?
+      self.check_for_permanency_achievement
+      self.check_for_comm_achievement()
       self.check_for_open_profile_achievement()
       self.check_for_izobretatelnost_achievement()
+      self.check_for_enthusiasm_achievement()
     end
   end
 
@@ -340,58 +346,203 @@ class User < ActiveRecord::Base
     end
   end
 
+  # Ачивка "Энтузиазм"
+  # Посетите заведение Уникальных Кальянных в пределах 10 минут после открытия
+  def check_for_enthusiasm_achievement
+	  # Select active reservations...
+	  payments = Payment.where(user_id: self.id)
+
+	  if payments
+		  #puts reservations.inspect
+		  payments.each do |r|
+			  unless r.table_id.nil?
+				  lounge = Lounge.joins(:tables).where("tables.id": r.table_id).first
+				  #puts lounge.inspect
+
+				  open_hour_we = lounge.open_hour_we
+				  open_hour_wd = lounge.open_hour_wd
+
+				  unless (open_hour_we.to_s.empty? || open_hour_wd.to_s.empty?)
+					  day_a = Date::ABBR_DAYNAMES[r.payed_at.wday]
+
+					  if (day_a == "Sat" || day_a == "Sun") # Выходные
+						  if (r.payed_at.hour == open_hour_we || r.payed_at.strftime('%M').to_i < 11)
+						  	  achievement_circle('entuziazm', 'Энтузиазм')
+						  end
+					  else
+						  if (r.payed_at.hour == open_hour_wd || r.payed_at.strftime('%M').to_i < 11)
+						  	  achievement_circle('entuziazm', 'Энтузиазм')
+						  end
+					  end
+				  end
+
+			  end
+		  end
+	  end
+  end
+
+  # Ачивка "Коммуникабельность"
+  # Назначьте N встреч через личный кабинет.
+  def check_for_comm_achievement
+	meet_count = 0
+
+	# Select active reservations...
+    reservations = Reservation.active.where(user_id: self.id)
+	if reservations
+		ids = []
+		reservations.each do |r|
+			ids.push(r.id)
+		end
+		meet_count = Meet.active.where('user_id = ? AND reservation_id = ?', self.id, ids).count
+	end
+
+	if meet_count >= 1
+		achievement_circle('kommunikabelnost-i', 'Коммуникабельность I')
+	end
+	if meet_count > 5
+		achievement_circle('kommunikabelnost-ii', 'Коммуникабельность II')
+	end
+	if meet_count > 10
+		achievement_circle('kommunikabelnost-iii', 'Коммуникабельность III')
+	end
+	if meet_count > 25
+		achievement_circle('kommunikabelnost-iv', 'Коммуникабельность IV')
+	end
+	if meet_count > 50
+		achievement_circle('kommunikabelnost-v', 'Коммуникабельность V')
+	end
+	if meet_count > 100
+		achievement_circle('kommunikabelnost-vi', 'Коммуникабельность VI')
+	end
+	if meet_count > 250
+		achievement_circle('kommunikabelnost-vii', 'Коммуникабельность VII')
+	end
+	if meet_count > 500
+		achievement_circle('kommunikabelnost-viii', 'Коммуникабельность VIII')
+	end
+  end
+
+  # Ачивка "Трудяга".
+  # Отработай N смен.
+  # Только для кальянщиков...
+  def check_for_work_achievement
+
+  end
+
+  # Ачивка "Постоянство".
+  # Кол-во часов проведённых в кальянной.
+  def check_for_permanency_achievement
+    reservations = Reservation.active.where('user_id = ?', self.id)
+	#total_seconds = 0
+	total_hours = 0
+
+	if reservations
+		reservations.each do |r|
+			#seconds = (r.end_visit_date - r.visit_date).to_i.abs
+			#total_seconds = seconds + total_seconds
+			total_hours = r.duration.to_f + total_hours
+		end
+
+		# To minutes, then to hours.
+		#total_hours = ((total_seconds / 60) / 60).floor.abs
+
+		if total_hours >= 1
+			achievement_circle('postoyanstvo-i', 'Постоянство I')
+		end
+		if total_hours > 5
+			achievement_circle('postoyanstvo-ii', 'Постоянство II')
+		end
+		if total_hours > 10
+			achievement_circle('postoyanstvo-iii', 'Постоянство III')
+		end
+		if total_hours > 25
+			achievement_circle('postoyanstvo-iv', 'Постоянство IV')
+		end
+		if total_hours > 50
+			achievement_circle('postoyanstvo-v', 'Постоянство V')
+		end
+		if total_hours > 100
+			achievement_circle('postoyanstvo-vi', 'Постоянство VI')
+		end
+		if total_hours > 250
+			achievement_circle('postoyanstvo-vii', 'Постоянство VII')
+		end
+		if total_hours > 500
+			achievement_circle('postoyanstvo-viii', 'Постоянство VIII')
+		end
+		if total_hours > 1000
+			achievement_circle('postoyanstvo-ix', 'Постоянство IX')
+		end
+	end # if reservations
+  end
+
+  # Ачивка "Гений организации"
+  # Проведи N мероприятий.
+  # Для кальянщиков...
+  def check_for_org_genius_achievement
+	  if self.party_count >= 1
+		  achievement_circle('geniy-organizatsii-i', 'Гений организации I')
+	  end
+	  if self.party_count > 3
+		  achievement_circle('geniy-organizatsii-ii', 'Гений организации II')
+	  end
+	  if self.party_count > 5
+		  achievement_circle('geniy-organizatsii-iii','Гений организации III')
+	  end
+	  if self.party_count > 10
+		  achievement_circle('geniy-organizatsii-iv', 'Гений организации IV')
+	  end
+	  if self.party_count > 20
+		  achievement_circle('geniy-organizatsii-v', 'Гений организации V')
+	  end
+	  if self.party_count > 35
+		  achievement_circle('geniy-organizatsii-vi', 'Гений организации VI')
+	  end
+	  if self.party_count > 50
+		  achievement_circle('geniy-organizatsii-vii', 'Гений организации VII')
+	  end
+  end
+
   # Ачимент "Открытость"
   # Заполните свой профиль на 100%
   def check_for_open_profile_achievement
-
-    if self.hobby.present? && self.employe.present? && self.work_company.present? && self.city.present?
-      achievement = Achievement.find_by_key('otkrytost')
-      if !achievement
-        achievement = Achievement.create(name: 'Открытость')
-      end
-      if !AchievementsUser.where(user_id: self.id, achievement_id: achievement.id).present?
-          AchievementsUser.create!(user: self, achievement: achievement)
-      end
-    end
+	  if self.hobby.present? && self.employe.present? && self.work_company.present? && self.city.present?
+		  achievement_circle('otkrytost','Открытость')
+	  end
   end
-  # Ачимент "Изобретательность"
-  # Проведите мероприятие
+
+  # Ачивка "Изобретательность"
+  # Проведите N мероприятий.
+  # Ачивка клиента, для кальянщика есть такая же выше.
   def check_for_izobretatelnost_achievement
-    achievement = nil
-    if self.party_count > 0
-      case self.party_count
-      when 1
-        achievement = Achievement.find_by_key('izobretatelnost-i')
-        if !achievement
-          achievement = Achievement.create(name: 'Изобретательность I')
-        end
-      when 2
-        achievement = Achievement.find_by_key('izobretatelnost-ii')
-        if !achievement
-          achievement = Achievement.create(name: 'Изобретательность II')
-        end
-      when 3
-        achievement = Achievement.find_by_key('izobretatelnost-iii')
-        if !achievement
-          achievement = Achievement.create(name: 'Изобретательность III')
-        end
-      when 4
-        achievement = Achievement.find_by_key('izobretatelnost-iv')
-        if !achievement
-          achievement = Achievement.create(name: 'Изобретательность IV')
-        end
-      when 5
-        achievement = Achievement.find_by_key('izobretatelnost-v')
-        if !achievement
-          achievement = Achievement.create(name: 'Изобретательность V')
-        end
-      end
-    end
-    if achievement
-      if !AchievementsUser.where(user_id: self.id, achievement_id: achievement.id).present?
-          AchievementsUser.create!(user: self, achievement: achievement)
-      end
-    end
+	  if self.party_count >= 1
+		  achievement_circle('izobretatelnost-i','Изобретательность I')
+	  end
+	  if self.party_count > 3
+		  achievement_circle('izobretatelnost-ii','Изобретательность II')
+	  end
+	  if self.party_count > 5
+		  achievement_circle('izobretatelnost-iii','Изобретательность III')
+	  end
+	  if self.party_count > 10
+		  achievement_circle('izobretatelnost-iv', 'Изобретательность IV')
+	  end
+	  if self.party_count > 25
+		  achievement_circle('izobretatelnost-v', 'Изобретательность V')
+	  end
+  end
+
+  def achievement_circle (key, name)
+	  achievement = Achievement.find_by_key(key)
+	  if !achievement
+		  achievement = Achievement.create(name: name)
+	  end
+
+	  if achievement
+		  if !AchievementsUser.where(user_id: self.id, achievement_id: achievement.id).present?
+			  AchievementsUser.create!(user: self, achievement: achievement)
+		  end
+	  end
   end
 
   #### Методы кальянщика

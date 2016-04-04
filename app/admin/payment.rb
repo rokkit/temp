@@ -13,7 +13,6 @@ ActiveAdmin.register Payment do
   end
 
   show do
-
     attributes_table do
       row :id
       row :user
